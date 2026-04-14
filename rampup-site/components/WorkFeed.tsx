@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
 import type { Client } from '@/lib/types'
 
@@ -194,74 +194,10 @@ function ClientCard({ client }: { client: Client }) {
   )
 }
 
-// ── Pill row used inside the filter bar ──
-// Rendered twice for seamless marquee loop on mobile
-function PillRow({
-  active,
-  onSelect,
-  ariaHidden = false,
-}: {
-  active: string
-  onSelect: (v: string) => void
-  ariaHidden?: boolean
-}) {
-  return (
-    <>
-      {filters.map((f) => (
-        <button
-          key={f.value}
-          onClick={() => onSelect(f.value)}
-          aria-hidden={ariaHidden}
-          tabIndex={ariaHidden ? -1 : 0}
-          className={`shrink-0 font-poppins text-[13px] font-semibold px-4 py-2 rounded-full border transition-all active:scale-[0.97] ${
-            active === f.value
-              ? 'bg-[#3DBE5A] text-white border-[#3DBE5A]'
-              : 'bg-white text-[#3D3D3D] border-black/10 hover:border-black/20'
-          }`}
-        >
-          {f.label}
-        </button>
-      ))}
-    </>
-  )
-}
 
 export default function WorkFeed({ clients }: { clients: Client[] }) {
   const [active, setActive] = useState('all')
   const feedRef = useRef<HTMLDivElement>(null)
-  // scrollRef  → outer div: owns overflow-x scroll + touch-action
-  // marqueeRef → inner div: owns CSS animation
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const marqueeRef = useRef<HTMLDivElement>(null)
-  const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  useEffect(() => {
-    const outer = scrollRef.current
-    const inner = marqueeRef.current
-    if (!outer || !inner) return
-
-    function onTouchStart() {
-      // 1. Freeze animation in place
-      inner!.style.animationPlayState = 'paused'
-      // 2. Let outer div handle native horizontal scroll
-      outer!.style.overflowX = 'auto'
-
-      // 3. Debounce resume — reset timer on every new touch
-      if (resumeTimer.current) clearTimeout(resumeTimer.current)
-      resumeTimer.current = setTimeout(() => {
-        // Snap scroll back to start, then re-enable animation
-        outer!.scrollLeft = 0
-        outer!.style.overflowX = 'hidden'
-        inner!.style.animationPlayState = 'running'
-      }, 3000)
-    }
-
-    outer.addEventListener('touchstart', onTouchStart, { passive: true })
-    return () => {
-      outer.removeEventListener('touchstart', onTouchStart)
-      if (resumeTimer.current) clearTimeout(resumeTimer.current)
-    }
-  }, [])
 
   function handleFilter(value: string) {
     setActive(value)
@@ -281,55 +217,43 @@ export default function WorkFeed({ clients }: { clients: Client[] }) {
 
       {/* ── Filter bar ── */}
       <div className="sticky top-16 z-30 bg-[#EDEDED] border-b border-black/[0.06]">
+        {/* Relative wrapper so the right-edge fade can be positioned inside */}
         <div className="relative">
-
-          {/*
-            MOBILE: marquee auto-scroll via CSS animation on the inner track.
-            Pills are rendered twice for a seamless loop.
-            Clicking still triggers handleFilter — animation doesn't block interaction.
-            DESKTOP (md+): static flex row, no animation, no duplicate pills.
-          */}
-
-          {/* Mobile marquee — outer scrolls, inner animates */}
           <div
-            ref={scrollRef}
-            className="md:hidden py-3 px-4"
+            className="flex gap-2 px-4 md:px-12 py-3"
             style={{
-              overflowX: 'hidden',           // hidden by default; set to auto on touch
+              overflowX: 'auto',
               WebkitOverflowScrolling: 'touch',
-              touchAction: 'pan-x',
+              scrollSnapType: 'x mandatory',
               scrollbarWidth: 'none',
-              maskImage: 'linear-gradient(to right, transparent, black 8%, black 88%, transparent)',
+              msOverflowStyle: 'none',
             }}
           >
-            <div
-              ref={marqueeRef}
-              className="flex gap-2 w-max"
-              style={{ animation: 'marquee-pills 20s linear infinite' }}
-            >
-              <PillRow active={active} onSelect={handleFilter} />
-              {/* Duplicate for seamless loop */}
-              <PillRow active={active} onSelect={handleFilter} ariaHidden />
-            </div>
+            {filters.map((f) => (
+              <button
+                key={f.value}
+                onClick={() => handleFilter(f.value)}
+                className={`shrink-0 font-poppins text-[13px] font-semibold px-4 py-2 rounded-full border transition-all active:scale-[0.97] ${
+                  f.value === active
+                    ? 'bg-[#3DBE5A] text-white border-[#3DBE5A]'
+                    : 'bg-white text-[#3D3D3D] border-black/10 hover:border-black/20'
+                }`}
+                style={{ scrollSnapAlign: 'start' }}
+              >
+                {f.label}
+              </button>
+            ))}
+            {/* Spacer so last pill clears the fade overlay */}
+            <div className="shrink-0 w-8 md:hidden" aria-hidden />
           </div>
 
-          {/* Desktop static row */}
+          {/* Right-edge fade — mobile only, signals more pills to the right */}
           <div
-            className="hidden md:flex gap-2 px-12 py-3"
-          >
-            <PillRow active={active} onSelect={handleFilter} />
-          </div>
-
+            className="pointer-events-none absolute inset-y-0 right-0 w-12 md:hidden"
+            style={{ background: 'linear-gradient(to right, transparent, #EDEDED)' }}
+          />
         </div>
       </div>
-
-      {/* Keyframes injected as a style tag — Tailwind can't express arbitrary keyframes inline */}
-      <style>{`
-        @keyframes marquee-pills {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
 
       {/* Count label — this is the scroll target */}
       <div ref={feedRef} className="px-4 md:px-12 pt-5 pb-2 scroll-mt-28">
