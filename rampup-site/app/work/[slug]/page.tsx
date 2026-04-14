@@ -32,7 +32,7 @@ function VideoEmbed({ videoId, label }: { videoId: string; label: string }) {
         style={{ aspectRatio: '9/16' }}
       >
         <iframe
-          src={`https://customer-${CLOUDFLARE_CUSTOMER_ID.replace('customer-', '')}.cloudflarestream.com/${videoId}/iframe?poster=&primaryColor=3DBE5A`}
+          src={`https://customer-h038b69ef3omo1hq.cloudflarestream.com/${videoId}/iframe?primaryColor=3DBE5A`}
           loading="lazy"
           allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
           allowFullScreen
