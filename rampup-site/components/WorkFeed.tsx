@@ -229,25 +229,36 @@ function PillRow({
 export default function WorkFeed({ clients }: { clients: Client[] }) {
   const [active, setActive] = useState('all')
   const feedRef = useRef<HTMLDivElement>(null)
+  // scrollRef  → outer div: owns overflow-x scroll + touch-action
+  // marqueeRef → inner div: owns CSS animation
+  const scrollRef = useRef<HTMLDivElement>(null)
   const marqueeRef = useRef<HTMLDivElement>(null)
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Pause marquee on touch, resume after 3s of no interaction
   useEffect(() => {
-    const el = marqueeRef.current
-    if (!el) return
+    const outer = scrollRef.current
+    const inner = marqueeRef.current
+    if (!outer || !inner) return
 
-    function pause() {
-      el!.style.animationPlayState = 'paused'
+    function onTouchStart() {
+      // 1. Freeze animation in place
+      inner!.style.animationPlayState = 'paused'
+      // 2. Let outer div handle native horizontal scroll
+      outer!.style.overflowX = 'auto'
+
+      // 3. Debounce resume — reset timer on every new touch
       if (resumeTimer.current) clearTimeout(resumeTimer.current)
       resumeTimer.current = setTimeout(() => {
-        el!.style.animationPlayState = 'running'
+        // Snap scroll back to start, then re-enable animation
+        outer!.scrollLeft = 0
+        outer!.style.overflowX = 'hidden'
+        inner!.style.animationPlayState = 'running'
       }, 3000)
     }
 
-    el.addEventListener('touchstart', pause, { passive: true })
+    outer.addEventListener('touchstart', onTouchStart, { passive: true })
     return () => {
-      el.removeEventListener('touchstart', pause)
+      outer.removeEventListener('touchstart', onTouchStart)
       if (resumeTimer.current) clearTimeout(resumeTimer.current)
     }
   }, [])
@@ -279,10 +290,17 @@ export default function WorkFeed({ clients }: { clients: Client[] }) {
             DESKTOP (md+): static flex row, no animation, no duplicate pills.
           */}
 
-          {/* Mobile marquee track */}
+          {/* Mobile marquee — outer scrolls, inner animates */}
           <div
-            className="md:hidden overflow-hidden py-3 px-4"
-            style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 88%, transparent)' }}
+            ref={scrollRef}
+            className="md:hidden py-3 px-4"
+            style={{
+              overflowX: 'hidden',           // hidden by default; set to auto on touch
+              WebkitOverflowScrolling: 'touch',
+              touchAction: 'pan-x',
+              scrollbarWidth: 'none',
+              maskImage: 'linear-gradient(to right, transparent, black 8%, black 88%, transparent)',
+            }}
           >
             <div
               ref={marqueeRef}
