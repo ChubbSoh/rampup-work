@@ -1,0 +1,138 @@
+{
+  "brand": {
+    "name": "Restaurant RampUp",
+    "tagline": "Grow your restaurant sales"
+  },
+  "typography": {
+    "heading": {
+      "font": "Sora",
+      "google_fonts_url": "https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap",
+      "weights": [400, 600, 700, 800],
+      "primary_weight": 800
+    },
+    "body": {
+      "font": "Poppins",
+      "google_fonts_url": "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap",
+      "weights": [400, 500, 600, 700],
+      "primary_weight": 400,
+      "primary_size": "18px"
+    },
+    "button": {
+      "font": "Poppins",
+      "weight": 600,
+      "size": "16px"
+    },
+    "import_url": "https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+  },
+  "colors": {
+    "background": "#EDEDED",
+    "text_primary": "#3D3D3D",
+    "text_secondary": "#888888",
+    "text_muted": "#AAAAAA",
+    "accent_green": "#3DBE5A",
+    "accent_green_light": "#E8F8ED",
+    "dark": "#2D2D2D",
+    "white": "#FFFFFF",
+    "card_background": "#FFFFFF",
+    "border": "rgba(0,0,0,0.08)"
+  },
+  "buttons": {
+    "primary": {
+      "background": "#3DBE5A",
+      "text": "#FFFFFF",
+      "border_radius": "100px",
+      "padding": "10px 22px",
+      "font": "Poppins",
+      "font_size": "16px",
+      "font_weight": 600
+    },
+    "secondary": {
+      "background": "#2D2D2D",
+      "text": "#FFFFFF",
+      "border_radius": "100px",
+      "padding": "10px 22px",
+      "font": "Poppins",
+      "font_size": "14px",
+      "font_weight": 600
+    },
+    "outline": {
+      "background": "transparent",
+      "text": "#2D2D2D",
+      "border": "1.5px solid rgba(0,0,0,0.2)",
+      "border_radius": "100px",
+      "padding": "8px 20px",
+      "font_size": "13px",
+      "font_weight": 600
+    }
+  },
+  "layout": {
+    "nav_height": "64px",
+    "page_padding_desktop": "48px",
+    "page_padding_mobile": "20px",
+    "card_border_radius": "16px",
+    "image_border_radius": "14px",
+    "tag_border_radius": "100px",
+    "max_width": "1200px"
+  },
+  "components": {
+    "nav": {
+      "background": "#EDEDED",
+      "border_bottom": "1px solid rgba(0,0,0,0.08)",
+      "height": "64px"
+    },
+    "card": {
+      "background": "#FFFFFF",
+      "border_radius": "16px",
+      "hover_transform": "translateY(-4px)",
+      "transition": "0.18s"
+    },
+    "tag": {
+      "color": "#3DBE5A",
+      "font_size": "10px",
+      "font_weight": 700,
+      "letter_spacing": "1.5px",
+      "text_transform": "uppercase"
+    },
+    "section_label": {
+      "color": "#3DBE5A",
+      "font_size": "11px",
+      "font_weight": 700,
+      "letter_spacing": "2px",
+      "text_transform": "uppercase"
+    },
+    "arrow_button": {
+      "background": "#3DBE5A",
+      "color": "#FFFFFF",
+      "size": "30px",
+      "border_radius": "50%"
+    }
+  },
+  "logo": {
+    "text": "RAMPUP",
+    "font": "Sora",
+    "font_weight": 800,
+    "font_size": "20px",
+    "color_main": "#2D2D2D",
+    "color_accent": "#3DBE5A",
+    "accent_on": "UP"
+  },
+  "video": {
+    "player_color": "3DBE5A",
+    "aspect_ratio_vertical": "9/16",
+    "aspect_ratio_horizontal": "16/9",
+    "border_radius": "14px",
+    "cloudflare_customer_id": "customer-h038b69ef3omo1hq"
+  },
+  "filters": {
+    "cuisine_types": [
+      "japanese",
+      "italian",
+      "korean",
+      "western",
+      "nightlife",
+      "cafe",
+      "thai",
+      "chinese"
+    ]
+  }
+}
