@@ -19,7 +19,7 @@ const filters = [
 ]
 
 const cuisineColors: Record<string, string> = {
-  japanese: 'bg-red-50 text-red-600',
+  japanese: 'bg-[#E8F8ED] text-[#3DBE5A]',
   italian: 'bg-orange-50 text-orange-600',
   korean: 'bg-purple-50 text-purple-600',
   western: 'bg-blue-50 text-blue-600',
@@ -127,9 +127,8 @@ function ClientCard({ client }: { client: Client }) {
       </div>
 
       {/* ── Videos (2 side by side, 9:16) ── */}
-      {/* On desktop capped at 480px total (240px each), left-aligned */}
       <div className="px-4 pb-3">
-        <div className="w-full md:max-w-[480px]">
+        <div className="w-full">
           {hasVideos ? (
             <div className="grid grid-cols-2 gap-2">
               {videoSlots.map((id) => (
@@ -247,7 +246,8 @@ export default function WorkFeed({ clients }: { clients: Client[] }) {
       </div>
 
       {/* ── Feed ── */}
-      <div className="px-4 md:px-12 pb-16 flex flex-col gap-5 max-w-2xl mx-auto md:max-w-site">
+      {/* Mobile: single column. Desktop: 3-column grid, 24px gap */}
+      <div className="px-4 md:px-12 pb-16 grid grid-cols-1 md:grid-cols-3 gap-5">
         {filtered.map((client) => (
           <ClientCard key={client.slug} client={client} />
         ))}
