@@ -217,23 +217,34 @@ export default function WorkFeed({ clients }: { clients: Client[] }) {
     <div className="max-w-site mx-auto">
       {/* ── Filter pills — horizontally scrollable ── */}
       <div className="sticky top-16 z-30 bg-[#EDEDED] border-b border-black/[0.06]">
-        <div
-          className="flex gap-2 px-4 md:px-12 py-3 overflow-x-auto scrollbar-none"
-          style={{ scrollbarWidth: 'none' }}
-        >
-          {filters.map((f) => (
-            <button
-              key={f.value}
-              onClick={() => setActive(f.value)}
-              className={`shrink-0 font-poppins text-[13px] font-semibold px-4 py-2 rounded-full border transition-all active:scale-[0.97] ${
-                active === f.value
-                  ? 'bg-green text-white border-green'
-                  : 'bg-white text-body border-black/10 hover:border-black/20'
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
+        {/* Wrapper is relative so the fade overlay can be positioned against it */}
+        <div className="relative">
+          <div
+            className="flex flex-nowrap gap-2 px-4 md:px-12 py-3 overflow-x-auto"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
+          >
+            {filters.map((f, i) => (
+              <button
+                key={f.value}
+                onClick={() => setActive(f.value)}
+                // Last pill gets extra right margin so it clears the fade on mobile
+                className={`shrink-0 font-poppins text-[13px] font-semibold px-4 py-2 rounded-full border transition-all active:scale-[0.97] ${
+                  i === filters.length - 1 ? 'mr-10 md:mr-0' : ''
+                } ${
+                  active === f.value
+                    ? 'bg-green text-white border-green'
+                    : 'bg-white text-body border-black/10 hover:border-black/20'
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+          {/* Right-edge fade — mobile only, hidden on md+ */}
+          <div
+            className="pointer-events-none absolute inset-y-0 right-0 w-16 md:hidden"
+            style={{ background: 'linear-gradient(to right, transparent, #EDEDED)' }}
+          />
         </div>
       </div>
 
