@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import type { Client } from '@/lib/types'
 
@@ -229,6 +229,28 @@ function PillRow({
 export default function WorkFeed({ clients }: { clients: Client[] }) {
   const [active, setActive] = useState('all')
   const feedRef = useRef<HTMLDivElement>(null)
+  const marqueeRef = useRef<HTMLDivElement>(null)
+  const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Pause marquee on touch, resume after 3s of no interaction
+  useEffect(() => {
+    const el = marqueeRef.current
+    if (!el) return
+
+    function pause() {
+      el!.style.animationPlayState = 'paused'
+      if (resumeTimer.current) clearTimeout(resumeTimer.current)
+      resumeTimer.current = setTimeout(() => {
+        el!.style.animationPlayState = 'running'
+      }, 3000)
+    }
+
+    el.addEventListener('touchstart', pause, { passive: true })
+    return () => {
+      el.removeEventListener('touchstart', pause)
+      if (resumeTimer.current) clearTimeout(resumeTimer.current)
+    }
+  }, [])
 
   function handleFilter(value: string) {
     setActive(value)
@@ -263,6 +285,7 @@ export default function WorkFeed({ clients }: { clients: Client[] }) {
             style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 88%, transparent)' }}
           >
             <div
+              ref={marqueeRef}
               className="flex gap-2 w-max"
               style={{ animation: 'marquee-pills 20s linear infinite' }}
             >
