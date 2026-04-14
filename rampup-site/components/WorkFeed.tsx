@@ -66,10 +66,28 @@ function PhotoPlaceholder({ initial, index }: { initial: string; index: number }
   )
 }
 
+// Parse shoot label from shoots array or months count
+// shoots entries expected as "YYYY-MM" or "Month YYYY" strings
+function getShootLabel(client: Client): string | null {
+  if (client.shoots && client.shoots.length > 0) {
+    const last = client.shoots[client.shoots.length - 1]
+    // Try parsing "YYYY-MM"
+    const isoMatch = last.match(/^(\d{4})-(\d{2})$/)
+    if (isoMatch) {
+      const d = new Date(parseInt(isoMatch[1]), parseInt(isoMatch[2]) - 1)
+      return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
+    }
+    // Return as-is if already human-readable
+    return last
+  }
+  return null
+}
+
 function ClientCard({ client }: { client: Client }) {
   const hasVideos = client.videos && client.videos.length > 0
   const hasPhotos = client.photos && client.photos.length > 0
   const initial = client.name.charAt(0)
+  const shootLabel = getShootLabel(client)
 
   // Placeholder video IDs shown as empty embeds when none set
   const videoSlots = hasVideos ? client.videos!.slice(0, 2) : []
@@ -98,42 +116,49 @@ function ClientCard({ client }: { client: Client }) {
               {client.name}
             </h2>
             <span className="font-poppins text-[11px] text-muted">{client.location}</span>
+            {shootLabel && (
+              <span className="font-poppins text-[10px] text-faint block leading-tight mt-0.5">
+                {shootLabel}
+              </span>
+            )}
           </div>
         </div>
         <CuisineTag cuisine={client.cuisine} />
       </div>
 
       {/* ── Videos (2 side by side, 9:16) ── */}
+      {/* On desktop capped at 480px total (240px each), left-aligned */}
       <div className="px-4 pb-3">
-        {hasVideos ? (
-          <div className="grid grid-cols-2 gap-2">
-            {videoSlots.map((id) => (
-              <VideoEmbed key={id} videoId={id} />
-            ))}
-            {/* If only 1 video, fill second slot with placeholder */}
-            {videoSlots.length === 1 && (
-              <div className="relative w-full rounded-[14px] bg-[#EDEDED] flex items-center justify-center" style={{ aspectRatio: '9/16' }}>
-                <span className="font-poppins text-[11px] text-muted text-center px-3">More coming soon</span>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-2">
-            {[0, 1].map((i) => (
-              <div
-                key={i}
-                className="relative w-full rounded-[14px] bg-[#EDEDED] flex flex-col items-center justify-center gap-2"
-                style={{ aspectRatio: '9/16' }}
-              >
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                  <rect x="3" y="5" width="22" height="18" rx="4" stroke="#AAAAAA" strokeWidth="1.5"/>
-                  <path d="M11 10l8 4-8 4V10z" fill="#AAAAAA"/>
-                </svg>
-                <span className="font-poppins text-[10px] text-faint">Coming soon</span>
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="w-full md:max-w-[480px]">
+          {hasVideos ? (
+            <div className="grid grid-cols-2 gap-2">
+              {videoSlots.map((id) => (
+                <VideoEmbed key={id} videoId={id} />
+              ))}
+              {videoSlots.length === 1 && (
+                <div className="relative w-full rounded-[14px] bg-[#EDEDED] flex items-center justify-center" style={{ aspectRatio: '9/16' }}>
+                  <span className="font-poppins text-[11px] text-muted text-center px-3">More coming soon</span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-2">
+              {[0, 1].map((i) => (
+                <div
+                  key={i}
+                  className="relative w-full rounded-[14px] bg-[#EDEDED] flex flex-col items-center justify-center gap-2"
+                  style={{ aspectRatio: '9/16' }}
+                >
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                    <rect x="3" y="5" width="22" height="18" rx="4" stroke="#AAAAAA" strokeWidth="1.5"/>
+                    <path d="M11 10l8 4-8 4V10z" fill="#AAAAAA"/>
+                  </svg>
+                  <span className="font-poppins text-[10px] text-faint">Coming soon</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* ── Photos (3 in a row) ── */}
@@ -158,8 +183,8 @@ function ClientCard({ client }: { client: Client }) {
       </div>
 
       {/* ── Footer ── */}
-      <div className="px-4 pb-5 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <div className="px-4 pb-5 flex items-center justify-between gap-3">
+        <div>
           {typeof client.months === 'number' && client.months > 0 ? (
             <span className="font-poppins text-xs text-muted">
               {client.months} month{client.months !== 1 ? 's' : ''} retained
@@ -172,12 +197,9 @@ function ClientCard({ client }: { client: Client }) {
         </div>
         <Link
           href={`/work/${client.slug}`}
-          className="inline-flex items-center gap-1.5 font-poppins text-xs font-semibold text-dark hover:text-green transition-colors group"
+          className="shrink-0 inline-flex items-center gap-1.5 bg-[#3DBE5A] text-white font-poppins text-[13px] font-semibold rounded-[100px] px-5 py-[10px] hover:brightness-105 transition-all active:scale-[0.97]"
         >
-          View full page
-          <span className="w-6 h-6 rounded-full bg-[#EDEDED] flex items-center justify-center group-hover:bg-green group-hover:text-white transition-all text-[11px]">
-            →
-          </span>
+          View Work →
         </Link>
       </div>
     </article>
