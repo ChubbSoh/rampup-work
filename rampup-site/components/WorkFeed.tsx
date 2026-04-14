@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
 import type { Client } from '@/lib/types'
 
@@ -30,11 +30,9 @@ const cuisineColors: Record<string, string> = {
 }
 
 function CuisineTag({ cuisine }: { cuisine: string }) {
-  const color = cuisineColors[cuisine.toLowerCase()] ?? 'bg-[#E0E0E0] text-body'
+  const color = cuisineColors[cuisine.toLowerCase()] ?? 'bg-[#E0E0E0] text-[#3D3D3D]'
   return (
-    <span
-      className={`inline-block font-poppins text-[10px] font-bold uppercase tracking-[1.5px] px-2.5 py-1 rounded-full ${color}`}
-    >
+    <span className={`inline-block font-poppins text-[10px] font-bold uppercase tracking-[1.5px] px-2.5 py-1 rounded-full ${color}`}>
       {cuisine}
     </span>
   )
@@ -42,14 +40,14 @@ function CuisineTag({ cuisine }: { cuisine: string }) {
 
 function VideoEmbed({ videoId }: { videoId: string }) {
   return (
-    <div className="relative w-full overflow-hidden rounded-[14px] bg-dark" style={{ aspectRatio: '9/16' }}>
+    <div className="relative w-full overflow-hidden rounded-[14px] bg-[#2D2D2D]" style={{ aspectRatio: '9/16' }}>
       <iframe
         src={`https://customer-${CLOUDFLARE_CUSTOMER_ID}.cloudflarestream.com/${videoId}/iframe?primaryColor=3DBE5A&muted=true&autoplay=false`}
         loading="lazy"
         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
         className="absolute inset-0 w-full h-full border-0"
-        title="Client video"
+        title="Restaurant content video"
       />
     </div>
   )
@@ -58,26 +56,20 @@ function VideoEmbed({ videoId }: { videoId: string }) {
 function PhotoPlaceholder({ initial, index }: { initial: string; index: number }) {
   const shades = ['bg-[#E4E4E4]', 'bg-[#DCDCDC]', 'bg-[#D8D8D8]']
   return (
-    <div
-      className={`relative w-full aspect-square rounded-[14px] ${shades[index % 3]} flex items-center justify-center overflow-hidden`}
-    >
-      <span className="font-sora font-extrabold text-2xl text-dark/10 select-none">{initial}</span>
+    <div className={`relative w-full aspect-square rounded-[14px] ${shades[index % 3]} flex items-center justify-center overflow-hidden`}>
+      <span className="font-sora font-extrabold text-2xl text-[#2D2D2D]/10 select-none">{initial}</span>
     </div>
   )
 }
 
-// Parse shoot label from shoots array or months count
-// shoots entries expected as "YYYY-MM" or "Month YYYY" strings
 function getShootLabel(client: Client): string | null {
   if (client.shoots && client.shoots.length > 0) {
     const last = client.shoots[client.shoots.length - 1]
-    // Try parsing "YYYY-MM"
     const isoMatch = last.match(/^(\d{4})-(\d{2})$/)
     if (isoMatch) {
       const d = new Date(parseInt(isoMatch[1]), parseInt(isoMatch[2]) - 1)
       return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
     }
-    // Return as-is if already human-readable
     return last
   }
   return null
@@ -88,36 +80,33 @@ function ClientCard({ client }: { client: Client }) {
   const hasPhotos = client.photos && client.photos.length > 0
   const initial = client.name.charAt(0)
   const shootLabel = getShootLabel(client)
-
-  // Placeholder video IDs shown as empty embeds when none set
   const videoSlots = hasVideos ? client.videos!.slice(0, 2) : []
   const photoSlots = hasPhotos ? client.photos!.slice(0, 3) : []
 
   return (
     <article className="bg-white rounded-[16px] overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
-      {/* ── Client header ── */}
+      {/* Header */}
       <div className="px-4 pt-5 pb-4 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          {/* Avatar */}
           <div className="w-10 h-10 rounded-full bg-[#EDEDED] flex items-center justify-center shrink-0">
             {client.cover ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={client.cover}
-                alt={client.name}
+                alt={`${client.name} — ${client.cuisine} restaurant in ${client.location}`}
                 className="w-full h-full object-cover rounded-full"
               />
             ) : (
-              <span className="font-sora font-extrabold text-sm text-dark/30">{initial}</span>
+              <span className="font-sora font-extrabold text-sm text-[#2D2D2D]/30">{initial}</span>
             )}
           </div>
           <div className="min-w-0">
-            <h2 className="font-sora font-bold text-[15px] text-dark leading-tight truncate">
+            <h2 className="font-sora font-bold text-[15px] text-[#2D2D2D] leading-tight truncate">
               {client.name}
             </h2>
-            <span className="font-poppins text-[11px] text-muted">{client.location}</span>
+            <span className="font-poppins text-[11px] text-[#888888]">{client.location}</span>
             {shootLabel && (
-              <span className="font-poppins text-[10px] text-faint block leading-tight mt-0.5">
+              <span className="font-poppins text-[10px] text-[#AAAAAA] block leading-tight mt-0.5">
                 {shootLabel}
               </span>
             )}
@@ -126,7 +115,7 @@ function ClientCard({ client }: { client: Client }) {
         <CuisineTag cuisine={client.cuisine} />
       </div>
 
-      {/* ── Videos (2 side by side, 9:16) ── */}
+      {/* Videos */}
       <div className="px-4 pb-3">
         <div className="w-full">
           {hasVideos ? (
@@ -136,7 +125,7 @@ function ClientCard({ client }: { client: Client }) {
               ))}
               {videoSlots.length === 1 && (
                 <div className="relative w-full rounded-[14px] bg-[#EDEDED] flex items-center justify-center" style={{ aspectRatio: '9/16' }}>
-                  <span className="font-poppins text-[11px] text-muted text-center px-3">More coming soon</span>
+                  <span className="font-poppins text-[11px] text-[#888888] text-center px-3">More coming soon</span>
                 </div>
               )}
             </div>
@@ -152,7 +141,7 @@ function ClientCard({ client }: { client: Client }) {
                     <rect x="3" y="5" width="22" height="18" rx="4" stroke="#AAAAAA" strokeWidth="1.5"/>
                     <path d="M11 10l8 4-8 4V10z" fill="#AAAAAA"/>
                   </svg>
-                  <span className="font-poppins text-[10px] text-faint">Coming soon</span>
+                  <span className="font-poppins text-[10px] text-[#AAAAAA]">Coming soon</span>
                 </div>
               ))}
             </div>
@@ -160,7 +149,7 @@ function ClientCard({ client }: { client: Client }) {
         </div>
       </div>
 
-      {/* ── Photos (3 in a row) ── */}
+      {/* Photos */}
       <div className="px-4 pb-4">
         <div className="grid grid-cols-3 gap-2">
           {hasPhotos
@@ -169,7 +158,7 @@ function ClientCard({ client }: { client: Client }) {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={src}
-                    alt={`${client.name} photo ${i + 1}`}
+                    alt={`${client.cuisine} restaurant content shoot in ${client.location} — ${client.name}`}
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
@@ -181,15 +170,15 @@ function ClientCard({ client }: { client: Client }) {
         </div>
       </div>
 
-      {/* ── Footer ── */}
+      {/* Footer */}
       <div className="px-4 pb-5 flex items-center justify-between gap-3">
         <div>
           {typeof client.months === 'number' && client.months > 0 ? (
-            <span className="font-poppins text-xs text-muted">
+            <span className="font-poppins text-xs text-[#888888]">
               {client.months} month{client.months !== 1 ? 's' : ''} retained
             </span>
           ) : (
-            <span className="font-poppins text-xs text-faint">
+            <span className="font-poppins text-xs text-[#AAAAAA]">
               {client.description || client.cuisine}
             </span>
           )}
@@ -205,8 +194,49 @@ function ClientCard({ client }: { client: Client }) {
   )
 }
 
+// ── Pill row used inside the filter bar ──
+// Rendered twice for seamless marquee loop on mobile
+function PillRow({
+  active,
+  onSelect,
+  ariaHidden = false,
+}: {
+  active: string
+  onSelect: (v: string) => void
+  ariaHidden?: boolean
+}) {
+  return (
+    <>
+      {filters.map((f) => (
+        <button
+          key={f.value}
+          onClick={() => onSelect(f.value)}
+          aria-hidden={ariaHidden}
+          tabIndex={ariaHidden ? -1 : 0}
+          className={`shrink-0 font-poppins text-[13px] font-semibold px-4 py-2 rounded-full border transition-all active:scale-[0.97] ${
+            active === f.value
+              ? 'bg-[#3DBE5A] text-white border-[#3DBE5A]'
+              : 'bg-white text-[#3D3D3D] border-black/10 hover:border-black/20'
+          }`}
+        >
+          {f.label}
+        </button>
+      ))}
+    </>
+  )
+}
+
 export default function WorkFeed({ clients }: { clients: Client[] }) {
   const [active, setActive] = useState('all')
+  const feedRef = useRef<HTMLDivElement>(null)
+
+  function handleFilter(value: string) {
+    setActive(value)
+    // Scroll feed into view just below the sticky filter bar
+    if (feedRef.current) {
+      feedRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
 
   const filtered =
     active === 'all'
@@ -215,57 +245,73 @@ export default function WorkFeed({ clients }: { clients: Client[] }) {
 
   return (
     <div className="max-w-site mx-auto">
-      {/* ── Filter pills — horizontally scrollable ── */}
+
+      {/* ── Filter bar ── */}
       <div className="sticky top-16 z-30 bg-[#EDEDED] border-b border-black/[0.06]">
-        {/* Wrapper is relative so the fade overlay can be positioned against it */}
         <div className="relative">
+
+          {/*
+            MOBILE: marquee auto-scroll via CSS animation on the inner track.
+            Pills are rendered twice for a seamless loop.
+            Clicking still triggers handleFilter — animation doesn't block interaction.
+            DESKTOP (md+): static flex row, no animation, no duplicate pills.
+          */}
+
+          {/* Mobile marquee track */}
           <div
-            className="flex flex-nowrap gap-2 px-4 md:px-12 py-3 overflow-x-auto"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
+            className="md:hidden overflow-hidden py-3 px-4"
+            style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 88%, transparent)' }}
           >
-            {filters.map((f, i) => (
-              <button
-                key={f.value}
-                onClick={() => setActive(f.value)}
-                // Last pill gets extra right margin so it clears the fade on mobile
-                className={`shrink-0 font-poppins text-[13px] font-semibold px-4 py-2 rounded-full border transition-all active:scale-[0.97] ${
-                  i === filters.length - 1 ? 'mr-10 md:mr-0' : ''
-                } ${
-                  active === f.value
-                    ? 'bg-green text-white border-green'
-                    : 'bg-white text-body border-black/10 hover:border-black/20'
-                }`}
-              >
-                {f.label}
-              </button>
-            ))}
+            <div
+              className="flex gap-2 w-max"
+              style={{ animation: 'marquee-pills 20s linear infinite' }}
+            >
+              <PillRow active={active} onSelect={handleFilter} />
+              {/* Duplicate for seamless loop */}
+              <PillRow active={active} onSelect={handleFilter} ariaHidden />
+            </div>
           </div>
-          {/* Right-edge fade — mobile only, hidden on md+ */}
+
+          {/* Desktop static row */}
           <div
-            className="pointer-events-none absolute inset-y-0 right-0 w-16 md:hidden"
-            style={{ background: 'linear-gradient(to right, transparent, #EDEDED)' }}
-          />
+            className="hidden md:flex gap-2 px-12 py-3"
+          >
+            <PillRow active={active} onSelect={handleFilter} />
+          </div>
+
         </div>
       </div>
 
-      {/* ── Count label ── */}
-      <div className="px-4 md:px-12 pt-5 pb-2">
-        <p className="font-poppins text-[12px] text-muted">
+      {/* Keyframes injected as a style tag — Tailwind can't express arbitrary keyframes inline */}
+      <style>{`
+        @keyframes marquee-pills {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
+
+      {/* Count label — this is the scroll target */}
+      <div ref={feedRef} className="px-4 md:px-12 pt-5 pb-2 scroll-mt-28">
+        <p className="font-poppins text-[12px] text-[#888888]">
           {filtered.length} restaurant{filtered.length !== 1 ? 's' : ''}
-          {active !== 'all' && <> &mdash; <span className="capitalize text-dark font-medium">{active}</span></>}
+          {active !== 'all' && (
+            <> &mdash; <span className="capitalize text-[#2D2D2D] font-medium">{active}</span></>
+          )}
         </p>
       </div>
 
-      {/* ── Feed ── */}
-      {/* Mobile: single column. Desktop: 3-column grid, 24px gap */}
-      <div className="px-4 md:px-12 pb-16 grid grid-cols-1 md:grid-cols-3 gap-5">
+      {/* Feed — min-h-screen so short result sets never expose the footer unexpectedly */}
+      <div
+        className="px-4 md:px-12 pb-16 grid grid-cols-1 md:grid-cols-3 gap-5"
+        style={{ minHeight: '100vh' }}
+      >
         {filtered.map((client) => (
           <ClientCard key={client.slug} client={client} />
         ))}
 
         {filtered.length === 0 && (
-          <div className="text-center py-20">
-            <p className="font-poppins text-muted text-sm">No clients in this category yet.</p>
+          <div className="col-span-full text-center py-20">
+            <p className="font-poppins text-[#888888] text-sm">No clients in this category yet.</p>
           </div>
         )}
       </div>

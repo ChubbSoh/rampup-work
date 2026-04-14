@@ -4,8 +4,11 @@ import WorkFeed from '@/components/WorkFeed'
 import { getAllClients } from '@/lib/clients'
 
 export const metadata = {
-  title: 'Our Work — Restaurant RampUp',
-  description: 'See the restaurants we work with across Bangkok and Thailand.',
+  title: 'Our Work | Restaurant Content Creation Bangkok | RampUp',
+  description:
+    'See our restaurant content shoots across Bangkok. Photos, videos, and social media for Japanese, Italian, Thai and more.',
+  keywords:
+    'restaurant content creation Bangkok, F&B marketing agency Bangkok, hospitality marketing agency Bangkok',
 }
 
 export default function WorkPage() {
@@ -21,7 +24,7 @@ export default function WorkPage() {
             Our Work
           </p>
           <h1 className="font-sora font-extrabold text-3xl md:text-5xl text-dark tracking-tight">
-            Real results.<br className="hidden md:block" /> Real restaurants.
+            Restaurant content creation<br className="hidden md:block" /> across Bangkok.
           </h1>
         </div>
 
