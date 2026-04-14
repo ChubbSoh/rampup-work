@@ -1,6 +1,6 @@
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
-import ClientGrid from '@/components/ClientGrid'
+import WorkFeed from '@/components/WorkFeed'
 import { getAllClients } from '@/lib/clients'
 
 export const metadata = {
@@ -15,19 +15,17 @@ export default function WorkPage() {
     <>
       <Nav />
       <main className="min-h-[100dvh] bg-[#EDEDED]">
-        <div className="max-w-site mx-auto px-5 md:px-12 pt-12 pb-8">
-          <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3">
+        {/* Header */}
+        <div className="px-4 md:px-12 pt-10 pb-6 max-w-site mx-auto">
+          <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-2">
             Our Work
           </p>
-          <h1 className="font-sora font-extrabold text-3xl md:text-5xl text-dark tracking-tight mb-4">
-            18 restaurants.<br className="hidden md:block" /> Real results.
+          <h1 className="font-sora font-extrabold text-3xl md:text-5xl text-dark tracking-tight">
+            Real results.<br className="hidden md:block" /> Real restaurants.
           </h1>
-          <p className="font-poppins text-base text-muted max-w-[480px]">
-            From Japanese izakayas to Italian trattorias — we grow restaurants across Bangkok and beyond.
-          </p>
         </div>
 
-        <ClientGrid clients={clients} />
+        <WorkFeed clients={clients} />
 
         <Footer />
       </main>
