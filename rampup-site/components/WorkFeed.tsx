@@ -64,13 +64,7 @@ function PhotoPlaceholder({ initial, index }: { initial: string; index: number }
 
 function getShootLabel(client: Client): string | null {
   if (client.shoots && client.shoots.length > 0) {
-    const last = client.shoots[client.shoots.length - 1]
-    const isoMatch = last.match(/^(\d{4})-(\d{2})$/)
-    if (isoMatch) {
-      const d = new Date(parseInt(isoMatch[1]), parseInt(isoMatch[2]) - 1)
-      return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
-    }
-    return last
+    return client.shoots[client.shoots.length - 1].date
   }
   return null
 }
