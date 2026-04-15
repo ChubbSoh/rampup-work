@@ -10,7 +10,15 @@
       "cover": "",
       "page": "okasan.html",
       "drive_folder": "Okasan",
-      "shoots": []
+      "shoots": [
+        {
+          "date": "2026-04",
+          "photos": [],
+          "videos": []
+        }
+      ],
+      "videos": [],
+      "photos": []
     },
     {
       "name": "APG x Sinnic",
