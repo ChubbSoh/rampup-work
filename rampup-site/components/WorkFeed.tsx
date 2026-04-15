@@ -62,49 +62,27 @@ function PhotoPlaceholder({ initial, index }: { initial: string; index: number }
   )
 }
 
-function getShootLabel(client: Client): string | null {
-  if (client.shoots && client.shoots.length > 0) {
-    return client.shoots[client.shoots.length - 1].date
-  }
-  return null
+function getLatestShootDate(client: Client): string {
+  if (!client.shoots || client.shoots.length === 0) return '0000-00'
+  return client.shoots.reduce((latest, s) => (s.date > latest ? s.date : latest), '')
 }
 
 function ClientCard({ client }: { client: Client }) {
   const hasVideos = client.videos && client.videos.length > 0
   const hasPhotos = client.photos && client.photos.length > 0
   const initial = client.name.charAt(0)
-  const shootLabel = getShootLabel(client)
   const videoSlots = hasVideos ? client.videos!.slice(0, 2) : []
   const photoSlots = hasPhotos ? client.photos!.slice(0, 3) : []
 
   return (
     <article className="bg-white rounded-[16px] overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
-      {/* Header */}
+      {/* Header — no circle logo */}
       <div className="px-4 pt-5 pb-4 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="w-10 h-10 rounded-full bg-[#EDEDED] flex items-center justify-center shrink-0">
-            {client.cover ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={client.cover}
-                alt={`${client.name} — ${client.cuisine} restaurant in ${client.location}`}
-                className="w-full h-full object-cover rounded-full"
-              />
-            ) : (
-              <span className="font-sora font-extrabold text-sm text-[#2D2D2D]/30">{initial}</span>
-            )}
-          </div>
-          <div className="min-w-0">
-            <h2 className="font-sora font-bold text-[15px] text-[#2D2D2D] leading-tight truncate">
-              {client.name}
-            </h2>
-            <span className="font-poppins text-[11px] text-[#888888]">{client.location}</span>
-            {shootLabel && (
-              <span className="font-poppins text-[10px] text-[#AAAAAA] block leading-tight mt-0.5">
-                {shootLabel}
-              </span>
-            )}
-          </div>
+        <div className="min-w-0">
+          <h2 className="font-sora font-bold text-[15px] text-[#2D2D2D] leading-tight truncate">
+            {client.name}
+          </h2>
+          <span className="font-poppins text-[11px] text-[#888888]">{client.location}</span>
         </div>
         <CuisineTag cuisine={client.cuisine} />
       </div>
@@ -164,19 +142,8 @@ function ClientCard({ client }: { client: Client }) {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="px-4 pb-5 flex items-center justify-between gap-3">
-        <div>
-          {typeof client.months === 'number' && client.months > 0 ? (
-            <span className="font-poppins text-xs text-[#888888]">
-              {client.months} month{client.months !== 1 ? 's' : ''} retained
-            </span>
-          ) : (
-            <span className="font-poppins text-xs text-[#AAAAAA]">
-              {client.description || client.cuisine}
-            </span>
-          )}
-        </div>
+      {/* Footer — just the View Work button */}
+      <div className="px-4 pb-5 flex justify-end">
         <Link
           href={`/work/${client.slug}`}
           className="shrink-0 inline-flex items-center gap-1.5 bg-[#3DBE5A] text-white font-poppins text-[13px] font-semibold rounded-[100px] px-5 py-[10px] hover:brightness-105 transition-all active:scale-[0.97]"
@@ -195,24 +162,26 @@ export default function WorkFeed({ clients }: { clients: Client[] }) {
 
   function handleFilter(value: string) {
     setActive(value)
-    // Scroll feed into view just below the sticky filter bar
     if (feedRef.current) {
       feedRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
   }
 
+  // Sort by latest shoot date DESC
+  const sorted = [...clients].sort(
+    (a, b) => getLatestShootDate(b).localeCompare(getLatestShootDate(a))
+  )
+
   const filtered =
     active === 'all'
-      ? clients
-      : clients.filter((c) => c.cuisine.toLowerCase() === active)
+      ? sorted
+      : sorted.filter((c) => c.cuisine.toLowerCase() === active)
 
   return (
-    <div className="max-w-site mx-auto">
-
-      {/* ── Filter bar ── */}
+    <div>
+      {/* ── Filter bar — full-width bg, pills aligned to content grid ── */}
       <div className="sticky top-16 z-30 bg-[#EDEDED] border-b border-black/[0.06]">
-        {/* Relative wrapper so the right-edge fade can be positioned inside */}
-        <div className="relative">
+        <div className="relative max-w-site mx-auto">
           <div
             className="flex gap-2 px-4 md:px-12 py-3"
             style={{
@@ -241,7 +210,7 @@ export default function WorkFeed({ clients }: { clients: Client[] }) {
             <div className="shrink-0 w-8 md:hidden" aria-hidden />
           </div>
 
-          {/* Right-edge fade — mobile only, signals more pills to the right */}
+          {/* Right-edge fade — mobile only */}
           <div
             className="pointer-events-none absolute inset-y-0 right-0 w-12 md:hidden"
             style={{ background: 'linear-gradient(to right, transparent, #EDEDED)' }}
@@ -249,8 +218,8 @@ export default function WorkFeed({ clients }: { clients: Client[] }) {
         </div>
       </div>
 
-      {/* Count label — this is the scroll target */}
-      <div ref={feedRef} className="px-4 md:px-12 pt-5 pb-2 scroll-mt-28">
+      {/* Count label */}
+      <div ref={feedRef} className="max-w-site mx-auto px-4 md:px-12 pt-5 pb-2 scroll-mt-28">
         <p className="font-poppins text-[12px] text-[#888888]">
           {filtered.length} restaurant{filtered.length !== 1 ? 's' : ''}
           {active !== 'all' && (
@@ -259,9 +228,9 @@ export default function WorkFeed({ clients }: { clients: Client[] }) {
         </p>
       </div>
 
-      {/* Feed — min-h-screen so short result sets never expose the footer unexpectedly */}
+      {/* Feed */}
       <div
-        className="px-4 md:px-12 pb-16 grid grid-cols-1 md:grid-cols-3 gap-5"
+        className="max-w-site mx-auto px-4 md:px-12 pb-16 grid grid-cols-1 md:grid-cols-3 gap-5"
         style={{ minHeight: '100vh' }}
       >
         {filtered.map((client) => (

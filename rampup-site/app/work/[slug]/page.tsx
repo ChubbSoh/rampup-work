@@ -24,6 +24,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const CLOUDFLARE_CUSTOMER_ID = 'customer-h038b69ef3omo1hq'
 
+const MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+]
+
+function getLatestShootLabel(client: ReturnType<typeof getClientBySlug>): string | null {
+  if (!client?.shoots || client.shoots.length === 0) return null
+  const latest = client.shoots.reduce((a, b) => (b.date > a.date ? b : a))
+  const [year, month] = latest.date.split('-')
+  const monthIndex = parseInt(month, 10) - 1
+  return `Updated ${MONTH_NAMES[monthIndex] ?? month} ${year}`
+}
+
 function VideoEmbed({ videoId, label }: { videoId: string; label: string }) {
   return (
     <div className="flex flex-col gap-2">
@@ -51,6 +64,7 @@ export default function ClientPage({ params }: Props) {
 
   const hasVideos = client.videos && client.videos.length > 0
   const hasPhotos = client.photos && client.photos.length > 0
+  const updatedLabel = getLatestShootLabel(client)
 
   return (
     <>
@@ -72,10 +86,8 @@ export default function ClientPage({ params }: Props) {
                   {client.cuisine}
                 </span>
                 <span className="font-poppins text-xs text-muted">{client.location}</span>
-                {typeof client.months === 'number' && client.months > 0 && (
-                  <span className="font-poppins text-xs text-muted">
-                    {client.months} months
-                  </span>
+                {updatedLabel && (
+                  <span className="font-poppins text-xs text-muted">{updatedLabel}</span>
                 )}
               </div>
               <h1 className="font-sora font-extrabold text-4xl md:text-5xl text-dark tracking-tight">
@@ -88,18 +100,21 @@ export default function ClientPage({ params }: Props) {
               )}
             </div>
 
-            <Link
-              href="/contact"
-              className="shrink-0 bg-green text-white font-poppins font-semibold text-sm px-6 py-3 rounded-pill hover:brightness-105 transition-all active:scale-[0.98]"
-            >
-              Work With Us
-            </Link>
+            {/* Work With Us — fit-content, centered on mobile */}
+            <div className="flex justify-center md:justify-end mt-2 md:mt-0">
+              <Link
+                href="/contact"
+                className="bg-green text-white font-poppins font-semibold text-sm px-6 py-2 rounded-pill hover:brightness-105 transition-all active:scale-[0.98]"
+              >
+                Work With Us
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* ── Cover ── */}
+        {/* ── Cover — constrained width ── */}
         {client.cover && (
-          <div className="max-w-site mx-auto px-5 md:px-12 mb-12">
+          <div className="max-w-5xl mx-auto px-5 md:px-12 mb-10">
             <div className="rounded-card overflow-hidden aspect-video">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -111,9 +126,9 @@ export default function ClientPage({ params }: Props) {
           </div>
         )}
 
-        {/* ── Videos ── */}
+        {/* ── Videos — constrained width ── */}
         {hasVideos && (
-          <section className="max-w-site mx-auto px-5 md:px-12 mb-16">
+          <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
             <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-6">
               Content
             </p>
@@ -127,7 +142,7 @@ export default function ClientPage({ params }: Props) {
 
         {/* ── Photos ── */}
         {hasPhotos && (
-          <section className="max-w-site mx-auto px-5 md:px-12 mb-16">
+          <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
             <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-6">
               Photography
             </p>
@@ -147,7 +162,7 @@ export default function ClientPage({ params }: Props) {
           </section>
         )}
 
-        {/* ── Empty state (no content yet) ── */}
+        {/* ── Empty state ── */}
         {!hasVideos && !hasPhotos && (
           <section className="max-w-site mx-auto px-5 md:px-12 mb-16">
             <div className="bg-white rounded-card p-12 text-center">
