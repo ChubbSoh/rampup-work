@@ -135,10 +135,21 @@
       "location": "Bangkok",
       "description": "Western",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ee0e2be9-6b44-43c7-5a71-b25d53c45600/public",
       "page": "lamaya-bkk.html",
       "drive_folder": "LAMAYA BKK",
-      "website_folder_id": "12t-ZTnHG0Tl6kxlz4M-8yv6fxXc25PLn"
+      "website_folder_id": "12t-ZTnHG0Tl6kxlz4M-8yv6fxXc25PLn",
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ee0e2be9-6b44-43c7-5a71-b25d53c45600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/8e8ce252-149b-4485-b6e4-20ab0da5a100/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/b66db3f5-e003-4880-1f2b-3762d3f31e00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/2cb4d86c-3224-4687-edf1-2f882298a300/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/175e9a58-7e30-45e2-0042-019317634400/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/0e17735e-a777-4e10-eab4-7c26f78b6a00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/3480d455-93f8-4ae7-78e2-b947649a8400/public"
+      ],
+      "videos": [],
+      "last_updated": "2026-04-16"
     },
     {
       "name": "Pitmaster",
