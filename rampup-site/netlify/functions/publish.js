@@ -1,3 +1,6 @@
+const fs = require('fs')
+const path = require('path')
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' }
@@ -8,12 +11,28 @@ exports.handler = async (event) => {
     if (!client_slug) {
       return { statusCode: 400, body: JSON.stringify({ error: 'client_slug required' }) }
     }
-    console.log('Sending websiteFolderId to n8n')
+
+    // Load clients.json relative to this function file
+    const clientsPath = path.join(__dirname, '../../data/clients.json')
+    const { clients } = JSON.parse(fs.readFileSync(clientsPath, 'utf8'))
+
+    const client = clients.find(c => c.slug === client_slug)
+    if (!client) {
+      return { statusCode: 400, body: JSON.stringify({ error: 'Unknown client slug: ' + client_slug }) }
+    }
+    if (!client.website_folder_id) {
+      return { statusCode: 400, body: JSON.stringify({ error: 'No website_folder_id configured for: ' + client_slug }) }
+    }
+
+    console.log('Publish requested for slug:', client_slug)
+    console.log('Resolved websiteFolderId:', client.website_folder_id)
+
     await fetch('https://rampupth.app.n8n.cloud/webhook/publish', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ websiteFolderId: '1ZKfuD4rMIezNyps3CeunJJ1lme-wPk75' })
+      body: JSON.stringify({ websiteFolderId: client.website_folder_id })
     })
+
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
