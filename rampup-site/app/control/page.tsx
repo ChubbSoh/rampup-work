@@ -248,7 +248,7 @@ function PublishSection() {
     e.preventDefault()
     setStatus({ type: 'loading' })
     try {
-      const res = await fetch('/api/publish', {
+      const res = await fetch('/.netlify/functions/publish', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ client_slug: clientSlug }),
