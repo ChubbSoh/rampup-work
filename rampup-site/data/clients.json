@@ -7,18 +7,24 @@
       "location": "Bangkok",
       "description": "Yakitori & Izakaya",
       "months": 0,
-      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/9e786515-4079-4815-73b6-191c0cb1c500/public",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/fefbbf6c-10cd-4f5f-f103-fd5f160f0d00/public",
       "page": "okasan.html",
       "drive_folder": "Okasan",
       "website_folder_id": "1ZKfuD4rMIezNyps3CeunJJ1lme-wPk75",
-      "videos": [],
+      "videos": [
+        "1a4915ae1ad9d457211b9b831c433aee",
+        "c47c463c92b51cf729ed6fd8a2efaf5a",
+        "96333f1d51285b7a65e2a00514be920c",
+        "0d989d469c35430c8465d33a0d7ebca2",
+        "1522acea54f4ff2c981e6c378ab5f876"
+      ],
       "photos": [
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/9e786515-4079-4815-73b6-191c0cb1c500/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/70b50353-f8cc-48b4-878a-6d0a54e35600/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c4ae087c-f50c-487e-c315-24b0623c4d00/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/f0c8326a-5fcd-4c70-3b98-01f4f50cc100/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/88556e68-5cbd-4923-182a-62efab382700/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e61d9e20-486c-4274-12ca-f8b93ef21600/public"
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/fefbbf6c-10cd-4f5f-f103-fd5f160f0d00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e43bd0b6-0793-44c2-ad04-6a5c971e8900/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/b96f7bca-db88-4ca5-6f52-d4e9ede07500/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/cff0662b-1505-4dcd-4b62-2bf5930a3000/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/f72248f4-16a7-4e42-2220-db2d3f582000/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e370c32a-4b8e-40ff-09a8-a6d5334e9b00/public"
       ],
       "last_updated": "2026-04-16"
     },
