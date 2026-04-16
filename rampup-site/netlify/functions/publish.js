@@ -8,10 +8,11 @@ exports.handler = async (event) => {
     if (!client_slug) {
       return { statusCode: 400, body: JSON.stringify({ error: 'client_slug required' }) }
     }
+    console.log('Sending websiteFolderId to n8n')
     await fetch('https://rampupth.app.n8n.cloud/webhook/publish', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ client_slug })
+      body: JSON.stringify({ websiteFolderId: '1ZKfuD4rMIezNyps3CeunJJ1lme-wPk75' })
     })
     return {
       statusCode: 200,
