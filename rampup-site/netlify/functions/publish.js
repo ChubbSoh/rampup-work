@@ -13,7 +13,8 @@ exports.handler = async (event) => {
     }
 
     // Load clients.json relative to this function file
-    const clientsPath = path.join(__dirname, '../../data/clients.json')
+    const clientsPath = path.join(__dirname, '../..', 'rampup-site', 'data', 'clients.json')
+    console.log('Resolved clients.json path:', clientsPath)
     const { clients } = JSON.parse(fs.readFileSync(clientsPath, 'utf8'))
 
     const client = clients.find(c => c.slug === client_slug)
