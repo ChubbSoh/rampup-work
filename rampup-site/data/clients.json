@@ -263,10 +263,26 @@
       "location": "Bangkok",
       "description": "Western",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/fe446e1f-2edd-4c0b-7d07-5bc155dc5b00/public",
       "page": "long-john-silvers.html",
       "drive_folder": "LJS",
-      "website_folder_id": "1cMd5LE5DVOgzkrB0OqFJIwaLJxogX3Sf"
+      "website_folder_id": "1cMd5LE5DVOgzkrB0OqFJIwaLJxogX3Sf",
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/fe446e1f-2edd-4c0b-7d07-5bc155dc5b00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/0ee07268-3f41-4dd8-ef13-792af1e3c100/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c00bbc38-8bea-43df-3dbf-782bc54f9600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/f4c171d2-17d1-4eda-e52e-0cfa287d8600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c9225193-2f50-4885-835d-19a318f65100/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/1666c3c2-b1bf-45e4-3075-6f059fab8e00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d7030f9c-19f0-40b8-0309-a099e0118c00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/20474529-0183-4f36-b309-895e5d900100/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/2d34759c-6c97-44d6-3b41-f651215aa100/public"
+      ],
+      "videos": [
+        "b2a1dde9121ece39484eedbfdb92f9bd",
+        "2b7521066b5513233db1ec8d6336d18e"
+      ],
+      "last_updated": "2026-04-16"
     },
     {
       "name": "Royal Pizza",
