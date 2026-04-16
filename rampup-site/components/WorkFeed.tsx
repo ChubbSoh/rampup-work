@@ -44,7 +44,7 @@ function VideoEmbed({ videoId }: { videoId: string }) {
       <iframe
         src={`https://customer-${CLOUDFLARE_CUSTOMER_ID}.cloudflarestream.com/${videoId}/iframe?primaryColor=3DBE5A&muted=true&autoplay=true&loop=true`}
         loading="lazy"
-        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
         allowFullScreen
         className="absolute inset-0 w-full h-full border-0"
         title="Restaurant content video"
