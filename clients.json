@@ -7,12 +7,16 @@
       "location": "Bangkok",
       "description": "Yakitori & Izakaya",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/913d3431-c166-4a34-d6b0-fdbc5d41ad00/public",
       "page": "okasan.html",
       "drive_folder": "Okasan",
       "drive_id": "0AAd5N8l7ruR8Uk9PVA",
-      "videos": [],
-      "photos": [],
+      "videos": [
+        "5f0300c32d966aa07f542918f4cc1bb8"
+      ],
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/913d3431-c166-4a34-d6b0-fdbc5d41ad00/public"
+      ],
       "last_updated": "2026-04-16"
     },
     {
