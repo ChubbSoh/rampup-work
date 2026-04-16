@@ -39,42 +39,16 @@ function CuisineTag({ cuisine }: { cuisine: string }) {
 }
 
 function VideoEmbed({ videoId }: { videoId: string }) {
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  function enterFullscreen() {
-    const el = containerRef.current
-    if (!el) return
-    if (el.requestFullscreen) {
-      el.requestFullscreen()
-    } else if ((el as unknown as { webkitRequestFullscreen?: () => void }).webkitRequestFullscreen) {
-      (el as unknown as { webkitRequestFullscreen: () => void }).webkitRequestFullscreen()
-    }
-  }
-
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full overflow-hidden rounded-[14px] bg-[#2D2D2D] group"
-      style={{ aspectRatio: '9/16' }}
-    >
+    <div className="relative w-full overflow-hidden rounded-[14px] bg-[#2D2D2D]" style={{ aspectRatio: '9/16' }}>
       <iframe
-        src={`https://customer-${CLOUDFLARE_CUSTOMER_ID}.cloudflarestream.com/${videoId}/iframe?primaryColor=3DBE5A&muted=true&autoplay=true&loop=true&controls=false`}
+        src={`https://customer-${CLOUDFLARE_CUSTOMER_ID}.cloudflarestream.com/${videoId}/iframe?primaryColor=3DBE5A&muted=true&autoplay=true&loop=true`}
         loading="lazy"
         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
         className="absolute inset-0 w-full h-full border-0"
         title="Restaurant content video"
       />
-      {/* Fullscreen toggle — always visible on mobile, hover-reveal on desktop */}
-      <button
-        onClick={enterFullscreen}
-        aria-label="Enter fullscreen"
-        className="absolute bottom-2 right-2 w-7 h-7 flex items-center justify-center rounded-full bg-black/40 text-white opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
-      >
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M1 4.5V1h3.5M8.5 1H12v3.5M12 8.5V12H8.5M4.5 12H1V8.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </button>
     </div>
   )
 }
