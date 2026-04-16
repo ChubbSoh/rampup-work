@@ -1,5 +1,4 @@
-const fs = require('fs')
-const path = require('path')
+const { clients } = require('../../data/clients.json')
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -12,10 +11,8 @@ exports.handler = async (event) => {
       return { statusCode: 400, body: JSON.stringify({ error: 'client_slug required' }) }
     }
 
-    // Load clients.json relative to this function file
-    const clientsPath = path.join(__dirname, '../..', 'rampup-site', 'data', 'clients.json')
-    console.log('Resolved clients.json path:', clientsPath)
-    const { clients } = JSON.parse(fs.readFileSync(clientsPath, 'utf8'))
+    console.log('__dirname:', __dirname)
+    console.log('Resolved clients source loaded successfully')
 
     const client = clients.find(c => c.slug === client_slug)
     if (!client) {
