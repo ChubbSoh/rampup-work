@@ -6,15 +6,15 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
 
-    const { client_slug, year, month } = body
-    if (!client_slug || !year || !month) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    const { client_slug } = body
+    if (!client_slug) {
+      return NextResponse.json({ error: 'Missing required field: client_slug' }, { status: 400 })
     }
 
     const upstream = await fetch(N8N_PUBLISH_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ client_slug, year, month }),
+      body: JSON.stringify({ client_slug }),
     })
 
     const text = await upstream.text()

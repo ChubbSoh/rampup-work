@@ -1,9 +1,3 @@
-export interface Shoot {
-  date: string
-  videos: string[]
-  photos: string[]
-}
-
 export interface Client {
   name: string
   slug: string
@@ -14,7 +8,7 @@ export interface Client {
   cover: string
   page: string
   drive_folder: string
-  shoots: Shoot[]
+  last_updated?: string
   videos?: string[]
   photos?: string[]
 }

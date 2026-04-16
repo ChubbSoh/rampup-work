@@ -19,36 +19,7 @@
         "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ff51ffd0-22a8-46be-88c6-0845052e9b00/public",
         "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ff51ffd0-22a8-46be-88c6-0845052e9b00/public"
       ],
-      "shoots": [
-        {
-          "date": "March 2026",
-          "videos": [
-            "946e10111b18824ec82a2bfe8f358469",
-            "8df0310ba9ca399564096b4be72890fd"
-          ],
-          "photos": [
-            "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ff51ffd0-22a8-46be-88c6-0845052e9b00/public",
-            "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/29acb295-fa2c-4039-53e1-12eeed46c800/public",
-            "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/8111e728-80dc-4e3a-c168-30ff04e47f00/public",
-            "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/df85da84-61b2-45e2-9cc0-4d245a7b6300/public",
-            "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e43fdcd2-5425-47d7-9848-060674853a00/public",
-            "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/f4470457-5155-44e8-de4f-58c2f6555500/public",
-            "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c9c47ee2-acd6-4709-5ad8-93af80fffe00/public"
-          ]
-        },
-        {
-          "date": "April 2026",
-          "videos": [
-            "946e10111b18824ec82a2bfe8f358469",
-            "8df0310ba9ca399564096b4be72890fd"
-          ],
-          "photos": [
-            "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ff51ffd0-22a8-46be-88c6-0845052e9b00/public",
-            "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ff51ffd0-22a8-46be-88c6-0845052e9b00/public",
-            "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ff51ffd0-22a8-46be-88c6-0845052e9b00/public"
-          ]
-        }
-      ]
+      "last_updated": "2026-04-16"
     },
     {
       "name": "APG x Sinnic",
@@ -59,8 +30,7 @@
       "months": 0,
       "cover": "",
       "page": "apg-x-sinnic.html",
-      "drive_folder": "APG x Sinnic",
-      "shoots": []
+      "drive_folder": "APG x Sinnic"
     },
     {
       "name": "Bacio",
@@ -71,8 +41,7 @@
       "months": 0,
       "cover": "",
       "page": "bacio.html",
-      "drive_folder": "BACIO",
-      "shoots": []
+      "drive_folder": "BACIO"
     },
     {
       "name": "Ballistic Pizza",
@@ -83,8 +52,7 @@
       "months": 0,
       "cover": "",
       "page": "ballistic-pizza.html",
-      "drive_folder": "Ballistic Pizza",
-      "shoots": []
+      "drive_folder": "Ballistic Pizza"
     },
     {
       "name": "Jagumsong",
@@ -95,8 +63,7 @@
       "months": 0,
       "cover": "",
       "page": "jagumsong.html",
-      "drive_folder": "JA",
-      "shoots": []
+      "drive_folder": "JA"
     },
     {
       "name": "Jumama",
@@ -107,8 +74,7 @@
       "months": 0,
       "cover": "",
       "page": "jumama.html",
-      "drive_folder": "Jumama",
-      "shoots": []
+      "drive_folder": "Jumama"
     },
     {
       "name": "Kaneumi",
@@ -119,8 +85,7 @@
       "months": 0,
       "cover": "",
       "page": "kaneumi.html",
-      "drive_folder": "Kaneumi",
-      "shoots": []
+      "drive_folder": "Kaneumi"
     },
     {
       "name": "Khao Yai - Lamaya",
@@ -131,8 +96,7 @@
       "months": 0,
       "cover": "",
       "page": "lamaya-khao-yai.html",
-      "drive_folder": "Khao Yai - LAMAYA",
-      "shoots": []
+      "drive_folder": "Khao Yai - LAMAYA"
     },
     {
       "name": "Kynd Kulture",
@@ -143,8 +107,7 @@
       "months": 0,
       "cover": "",
       "page": "kynd-kulture.html",
-      "drive_folder": "Kynd Kulture",
-      "shoots": []
+      "drive_folder": "Kynd Kulture"
     },
     {
       "name": "Lamaya BKK",
@@ -155,8 +118,7 @@
       "months": 0,
       "cover": "",
       "page": "lamaya-bkk.html",
-      "drive_folder": "LAMAYA BKK",
-      "shoots": []
+      "drive_folder": "LAMAYA BKK"
     },
     {
       "name": "Pitmaster",
@@ -167,8 +129,7 @@
       "months": 0,
       "cover": "",
       "page": "pitmaster.html",
-      "drive_folder": "Pitmaster",
-      "shoots": []
+      "drive_folder": "Pitmaster"
     },
     {
       "name": "RaLuek",
@@ -179,8 +140,7 @@
       "months": 0,
       "cover": "",
       "page": "raluek.html",
-      "drive_folder": "RALUEK",
-      "shoots": []
+      "drive_folder": "RALUEK"
     },
     {
       "name": "Semolina",
@@ -191,8 +151,7 @@
       "months": 0,
       "cover": "",
       "page": "semolina.html",
-      "drive_folder": "Semolina",
-      "shoots": []
+      "drive_folder": "Semolina"
     },
     {
       "name": "Sudo Social",
@@ -203,8 +162,7 @@
       "months": 0,
       "cover": "",
       "page": "sudo-social.html",
-      "drive_folder": "Sudo Social",
-      "shoots": []
+      "drive_folder": "Sudo Social"
     },
     {
       "name": "Toh D",
@@ -215,8 +173,7 @@
       "months": 0,
       "cover": "",
       "page": "toh-d.html",
-      "drive_folder": "Toh D",
-      "shoots": []
+      "drive_folder": "Toh D"
     },
     {
       "name": "Vstreet",
@@ -227,8 +184,7 @@
       "months": 0,
       "cover": "",
       "page": "vstreet.html",
-      "drive_folder": "Vstreet",
-      "shoots": []
+      "drive_folder": "Vstreet"
     },
     {
       "name": "YUN",
@@ -239,8 +195,7 @@
       "months": 0,
       "cover": "",
       "page": "yun.html",
-      "drive_folder": "YUN",
-      "shoots": []
+      "drive_folder": "YUN"
     },
     {
       "name": "Royal Pizza",
@@ -251,8 +206,7 @@
       "months": 0,
       "cover": "",
       "page": "",
-      "drive_folder": "",
-      "shoots": []
+      "drive_folder": ""
     }
   ]
 }

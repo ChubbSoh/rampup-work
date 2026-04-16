@@ -29,12 +29,15 @@ const MONTH_NAMES = [
   'July', 'August', 'September', 'October', 'November', 'December',
 ]
 
-function getLatestShootLabel(client: ReturnType<typeof getClientBySlug>): string | null {
-  if (!client?.shoots || client.shoots.length === 0) return null
-  const latest = client.shoots.reduce((a, b) => (b.date > a.date ? b : a))
-  const [year, month] = latest.date.split('-')
-  const monthIndex = parseInt(month, 10) - 1
-  return `Updated ${MONTH_NAMES[monthIndex] ?? month} ${year}`
+function formatLastUpdated(dateStr?: string): string | null {
+  if (!dateStr) return null
+  const [year, month, day] = dateStr.split('-')
+  if (!year) return null
+  if (month) {
+    const monthIndex = parseInt(month, 10) - 1
+    return `Updated ${MONTH_NAMES[monthIndex] ?? month} ${year}`
+  }
+  return `Updated ${year}`
 }
 
 function VideoEmbed({ videoId, label }: { videoId: string; label: string }) {
@@ -64,7 +67,7 @@ export default function ClientPage({ params }: Props) {
 
   const hasVideos = client.videos && client.videos.length > 0
   const hasPhotos = client.photos && client.photos.length > 0
-  const updatedLabel = getLatestShootLabel(client)
+  const updatedLabel = formatLastUpdated(client.last_updated)
 
   return (
     <>

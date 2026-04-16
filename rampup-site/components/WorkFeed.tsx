@@ -62,9 +62,8 @@ function PhotoPlaceholder({ initial, index }: { initial: string; index: number }
   )
 }
 
-function getLatestShootDate(client: Client): string {
-  if (!client.shoots || client.shoots.length === 0) return '0000-00'
-  return client.shoots.reduce((latest, s) => (s.date > latest ? s.date : latest), '')
+function getSortKey(client: Client): string {
+  return client.last_updated ?? '0000-00-00'
 }
 
 function ClientCard({ client }: { client: Client }) {
@@ -167,9 +166,9 @@ export default function WorkFeed({ clients }: { clients: Client[] }) {
     }
   }
 
-  // Sort by latest shoot date DESC
+  // Sort by last_updated DESC
   const sorted = [...clients].sort(
-    (a, b) => getLatestShootDate(b).localeCompare(getLatestShootDate(a))
+    (a, b) => getSortKey(b).localeCompare(getSortKey(a))
   )
 
   const filtered =

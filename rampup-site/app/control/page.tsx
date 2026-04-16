@@ -31,21 +31,6 @@ const CUISINE_COLORS: Record<string, string> = {
   chinese:   'bg-rose-50 text-rose-600',
 }
 
-const MONTHS = [
-  { value: '01', label: 'January' },
-  { value: '02', label: 'February' },
-  { value: '03', label: 'March' },
-  { value: '04', label: 'April' },
-  { value: '05', label: 'May' },
-  { value: '06', label: 'June' },
-  { value: '07', label: 'July' },
-  { value: '08', label: 'August' },
-  { value: '09', label: 'September' },
-  { value: '10', label: 'October' },
-  { value: '11', label: 'November' },
-  { value: '12', label: 'December' },
-]
-
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function slugify(name: string): string {
@@ -250,18 +235,13 @@ function OnboardSection() {
 
 function PublishSection() {
   const clients = clientsData.clients as ClientEntry[]
-  const now = new Date()
   const [clientSlug, setClientSlug] = useState(clients[0]?.slug ?? '')
-  const [year, setYear]   = useState(String(now.getFullYear()))
-  const [month, setMonth] = useState(String(now.getMonth() + 1).padStart(2, '0'))
   const [status, setStatus] = useState<Status>({ type: 'idle' })
 
   const selectedClient = clients.find(c => c.slug === clientSlug)
 
   function reset() {
     setClientSlug(clients[0]?.slug ?? '')
-    setYear(String(now.getFullYear()))
-    setMonth(String(now.getMonth() + 1).padStart(2, '0'))
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -271,7 +251,7 @@ function PublishSection() {
       const res = await fetch('/api/publish', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ client_slug: clientSlug, year, month }),
+        body: JSON.stringify({ client_slug: clientSlug }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Request failed')
@@ -304,32 +284,6 @@ function PublishSection() {
             </div>
           )}
         </Field>
-
-        <div className="grid grid-cols-2 gap-4">
-          <Field label="Year">
-            <input
-              className={inputCls}
-              type="number"
-              min="2024"
-              max="2099"
-              value={year}
-              onChange={e => setYear(e.target.value)}
-              required
-            />
-          </Field>
-
-          <Field label="Month">
-            <select
-              className={inputCls}
-              value={month}
-              onChange={e => setMonth(e.target.value)}
-            >
-              {MONTHS.map(m => (
-                <option key={m.value} value={m.value}>{m.label}</option>
-              ))}
-            </select>
-          </Field>
-        </div>
 
         <div className="flex items-center justify-between pt-1 gap-4">
           <StatusBadge status={status} />
