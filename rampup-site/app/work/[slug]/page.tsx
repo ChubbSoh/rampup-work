@@ -141,13 +141,13 @@ export default function ClientPage({ params }: Props) {
           </section>
         )}
 
-        {/* ── Platforms ── */}
-        <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
+        {/* ── Social Platforms ── */}
+        <section className="max-w-5xl mx-auto px-5 md:px-12 mb-0">
           <div className="bg-[#F5F5F5] rounded-2xl py-8 md:py-10 px-4 md:px-8 mt-12 text-center">
             <h2 className="font-sora font-bold text-2xl md:text-3xl text-dark mb-8">
               We post on these platforms
             </h2>
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-y-6 gap-x-4 justify-items-center">
+            <div className="grid grid-cols-2 gap-y-6 gap-x-6 justify-items-center max-w-xs mx-auto">
               {[
                 {
                   label: 'Facebook',
@@ -189,6 +189,27 @@ export default function ClientPage({ params }: Props) {
                     </svg>
                   ),
                 },
+              ].map(({ label, icon }) => (
+                <div
+                  key={label}
+                  className="flex flex-col items-center text-center gap-1 text-[#2D2D2D] hover:scale-105 transition-transform"
+                >
+                  {icon}
+                  <span className="font-poppins text-sm text-[#666666]">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Delivery Platforms ── */}
+        <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
+          <div className="bg-[#ECECEC] rounded-2xl py-8 px-6 mt-4 text-center">
+            <h2 className="font-sora font-bold text-2xl md:text-3xl text-dark mb-2">
+              We grow online sales on
+            </h2>
+            <div className="flex justify-center gap-10 mt-6">
+              {[
                 {
                   label: 'Grab',
                   icon: (
@@ -208,7 +229,7 @@ export default function ClientPage({ params }: Props) {
               ].map(({ label, icon }) => (
                 <div
                   key={label}
-                  className="flex flex-col items-center text-center gap-1.5 text-[#2D2D2D] hover:scale-105 transition-transform"
+                  className="flex flex-col items-center gap-2 text-[#2D2D2D] hover:scale-105 transition-transform"
                 >
                   {icon}
                   <span className="font-poppins text-sm text-[#666666]">{label}</span>
@@ -245,6 +266,9 @@ export default function ClientPage({ params }: Props) {
               <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight">
                 Transform your socials like {client.name}
               </h2>
+              <p className="font-poppins text-sm md:text-base text-white/60 mt-2 max-w-md">
+                We turn content into consistent revenue through ads, strategy, and high-converting visuals that drive real customer action and growth.
+              </p>
             </div>
             <Link
               href="/contact"
