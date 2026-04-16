@@ -74,12 +74,27 @@
       "location": "Bangkok",
       "description": "Pizza",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c72a74ee-bdbf-4f2c-d349-c99dc07d1600/public",
       "page": "ballistic-pizza.html",
       "drive_folder": "Ballistic Pizza",
       "website_folder_id": "1edfYJqDYmfchv3vwZW1qhZqmbpVMXVOQ",
-      "photos": [],
-      "videos": [],
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c72a74ee-bdbf-4f2c-d349-c99dc07d1600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/5d804406-2ffa-4c27-de26-197d42c7cf00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/734c2f5e-5689-464b-d097-e0538455f800/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/32f4c498-4544-452c-5bd0-ba8a0b3acf00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/eee7f10d-baa3-4dec-36e2-d2570ae42100/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/22bae895-3ee3-4371-04dc-cc6e1fa02b00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c67a5f57-d48e-404d-6491-357685b49c00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e7a3c91d-9bd3-4170-0862-a0d58cd46000/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/4d4da2f4-0f5d-4663-9ccc-5ed8ecfbce00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/9315a880-f97e-4aeb-3311-c223b214af00/public"
+      ],
+      "videos": [
+        "d3d790cb2ad92fb798db7e840f81420a",
+        "7122f221729e66759d7a9ca6a7ea5aea",
+        "7458816587506974c316e6ad692307c5"
+      ],
       "last_updated": "2026-04-16"
     },
     {
