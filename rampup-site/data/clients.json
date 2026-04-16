@@ -7,18 +7,23 @@
       "location": "Bangkok",
       "description": "Yakitori & Izakaya",
       "months": 0,
-      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/fe425508-ff52-487c-ba5b-16d0c879d000/public",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ad1deeb3-a9a3-455e-c0f4-2e597f96d900/public",
       "page": "okasan.html",
       "drive_folder": "Okasan",
       "website_folder_id": "1ZKfuD4rMIezNyps3CeunJJ1lme-wPk75",
-      "videos": [],
+      "videos": [
+        "b558cb875b2da8894ca90ff97c531421",
+        "29f95c78926b36451387194124c145f5",
+        "4ef45cbaf486f9c6bc41717d77b2108e",
+        "9878a8ff9d7cf701b935f1d6f40cf201",
+        "43d211502f604cbc087271dd00420a61"
+      ],
       "photos": [
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/fe425508-ff52-487c-ba5b-16d0c879d000/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d780ddea-51c3-4d06-077b-faddb5b35c00/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c93d85bd-5d96-4d14-ba97-ea70c503c000/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/f1013570-04f2-4c72-460e-b6bfa76ee000/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e849f42e-21a0-49da-2792-54e8b6b76300/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/56fd0864-ffc6-4142-c682-b30f28537600/public"
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ad1deeb3-a9a3-455e-c0f4-2e597f96d900/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c0eac501-8bd4-4c47-b12c-160307269a00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ada549a6-5034-462c-7e1e-8c7f5f80b400/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/cd81b307-07fc-4f1f-f649-09b00c316500/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/4aadf3fe-a363-454b-7e0b-b9cd66114c00/public"
       ],
       "last_updated": "2026-04-16"
     },
