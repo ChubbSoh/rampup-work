@@ -11,6 +11,7 @@ export interface Client {
   last_updated?: string
   videos?: string[]
   photos?: string[]
+  website_folder_id?: string
 }
 
 export type CuisineFilter =

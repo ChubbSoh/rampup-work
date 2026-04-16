@@ -76,7 +76,8 @@
       "months": 0,
       "cover": "",
       "page": "ballistic-pizza.html",
-      "drive_folder": "Ballistic Pizza"
+      "drive_folder": "Ballistic Pizza",
+      "website_folder_id": "1edfYJqDYmfchv3vwZW1qhZqmbpVMXVOQ"
     },
     {
       "name": "Jagumsong",
@@ -87,7 +88,8 @@
       "months": 0,
       "cover": "",
       "page": "jagumsong.html",
-      "drive_folder": "JA"
+      "drive_folder": "JA",
+      "website_folder_id": "1Fn5F3lMt1U601Zk0UN-Lq6LFSOpmVVB9"
     },
     {
       "name": "Jumama",
@@ -98,7 +100,8 @@
       "months": 0,
       "cover": "",
       "page": "jumama.html",
-      "drive_folder": "Jumama"
+      "drive_folder": "Jumama",
+      "website_folder_id": "1qJNTPgW5P44YizRWnwrfP1vVbyHKT3pK"
     },
     {
       "name": "Kaneumi",
@@ -109,10 +112,11 @@
       "months": 0,
       "cover": "",
       "page": "kaneumi.html",
-      "drive_folder": "Kaneumi"
+      "drive_folder": "Kaneumi",
+      "website_folder_id": "1lGtSUAeO8lznxhoO-pJs7mD-AVEcc2vK"
     },
     {
-      "name": "Khao Yai - Lamaya",
+      "name": "Nightlife",
       "slug": "lamaya-khao-yai",
       "cuisine": "western",
       "location": "Khao Yai",
@@ -120,7 +124,8 @@
       "months": 0,
       "cover": "",
       "page": "lamaya-khao-yai.html",
-      "drive_folder": "Khao Yai - LAMAYA"
+      "drive_folder": "Khao Yai - LAMAYA",
+      "website_folder_id": "1JOy4X8Ct4R1vn2S-tGOIUtADPEu9MK8h"
     },
     {
       "name": "Kynd Kulture",
@@ -131,7 +136,8 @@
       "months": 0,
       "cover": "",
       "page": "kynd-kulture.html",
-      "drive_folder": "Kynd Kulture"
+      "drive_folder": "Kynd Kulture",
+      "website_folder_id": "16w9PWSd_94eTQxUXY0rEgAEd0OaiWGHg"
     },
     {
       "name": "Lamaya BKK",
@@ -172,7 +178,8 @@
       "months": 0,
       "cover": "",
       "page": "pitmaster.html",
-      "drive_folder": "Pitmaster"
+      "drive_folder": "Pitmaster",
+      "website_folder_id": "1oBYbzHWaRhmPcbnZmHM6LENtiV-htmEP"
     },
     {
       "name": "RaLuek",
@@ -183,7 +190,8 @@
       "months": 0,
       "cover": "",
       "page": "raluek.html",
-      "drive_folder": "RALUEK"
+      "drive_folder": "RALUEK",
+      "website_folder_id": "1MM-rH7Wox7pQ2a_mpKHnvsl_6Ab0ifjb"
     },
     {
       "name": "Semolina",
@@ -194,21 +202,23 @@
       "months": 0,
       "cover": "",
       "page": "semolina.html",
-      "drive_folder": "Semolina"
+      "drive_folder": "Semolina",
+      "website_folder_id": "1vaWGSVUUqqKzhGhlnJTh_d0csJ9BO4Ca"
     },
     {
       "name": "Sudo Social",
       "slug": "sudo-social",
-      "cuisine": "nightlife",
+      "cuisine": "western",
       "location": "Bangkok",
       "description": "Mexican & Bar",
       "months": 0,
       "cover": "",
       "page": "sudo-social.html",
-      "drive_folder": "Sudo Social"
+      "drive_folder": "Sudo Social",
+      "website_folder_id": "13mtXyFAKaHu8Ja98vbDsUfpYO7678DzM"
     },
     {
-      "name": "Toh D",
+      "name": "Toh Daeng",
       "slug": "toh-d",
       "cuisine": "thai",
       "location": "Bangkok",
@@ -216,7 +226,8 @@
       "months": 0,
       "cover": "",
       "page": "toh-d.html",
-      "drive_folder": "Toh D"
+      "drive_folder": "Toh D",
+      "website_folder_id": "1KtJX58tV2sQeba7rkfIRfjvMiOZB9hmM"
     },
     {
       "name": "Vstreet",
@@ -227,7 +238,8 @@
       "months": 0,
       "cover": "",
       "page": "vstreet.html",
-      "drive_folder": "Vstreet"
+      "drive_folder": "Vstreet",
+      "website_folder_id": "19S2MA07qqQ4Vs2PZAFx-MnN8rw8TI6zL"
     },
     {
       "name": "YUN",
@@ -238,7 +250,20 @@
       "months": 0,
       "cover": "",
       "page": "yun.html",
-      "drive_folder": "YUN"
+      "drive_folder": "YUN",
+      "website_folder_id": "1aM_dWs2DIbh1-1vxro4SF_IXkjUbzueM"
+    },
+    {
+      "name": "LJS",
+      "slug": "long-john-silvers",
+      "cuisine": "western",
+      "location": "Bangkok",
+      "description": "Western",
+      "months": 0,
+      "cover": "",
+      "page": "long-john-silvers.html",
+      "drive_folder": "LJS",
+      "website_folder_id": "1cMd5LE5DVOgzkrB0OqFJIwaLJxogX3Sf"
     },
     {
       "name": "Royal Pizza",
