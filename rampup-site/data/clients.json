@@ -46,10 +46,27 @@
       "location": "Bangkok",
       "description": "Italian",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/59adb465-83d8-4f93-5577-815c1a1df300/public",
       "page": "bacio.html",
       "drive_folder": "BACIO",
-      "website_folder_id": "1-HVuEZb0Ikcr8excbojMGebmm7-PFnBY"
+      "website_folder_id": "1-HVuEZb0Ikcr8excbojMGebmm7-PFnBY",
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/59adb465-83d8-4f93-5577-815c1a1df300/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a21d26d0-ec00-42b4-0b19-9235db5b0300/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/fd366792-2ff8-41bc-6925-80d886c1cf00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/0c954be3-946b-44fa-d4cf-380133ef6600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/4c11d44f-3c88-46d0-7cfe-1d3abaddcf00/public"
+      ],
+      "videos": [
+        "882cfb0de5aa8c9dc4bf77722abf15b0",
+        "4a818d7eb64d17c1416879ed673f4497",
+        "85a0d05c9bae7169ae12d7df5500ef84",
+        "da37dbd34816eb5d7fb2139964d4a721",
+        "23c1a3aacaa5bc88142d5e56ea3ac853",
+        "98f0f81e0bebdb4ea9dcf214120a34dc",
+        "3f9c5719c9d191104ab3c5a6ae163432"
+      ],
+      "last_updated": "2026-04-16"
     },
     {
       "name": "Ballistic Pizza",
