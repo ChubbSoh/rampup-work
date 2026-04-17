@@ -160,7 +160,7 @@ export default function Home() {
               <Link
                 key={i}
                 href={`/work/${client.slug}`}
-                className="shrink-0 w-[200px] bg-white rounded-[16px] overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.06)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-200 block"
+                className="shrink-0 w-[260px] bg-white rounded-[18px] overflow-hidden shadow-[0_2px_16px_rgba(0,0,0,0.07)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-200 block"
               >
                 <div className="relative w-full aspect-[4/3] bg-[#EDEDED] overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -170,10 +170,14 @@ export default function Home() {
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
+                  {/* Cuisine tag overlay */}
+                  <span className="absolute bottom-2.5 left-2.5 font-poppins text-[10px] font-semibold uppercase tracking-[1px] bg-black/50 text-white px-2.5 py-1 rounded-full backdrop-blur-sm">
+                    {client.cuisine}
+                  </span>
                 </div>
-                <div className="px-3 py-3">
-                  <p className="font-sora font-bold text-[13px] text-dark truncate">{client.name}</p>
-                  <p className="font-poppins text-[11px] text-muted">{client.location}</p>
+                <div className="px-4 py-3.5">
+                  <p className="font-sora font-bold text-[14px] text-dark truncate">{client.name}</p>
+                  <p className="font-poppins text-[11px] text-muted mt-0.5">{client.location}</p>
                 </div>
               </Link>
             ))}

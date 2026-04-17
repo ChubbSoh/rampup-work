@@ -41,8 +41,8 @@
   }
   .carousel-track {
     display: inline-flex;
-    gap: 1rem;
-    animation: ticker 35s linear infinite;
+    gap: 1.25rem;
+    animation: ticker 55s linear infinite;
   }
   .carousel-wrap:hover .carousel-track {
     animation-play-state: paused;
