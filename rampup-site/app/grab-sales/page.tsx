@@ -44,6 +44,10 @@ const steps = [
 
 const faqs = [
   {
+    q: 'How to join?',
+    a: 'Yes, we only accept Grab clients if they also do social media.',
+  },
+  {
     q: 'How long before I see results?',
     a: 'Most clients see measurable Grab revenue improvement within 30–60 days of launch. Store optimisation and photography have the fastest impact.',
   },
