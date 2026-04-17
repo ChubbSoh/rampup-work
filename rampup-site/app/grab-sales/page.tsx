@@ -141,7 +141,7 @@ export default async function GrabSalesPage() {
               }}
             >
               {[
-                { before: '฿665K', after: '฿1.25M', timeframe: '2 months', growth: '+81.6%', monthly: '+฿295K / month', beforeImg: '/results/card1-before.jpg', afterImg: '/results/card1-after.avif' },
+                { before: '฿665K', after: '฿1.25M', timeframe: '2 months', growth: '+81.6%', monthly: '+฿295K / month', beforeImg: '/results/proof-1-before.jpg', afterImg: '/results/proof-1-after.jpg' },
                 { before: '฿95K',  after: '฿210K',  timeframe: '3 months', growth: '+121%',  monthly: '+฿38K / month',  beforeImg: '',                        afterImg: '' },
                 { before: '฿150K', after: '฿420K',  timeframe: '3 months', growth: '+180%',  monthly: '+฿90K / month',  beforeImg: '',                        afterImg: '' },
                 { before: '฿80K',  after: '฿230K',  timeframe: '3 months', growth: '+188%',  monthly: '+฿50K / month',  beforeImg: '',                        afterImg: '' },
