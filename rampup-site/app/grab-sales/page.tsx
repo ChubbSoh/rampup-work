@@ -174,6 +174,10 @@ export default async function GrabSalesPage() {
                           // eslint-disable-next-line @next/next/no-img-element
                           <img src={src} alt={label} className="absolute inset-0 w-full h-full object-cover object-top" />
                         )}
+                        {/* Top fade */}
+                        <div className="absolute inset-x-0 top-0 h-[20%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to bottom, rgba(255,255,255,0.85) 0%, transparent 100%)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)', maskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)' }} />
+                        {/* Bottom fade */}
+                        <div className="absolute inset-x-0 bottom-0 h-[20%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(255,255,255,0.85) 0%, transparent 100%)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)', maskImage: 'linear-gradient(to top, black 0%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to top, black 0%, transparent 100%)' }} />
                         <span
                           className={`absolute top-2 left-2 font-poppins text-[10px] font-bold px-2 py-1 rounded-full text-white z-10 ${
                             label === 'BEFORE' ? 'bg-[#9E9E9E]' : 'bg-[#3DBE5A]'
