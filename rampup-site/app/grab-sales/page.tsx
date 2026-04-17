@@ -76,11 +76,12 @@ export default async function GrabSalesPage() {
               Grab Sales Growth
             </p>
             <h1 className="font-sora font-extrabold text-[clamp(2.4rem,5vw,3.6rem)] leading-[1.1] tracking-tight text-dark mb-6">
-              3x your Grab revenue.<br />
+              2x your Grab revenue.<br />
               <span className="text-green">Guaranteed growth.</span>
             </h1>
             <p className="font-poppins text-base md:text-lg text-muted leading-relaxed mb-8 max-w-xl">
-              We optimise your Grab storefront, run your ads, and manage promotions so you can focus on cooking. Most clients 2–4x their delivery revenue within 90 days.
+              We optimise your Grab storefront, run your ads, and manage promotions so you can focus on cooking.<br />
+              Most clients 2x their delivery revenue within 90 days.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
@@ -98,7 +99,7 @@ export default async function GrabSalesPage() {
           <div className="max-w-site mx-auto px-5 md:px-12">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {[
-                { value: '3x', label: 'Average revenue growth' },
+                { value: '2x', label: 'Average revenue growth' },
                 { value: '0', label: 'Risk' },
                 { value: '18+', label: 'Restaurant clients' },
                 { value: '50M+', label: 'THB Generated' },
