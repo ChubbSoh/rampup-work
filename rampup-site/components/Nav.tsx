@@ -8,7 +8,6 @@ const links = [
   { href: '/work', label: 'Our Work' },
   { href: '/grab-sales', label: 'Grab Sales' },
   { href: '/social-media', label: 'Social Media' },
-  { href: '/contact', label: 'Contact' },
 ]
 
 export default function Nav() {
@@ -45,7 +44,7 @@ export default function Nav() {
             href="/contact"
             className="bg-green text-white font-poppins text-sm font-semibold px-5 py-2.5 rounded-pill hover:brightness-105 transition-all active:scale-[0.98]"
           >
-            Get Started
+            Apply now!
           </Link>
         </div>
 
@@ -98,7 +97,7 @@ export default function Nav() {
             onClick={() => setOpen(false)}
             className="mt-3 bg-green text-white font-poppins text-sm font-semibold px-5 py-3 rounded-pill text-center"
           >
-            Get Started
+            Apply now!
           </Link>
         </div>
       </div>
