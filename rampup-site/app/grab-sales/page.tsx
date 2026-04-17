@@ -289,6 +289,55 @@ export default async function GrabSalesPage() {
           </div>
         </section>
 
+        {/* ── Pricing ── */}
+        <section className="max-w-site mx-auto px-5 md:px-12 pb-20">
+          <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3">
+            Pricing
+          </p>
+          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-8">
+            Simple pricing. Real results.
+          </h2>
+
+          <div className="bg-white rounded-[20px] shadow-[0_2px_16px_rgba(0,0,0,0.06)] p-7 md:p-10 max-w-2xl">
+            <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-2">
+              Grab Sales Growth
+            </p>
+            <p className="font-sora font-extrabold text-4xl md:text-5xl text-dark mb-1">
+              ฿9,990
+            </p>
+            <p className="font-poppins text-sm text-muted mb-2">/ month</p>
+            <p className="font-poppins text-[11px] text-muted/50 mb-7">Ad spend is not included.</p>
+
+            <p className="font-poppins text-xs font-semibold text-dark/50 uppercase tracking-[1.5px] mb-4">Included</p>
+            <ul className="flex flex-col gap-3 mb-8">
+              {[
+                'Grab store audit & optimisation',
+                'Menu restructure & copywriting',
+                'Monthly photo & video shoot',
+                'Promotion & voucher strategy',
+                'Grab Ads management',
+                'Monthly revenue reporting',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <span className="mt-[3px] w-4 h-4 rounded-full bg-[#E8F8ED] flex items-center justify-center shrink-0">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                      <path d="M1.5 4l2 2 3-3" stroke="#3DBE5A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
+                  <span className="font-poppins text-sm text-body">{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href="/contact"
+              className="block w-full text-center bg-green text-white font-poppins font-semibold text-sm px-6 py-3.5 rounded-pill hover:brightness-105 transition-all active:scale-[0.98]"
+            >
+              Apply Now →
+            </Link>
+          </div>
+        </section>
+
         {/* ── CTA ── */}
         <section className="max-w-site mx-auto px-5 md:px-12 pb-24">
           <div className="bg-green rounded-card p-8 md:p-12 text-center">
