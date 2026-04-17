@@ -104,10 +104,27 @@
       "location": "Bangkok",
       "description": "Korean",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/1f3d0224-fcc4-443e-c798-82ae95161e00/public",
       "page": "jagumsong.html",
       "drive_folder": "JA",
-      "website_folder_id": "1Fn5F3lMt1U601Zk0UN-Lq6LFSOpmVVB9"
+      "website_folder_id": "1Fn5F3lMt1U601Zk0UN-Lq6LFSOpmVVB9",
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/1f3d0224-fcc4-443e-c798-82ae95161e00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/6cbff003-cb0c-4216-79f3-e7b650a70800/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/06b3a55b-59fa-4829-833b-1ae59fe85a00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/465c3327-136d-4618-3a3b-19e394569700/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a85a6316-a674-48d5-a128-fdd3985b8800/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d79bdaa9-6bd2-4783-8765-46188f7d0900/public"
+      ],
+      "videos": [
+        "37ed431788b8783d90f2daa8698a20a6",
+        "1dca99d77d7805da788207b798eb20b0",
+        "1b6874edf1c35d6bcaa718b168b75a60",
+        "f68d33a9ae040b3bb5b13d0c2a9709f9",
+        "82939122c84d99e2ff4a53007f5efeac",
+        "62ef9a070ef8032b2751026086358c03"
+      ],
+      "last_updated": "2026-04-17"
     },
     {
       "name": "Jumama",
