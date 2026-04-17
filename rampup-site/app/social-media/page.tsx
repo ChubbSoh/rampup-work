@@ -209,8 +209,8 @@ export default async function SocialMediaPage() {
             Simple pricing. Real results.
           </h2>
 
-          {/* Main plan */}
-          <div className="bg-white rounded-[20px] shadow-[0_2px_16px_rgba(0,0,0,0.06)] p-7 md:p-10 mb-5 max-w-2xl">
+          {/* Main plan + add-ons in one card */}
+          <div className="bg-white rounded-[20px] shadow-[0_2px_16px_rgba(0,0,0,0.06)] p-7 md:p-10 max-w-2xl">
             <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-2">
               Social Media Growth
             </p>
@@ -240,38 +240,32 @@ export default async function SocialMediaPage() {
               ))}
             </ul>
 
-            <p className="font-poppins text-xs text-muted/70 italic">
-              Built for restaurants that want to grow — not just post.
-            </p>
-          </div>
-
-          {/* Add-ons */}
-          <div className="max-w-2xl">
-            <p className="font-poppins text-xs text-muted/60 mb-5">
-              Optional add-ons for restaurants ready to scale faster
-            </p>
-            <p className="font-sora font-bold text-base text-dark mb-4">
-              Add-ons to accelerate growth
-            </p>
-
-            <div className="flex flex-col divide-y divide-black/[0.06]">
-              {[
-                { label: 'Grow your Grab sales', price: '฿9,990 / month' },
-                { label: 'Capture Lineman demand', price: '฿4,990 / month' },
-                { label: 'Get found on Google Maps', price: '฿5,990 / month' },
-                { label: 'Turn LINE into a sales channel', price: '฿3,990 / month' },
-              ].map((a) => (
-                <div key={a.label} className="flex items-center justify-between py-3.5">
-                  <span className="font-poppins text-sm text-body">{a.label}</span>
-                  <span className="font-poppins text-sm font-semibold text-dark shrink-0 ml-4">{a.price}</span>
-                </div>
-              ))}
+            {/* Divider */}
+            <div className="border-t border-black/[0.07] pt-6 mb-5">
+              <p className="font-sora font-bold text-sm text-dark mb-4">Add-ons to accelerate growth</p>
+              <div className="flex flex-col divide-y divide-black/[0.06]">
+                {[
+                  { label: 'Grow your Grab sales', price: '฿9,990 / month' },
+                  { label: 'Capture Lineman demand', price: '฿4,990 / month' },
+                  { label: 'Get found on Google Maps', price: '฿5,990 / month' },
+                  { label: 'Turn LINE into a sales channel', price: '฿3,990 / month' },
+                ].map((a) => (
+                  <div key={a.label} className="flex items-center justify-between py-3">
+                    <span className="font-poppins text-sm text-muted">{a.label}</span>
+                    <span className="font-poppins text-sm font-semibold text-dark shrink-0 ml-4">{a.price}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 pt-4 border-t border-black/[0.06] flex items-center justify-between">
+                <span className="font-poppins text-sm text-muted">Website Design &amp; Build</span>
+                <span className="font-poppins text-sm font-semibold text-dark">฿35,000 <span className="font-normal text-muted text-xs">(one-time)</span></span>
+              </div>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-black/[0.08] flex items-center justify-between">
-              <span className="font-poppins text-sm text-body">Website Design &amp; Build</span>
-              <span className="font-poppins text-sm font-semibold text-dark">฿35,000 <span className="font-normal text-muted text-xs">(one-time)</span></span>
-            </div>
+            {/* Disclaimer */}
+            <p className="font-poppins text-[11px] text-muted/50">
+              Ad spend is not included.
+            </p>
           </div>
         </section>
 
