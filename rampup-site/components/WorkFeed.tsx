@@ -231,7 +231,7 @@ export default function WorkFeed({ clients }: { clients: Client[] }) {
 
       {/* Feed */}
       <div
-        className="max-w-site mx-auto px-4 md:px-12 pb-16 grid grid-cols-1 md:grid-cols-3 gap-5"
+        className="max-w-site mx-auto px-4 md:px-12 pb-16 grid grid-cols-1 md:grid-cols-3 gap-5 items-start"
         style={{ minHeight: '100vh' }}
       >
         {filtered.map((client) => (
