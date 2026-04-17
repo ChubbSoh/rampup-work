@@ -1,6 +1,7 @@
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+import { getAllClients } from '@/lib/clients'
 
 export const metadata = {
   title: 'Grab Sales Growth — Restaurant RampUp',
@@ -10,32 +11,32 @@ export const metadata = {
 
 const steps = [
   {
-    num: '01',
+    num: '1',
     title: 'Grab Store Audit',
     body: 'We review your menu, photos, pricing, packaging, and store SEO. Most restaurants are losing 30–50% of potential orders from poor presentation alone.',
   },
   {
-    num: '02',
+    num: '2',
     title: 'Menu Optimisation',
     body: "We restructure your menu architecture, rewrite item names and descriptions, and identify hero items to push. Higher average order value, higher conversion.",
   },
   {
-    num: '03',
-    title: 'Photo & Video Shoot',
+    num: '3',
+    title: 'Photo & Video shoot',
     body: 'Professional food photography every month. Grab stores with high-quality images convert 2–3x better than stores with stock or phone photos.',
   },
   {
-    num: '04',
+    num: '4',
     title: 'Promotion Strategy',
     body: 'We plan and run your Grab promotions, discount structure, and voucher strategy to maximise revenue — not just order volume.',
   },
   {
-    num: '05',
+    num: '5',
     title: 'Grab Ads Management',
     body: 'We manage your Grab Ad spend, targeting, bidding, and creatives. Every baht tracked to actual orders.',
   },
   {
-    num: '06',
+    num: '6',
     title: 'Monthly Reporting',
     body: 'Clear revenue reports, order tracking, and growth insights every month. No agency jargon — just numbers.',
   },
@@ -60,7 +61,10 @@ const faqs = [
   },
 ]
 
-export default function GrabSalesPage() {
+export default async function GrabSalesPage() {
+  const allClients = getAllClients()
+  const proofClients = allClients.filter((c) => c.cover).slice(0, 6)
+
   return (
     <>
       <Nav />
@@ -83,13 +87,7 @@ export default function GrabSalesPage() {
                 href="/contact"
                 className="bg-green text-white font-poppins font-semibold text-sm px-6 py-3.5 rounded-pill hover:brightness-105 transition-all active:scale-[0.98]"
               >
-                Get a Free Grab Audit
-              </Link>
-              <Link
-                href="/work"
-                className="bg-white text-dark font-poppins font-semibold text-sm px-6 py-3.5 rounded-pill border border-black/10 hover:border-black/20 transition-all active:scale-[0.98]"
-              >
-                See Client Results
+                Apply Now
               </Link>
             </div>
           </div>
@@ -101,7 +99,7 @@ export default function GrabSalesPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {[
                 { value: '3x', label: 'Average revenue growth' },
-                { value: '90', label: 'Days to see results' },
+                { value: '0', label: 'Risk' },
                 { value: '18+', label: 'Restaurant clients' },
                 { value: '0', label: 'Lock-in contracts' },
               ].map((s) => (
@@ -130,7 +128,7 @@ export default function GrabSalesPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {steps.map((s) => (
               <div key={s.num} className="bg-white rounded-card p-7">
-                <span className="font-sora font-extrabold text-4xl text-green/20 block mb-4">
+                <span className="font-sora font-extrabold text-4xl text-green/50 block mb-4">
                   {s.num}
                 </span>
                 <h3 className="font-sora font-bold text-lg text-dark mb-3">{s.title}</h3>
@@ -139,6 +137,43 @@ export default function GrabSalesPage() {
             ))}
           </div>
         </section>
+
+        {/* ── See the Proof ── */}
+        {proofClients.length > 0 && (
+          <section className="max-w-site mx-auto px-5 md:px-12 pb-20">
+            <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3">
+              See the Proof
+            </p>
+            <div className="flex items-end justify-between gap-4 mb-8">
+              <h2 className="font-sora font-extrabold text-3xl md:text-4xl text-dark tracking-tight">
+                Real restaurants.<br className="hidden md:block" /> Real results.
+              </h2>
+              <Link
+                href="/work"
+                className="shrink-0 font-poppins text-sm font-semibold text-green hover:underline"
+              >
+                View all →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {proofClients.map((c) => (
+                <Link key={c.slug} href={`/work/${c.slug}`} className="group relative rounded-[16px] overflow-hidden bg-[#2D2D2D] aspect-[3/4]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={c.cover!}
+                    alt={c.name}
+                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <p className="font-sora font-bold text-white text-sm leading-tight">{c.name}</p>
+                    <p className="font-poppins text-[11px] text-white/60 capitalize">{c.cuisine}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* ── FAQ ── */}
         <section className="max-w-site mx-auto px-5 md:px-12 pb-20">
