@@ -2,6 +2,7 @@ import Link from 'next/link'
 import LeadForm from '@/components/LeadForm'
 import Footer from '@/components/Footer'
 import { getAllClients } from '@/lib/clients'
+import PricingCard from '@/components/PricingCard'
 
 const tickerItems = [
   'Grab',
@@ -269,6 +270,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <PricingCard />
 
       {/* ── 6. BOTTOM FORM (Apply Today) — FORM 2 ── */}
       <section className="max-w-site mx-auto px-5 md:px-12 pb-24">
