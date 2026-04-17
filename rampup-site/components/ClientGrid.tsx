@@ -14,6 +14,7 @@ const filters = [
   { value: 'cafe', label: 'Cafe' },
   { value: 'thai', label: 'Thai' },
   { value: 'chinese', label: 'Chinese' },
+  { value: 'mexican', label: 'Mexican' },
 ]
 
 const cuisineColors: Record<string, string> = {
@@ -26,6 +27,7 @@ const cuisineColors: Record<string, string> = {
   thai: 'bg-yellow-50 text-yellow-700',
   chinese: 'bg-rose-50 text-rose-600',
   pizza: 'bg-orange-50 text-orange-600',
+  mexican: 'bg-red-50 text-red-600',
 }
 
 function CuisineTag({ cuisine }: { cuisine: string }) {

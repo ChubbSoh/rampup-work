@@ -24,3 +24,4 @@ export type CuisineFilter =
   | 'cafe'
   | 'thai'
   | 'chinese'
+  | 'mexican'
