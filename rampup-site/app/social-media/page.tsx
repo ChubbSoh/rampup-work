@@ -1,6 +1,7 @@
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+import { getAllClients } from '@/lib/clients'
 
 export const metadata = {
   title: 'Social Media Management — Restaurant RampUp',
@@ -44,7 +45,7 @@ const platforms = [
   {
     name: 'LINE OA',
     desc: 'Direct messaging and broadcast to your most loyal customers in Thailand.',
-    color: 'bg-green-50',
+    color: 'bg-slate-50',
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
         <rect x="2" y="4" width="20" height="16" rx="5" stroke="#00B900" strokeWidth="2"/>
@@ -55,10 +56,10 @@ const platforms = [
 ]
 
 const deliverables = [
-  { label: 'Monthly Shoots', value: '1–2' },
-  { label: 'Posts per Month', value: '12–20' },
-  { label: 'Platforms Managed', value: '4' },
-  { label: 'Stories / Reels', value: 'Included' },
+  { label: 'Monthly Shoot', value: '1' },
+  { label: 'Posts per Month', value: '18' },
+  { label: 'Platforms', value: '4' },
+  { label: 'Reels', value: '7' },
 ]
 
 const process = [
@@ -68,7 +69,10 @@ const process = [
   { num: '04', title: 'Post & Monitor', body: 'We post at optimal times, respond to comments, and track performance. You focus on the kitchen.' },
 ]
 
-export default function SocialMediaPage() {
+export default async function SocialMediaPage() {
+  const allClients = getAllClients()
+  const proofClients = allClients.filter((c) => c.cover).slice(0, 6)
+
   return (
     <>
       <Nav />
@@ -80,8 +84,8 @@ export default function SocialMediaPage() {
               Social Media Management
             </p>
             <h1 className="font-sora font-extrabold text-[clamp(2.4rem,5vw,3.6rem)] leading-[1.1] tracking-tight text-dark mb-6">
-              Your restaurant.<br />
-              <span className="text-green">Everywhere people eat.</span>
+              Seen more. Chosen more.<br />
+              <span className="text-green">That&apos;s how restaurants grow.</span>
             </h1>
             <p className="font-poppins text-base md:text-lg text-muted leading-relaxed mb-8 max-w-xl">
               Monthly shoots, professional content creation, and full management across Instagram, TikTok, Facebook, and LINE OA. Built for busy Bangkok restaurant owners.
@@ -92,12 +96,6 @@ export default function SocialMediaPage() {
                 className="bg-green text-white font-poppins font-semibold text-sm px-6 py-3.5 rounded-pill hover:brightness-105 transition-all active:scale-[0.98]"
               >
                 Start Growing →
-              </Link>
-              <Link
-                href="/work"
-                className="bg-white text-dark font-poppins font-semibold text-sm px-6 py-3.5 rounded-pill border border-black/10 hover:border-black/20 transition-all active:scale-[0.98]"
-              >
-                See Content Examples
               </Link>
             </div>
           </div>
@@ -143,6 +141,43 @@ export default function SocialMediaPage() {
             </div>
           </div>
         </div>
+
+        {/* ── Our Work ── */}
+        {proofClients.length > 0 && (
+          <section className="max-w-site mx-auto px-5 md:px-12 pb-20">
+            <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3">
+              Our work
+            </p>
+            <div className="flex items-end justify-between gap-4 mb-8">
+              <h2 className="font-sora font-extrabold text-3xl md:text-4xl text-dark tracking-tight">
+                Real restaurants.<br className="hidden md:block" /> Real results.
+              </h2>
+              <Link
+                href="/work"
+                className="shrink-0 font-poppins text-sm font-semibold text-green hover:underline"
+              >
+                View all →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {proofClients.map((c) => (
+                <Link key={c.slug} href={`/work/${c.slug}`} className="group relative rounded-[16px] overflow-hidden bg-[#2D2D2D] aspect-[3/4]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={c.cover!}
+                    alt={c.name}
+                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <p className="font-sora font-bold text-white text-sm leading-tight">{c.name}</p>
+                    <p className="font-poppins text-[11px] text-white/60 capitalize">{c.cuisine}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* ── Process ── */}
         <section className="max-w-site mx-auto px-5 md:px-12 pb-20">
