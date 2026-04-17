@@ -186,10 +186,27 @@
       "location": "Bangkok",
       "description": "Cafe",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/9ba5deb9-cdbc-4c2d-4030-5ca0c6abdb00/public",
       "page": "kynd-kulture.html",
       "drive_folder": "Kynd Kulture",
-      "website_folder_id": "16w9PWSd_94eTQxUXY0rEgAEd0OaiWGHg"
+      "website_folder_id": "16w9PWSd_94eTQxUXY0rEgAEd0OaiWGHg",
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/9ba5deb9-cdbc-4c2d-4030-5ca0c6abdb00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/324f35be-edfb-46a1-5c37-bf9e9eb31800/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/9dcc67cf-8082-4c00-d0bc-b9bbe5c7ab00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/2afeb592-ef3a-4f7f-dd73-3e70af949100/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/0daa158b-8af5-4bde-6cbd-96b2170eaf00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/9b88be2b-4711-4140-0246-b6de74b2ae00/public"
+      ],
+      "videos": [
+        "9826bf1c2f70bbe97728dd7cf036ea5d",
+        "04c83b00ebaf02de82794bbfef4805f6",
+        "dfc1034164690506907c8e8b46a60afa",
+        "8262af996f9d438ca86c118d5ecb721f",
+        "f8426eb69720bf98583e8cdcd7698677",
+        "3296ee5cd9920463dc65e052a237718f"
+      ],
+      "last_updated": "2026-04-17"
     },
     {
       "name": "Lamaya BKK",
