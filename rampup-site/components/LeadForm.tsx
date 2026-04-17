@@ -3,9 +3,8 @@
 import { useState } from 'react'
 
 const services = [
-  { value: 'grab', label: 'Grab Sales Growth' },
   { value: 'social', label: 'Social Media Management' },
-  { value: 'both', label: 'Both Services' },
+  { value: 'both', label: 'Social Media Management + Grab Growth' },
 ]
 
 export default function LeadForm({ compact = false }: { compact?: boolean }) {
