@@ -258,14 +258,22 @@ export default async function SocialMediaPage() {
               </div>
               <div className="mt-4 pt-4 border-t border-black/[0.06] flex items-center justify-between">
                 <span className="font-poppins text-sm text-muted">Website Design &amp; Build</span>
-                <span className="font-poppins text-sm font-semibold text-dark">฿35,000 <span className="font-normal text-muted text-xs">(one-time)</span></span>
+                <span className="font-poppins text-sm font-semibold text-dark">฿79,990 <span className="font-normal text-muted text-xs">(one-time)</span></span>
               </div>
             </div>
 
             {/* Disclaimer */}
-            <p className="font-poppins text-[11px] text-muted/50">
+            <p className="font-poppins text-[11px] text-muted/50 mb-6">
               Ad spend is not included.
             </p>
+
+            {/* CTA */}
+            <Link
+              href="/contact"
+              className="block w-full text-center bg-green text-white font-poppins font-semibold text-sm px-6 py-3.5 rounded-pill hover:brightness-105 transition-all active:scale-[0.98]"
+            >
+              Apply Now →
+            </Link>
           </div>
         </section>
 
