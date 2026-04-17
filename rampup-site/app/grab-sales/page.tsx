@@ -216,12 +216,12 @@ export default async function GrabSalesPage() {
               Our work
             </p>
             <h2 className="font-sora font-extrabold text-3xl md:text-4xl text-dark tracking-tight mb-2">
-              Go Viral<br />Grow your social
+              Grow your socials<br />Get more brand awareness
             </h2>
-            <div className="mt-6 mb-8">
+            <div className="mt-4 mb-8">
               <Link
                 href="/work"
-                className="inline-block bg-green text-white font-poppins font-semibold text-sm px-6 py-3.5 rounded-pill hover:brightness-105 transition-all active:scale-[0.98]"
+                className="font-poppins text-sm font-semibold text-green hover:underline transition-colors"
               >
                 View all →
               </Link>
