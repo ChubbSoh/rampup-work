@@ -217,7 +217,8 @@ export default async function SocialMediaPage() {
             <p className="font-sora font-extrabold text-4xl md:text-5xl text-dark mb-1">
               ฿49,990
             </p>
-            <p className="font-poppins text-sm text-muted mb-7">/ month</p>
+            <p className="font-poppins text-sm text-muted mb-2">/ month</p>
+            <p className="font-poppins text-[11px] text-muted/50 mb-7">Ad spend is not included.</p>
 
             <p className="font-poppins text-xs font-semibold text-dark/50 uppercase tracking-[1.5px] mb-4">Included</p>
             <ul className="flex flex-col gap-3 mb-7">
@@ -261,11 +262,6 @@ export default async function SocialMediaPage() {
                 <span className="font-poppins text-sm font-semibold text-dark">฿79,990 <span className="font-normal text-muted text-xs">(one-time)</span></span>
               </div>
             </div>
-
-            {/* Disclaimer */}
-            <p className="font-poppins text-[11px] text-muted/50 mb-6">
-              Ad spend is not included.
-            </p>
 
             {/* CTA */}
             <Link
