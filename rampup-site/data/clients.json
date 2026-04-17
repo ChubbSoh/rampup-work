@@ -28,7 +28,7 @@
       "last_updated": "2026-04-16"
     },
     {
-      "name": "APG x Sinnic",
+      "name": "Apgujeong Grill",
       "slug": "apg-x-sinnic",
       "cuisine": "korean",
       "location": "Bangkok",
@@ -37,6 +37,17 @@
       "cover": "",
       "page": "apg-x-sinnic.html",
       "drive_folder": "APG x Sinnic"
+    },
+    {
+      "name": "Sinnic Suki",
+      "slug": "sinnic-suki",
+      "cuisine": "thai",
+      "location": "Bangkok",
+      "description": "Thai Suki",
+      "months": 0,
+      "cover": "",
+      "page": "",
+      "drive_folder": ""
     },
     {
       "name": "Bacio",
@@ -168,11 +179,11 @@
       "website_folder_id": "1lGtSUAeO8lznxhoO-pJs7mD-AVEcc2vK"
     },
     {
-      "name": "Nightlife",
+      "name": "Lamaya Khao Yai",
       "slug": "lamaya-khao-yai",
-      "cuisine": "western",
+      "cuisine": "nightlife",
       "location": "Khao Yai",
-      "description": "Western",
+      "description": "Nightlife",
       "months": 0,
       "cover": "",
       "page": "lamaya-khao-yai.html",
@@ -271,7 +282,7 @@
       "name": "RaLuek",
       "slug": "raluek",
       "cuisine": "thai",
-      "location": "Bangkok",
+      "location": "Khao Yai",
       "description": "Thai",
       "months": 0,
       "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a0c96bdc-870b-4e1d-9f1f-b5457ddefd00/public",
