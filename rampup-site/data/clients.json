@@ -372,10 +372,27 @@
       "location": "Bangkok",
       "description": "Thai Street Food",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e161fbb3-66af-47da-69a0-00b0e1032d00/public",
       "page": "vstreet.html",
       "drive_folder": "Vstreet",
-      "website_folder_id": "19S2MA07qqQ4Vs2PZAFx-MnN8rw8TI6zL"
+      "website_folder_id": "19S2MA07qqQ4Vs2PZAFx-MnN8rw8TI6zL",
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e161fbb3-66af-47da-69a0-00b0e1032d00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c5d7c0e9-6e0e-4acc-e557-47e87eb3cc00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d1a2817d-8234-4bc8-3d5f-04f644220600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a62c0d5a-6f4c-4d89-225f-4cd9f8fcba00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/36b84b81-05d3-483c-8258-1ccbd9830c00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/4cd9f988-d889-4485-b241-9380cdec7100/public"
+      ],
+      "videos": [
+        "54e227c2aa68b2190ad6c7077200d225",
+        "bc6a562c50073ec9be7f7e4ae426c813",
+        "4599f635f5aa7fcee5565a7b30fc7a0e",
+        "b9f87a3d2849ac11de93e8f5a07a2bb5",
+        "8885f78cc3253e3f00910a0dae530aae",
+        "2e7a74ea5937fde4de83a1e01799ab04"
+      ],
+      "last_updated": "2026-04-17"
     },
     {
       "name": "YUN",
