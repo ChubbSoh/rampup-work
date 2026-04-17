@@ -209,19 +209,19 @@ export default async function GrabSalesPage() {
           </div>
         </section>
 
-        {/* ── See the Proof ── */}
+        {/* ── Our Work ── */}
         {proofClients.length > 0 && (
           <section className="max-w-site mx-auto px-5 md:px-12 pb-20">
             <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3">
-              See the Proof
+              Our work
             </p>
-            <div className="flex items-end justify-between gap-4 mb-8">
-              <h2 className="font-sora font-extrabold text-3xl md:text-4xl text-dark tracking-tight">
-                Real restaurants.<br className="hidden md:block" /> Real results.
-              </h2>
+            <h2 className="font-sora font-extrabold text-3xl md:text-4xl text-dark tracking-tight mb-2">
+              Go Viral<br />Grow your social
+            </h2>
+            <div className="mt-6 mb-8">
               <Link
                 href="/work"
-                className="shrink-0 font-poppins text-sm font-semibold text-green hover:underline"
+                className="inline-block bg-green text-white font-poppins font-semibold text-sm px-6 py-3.5 rounded-pill hover:brightness-105 transition-all active:scale-[0.98]"
               >
                 View all →
               </Link>
@@ -242,6 +242,14 @@ export default async function GrabSalesPage() {
                   </div>
                 </Link>
               ))}
+            </div>
+            <div className="mt-8 flex justify-center">
+              <Link
+                href="/work"
+                className="inline-block bg-white text-dark font-poppins font-semibold text-sm px-6 py-3.5 rounded-pill border border-black/10 hover:border-black/20 transition-all active:scale-[0.98]"
+              >
+                See more →
+              </Link>
             </div>
           </section>
         )}
