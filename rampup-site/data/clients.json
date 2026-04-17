@@ -245,10 +245,27 @@
       "location": "Bangkok",
       "description": "BBQ",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c027cda0-ee21-4782-4175-c78787a29600/public",
       "page": "pitmaster.html",
       "drive_folder": "Pitmaster",
-      "website_folder_id": "1oBYbzHWaRhmPcbnZmHM6LENtiV-htmEP"
+      "website_folder_id": "1oBYbzHWaRhmPcbnZmHM6LENtiV-htmEP",
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c027cda0-ee21-4782-4175-c78787a29600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/420d378e-9eea-4493-50ed-ea67bd319100/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/362ad56a-3593-413c-9b29-398408e89600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/f7dc1080-f070-4741-99d1-9ed0ead61700/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/947c4744-3dd2-4b2a-1ece-4a0183d50300/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a51ec460-2e65-412d-eb87-db0ceb22b800/public"
+      ],
+      "videos": [
+        "5b39b3bcfbf4b5a53771a70b5c1c90fe",
+        "3b575e2afd2d2ee01b9205af9a4f5527",
+        "b773ded92519e2a88d20246b8f4470a2",
+        "5edeba8c9c96c1c91b426eb57267dbba",
+        "0fb42515c2cb3787e36d6cfdf657e957",
+        "b217535e762f89dd714fec0a144cbc08"
+      ],
+      "last_updated": "2026-04-17"
     },
     {
       "name": "RaLuek",
