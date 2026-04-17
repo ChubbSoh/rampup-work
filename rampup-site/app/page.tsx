@@ -162,7 +162,7 @@ export default function Home() {
                 href={`/work/${client.slug}`}
                 className="shrink-0 w-[260px] bg-white rounded-[18px] overflow-hidden shadow-[0_2px_16px_rgba(0,0,0,0.07)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-200 block"
               >
-                <div className="relative w-full aspect-[4/3] bg-[#EDEDED] overflow-hidden">
+                <div className="relative w-full aspect-[3/4] bg-[#EDEDED] overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={client.cover}
