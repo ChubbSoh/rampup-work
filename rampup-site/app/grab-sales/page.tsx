@@ -141,18 +141,21 @@ export default async function GrabSalesPage() {
               }}
             >
               {[
-                { header: 'From 120K to 380K in 3 months', before: '฿120K', after: '฿380K', growth: '+216%', monthly: '+฿87K / month' },
-                { header: 'From 95K to 210K in 3 months',  before: '฿95K',  after: '฿210K', growth: '+121%', monthly: '+฿38K / month' },
-                { header: 'From 150K to 420K in 3 months', before: '฿150K', after: '฿420K', growth: '+180%', monthly: '+฿90K / month' },
+                { before: '฿120K', after: '฿380K', growth: '+216%', monthly: '+฿87K / month' },
+                { before: '฿95K',  after: '฿210K', growth: '+121%', monthly: '+฿38K / month' },
+                { before: '฿150K', after: '฿420K', growth: '+180%', monthly: '+฿90K / month' },
               ].map((card) => (
                 <div
-                  key={card.header}
+                  key={card.before}
                   className="shrink-0 w-[80vw] md:w-auto bg-white rounded-[20px] shadow-[0_2px_16px_rgba(0,0,0,0.06)] p-5"
                   style={{ scrollSnapAlign: 'start' }}
                 >
-                  {/* Card header */}
-                  <p className="font-sora font-bold text-[14px] text-dark text-center mb-4 leading-snug">
-                    {card.header}
+                  {/* Header */}
+                  <p className="font-sora font-bold text-[17px] text-dark leading-tight mb-0.5">
+                    {card.before} → {card.after}
+                  </p>
+                  <p className="font-poppins text-[11px] text-muted/70 mb-4">
+                    Results achieved in 3 months
                   </p>
 
                   {/* Before / After placeholders */}
@@ -174,16 +177,10 @@ export default async function GrabSalesPage() {
                     ))}
                   </div>
 
-                  {/* Numbers */}
-                  <div className="text-center">
-                    <p className="font-poppins text-sm font-semibold text-dark mb-1">
-                      <span className="text-muted">{card.before}</span>
-                      {' → '}
-                      <span className="text-green">{card.after}</span>
-                    </p>
-                    <p className="font-sora font-extrabold text-2xl text-green mb-1">{card.growth}</p>
-                    <p className="font-poppins text-xs text-muted">{card.monthly}</p>
-                  </div>
+                  {/* Results */}
+                  <p className="font-sora font-extrabold text-2xl text-green mb-0.5">{card.growth}</p>
+                  <p className="font-poppins text-sm font-semibold text-dark mb-0.5">{card.monthly}</p>
+                  <p className="font-poppins text-[11px] text-muted/70">Average monthly increase in revenue</p>
                 </div>
               ))}
             </div>
