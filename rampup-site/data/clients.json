@@ -274,10 +274,27 @@
       "location": "Bangkok",
       "description": "Thai",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a0c96bdc-870b-4e1d-9f1f-b5457ddefd00/public",
       "page": "raluek.html",
       "drive_folder": "RALUEK",
-      "website_folder_id": "1MM-rH7Wox7pQ2a_mpKHnvsl_6Ab0ifjb"
+      "website_folder_id": "1MM-rH7Wox7pQ2a_mpKHnvsl_6Ab0ifjb",
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a0c96bdc-870b-4e1d-9f1f-b5457ddefd00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/81e83ed2-920f-47ec-37f7-6f8fc375db00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/5fade701-433a-42ac-60db-07c170ebfc00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/88447151-ec48-4846-f966-3f3348b9dd00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/eb723904-4528-4db8-c986-d96bd2bd0500/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/41726f6d-7d2b-475c-bc47-e276adcd4400/public"
+      ],
+      "videos": [
+        "dc607b4317bc7a778e1212777ca49c89",
+        "c4a5f9178c7cd0e81fada8be3941d4c6",
+        "3752774427c35f93bdb980eea8e3de6b",
+        "0934da866482d67f2bbdea2715908c4f",
+        "b547991b0d5f8dbe25f9bb3f8a95bf47",
+        "7d1cc8b69b26b81a6dee079196295c00"
+      ],
+      "last_updated": "2026-04-17"
     },
     {
       "name": "Semolina",
