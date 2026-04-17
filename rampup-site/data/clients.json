@@ -133,10 +133,27 @@
       "location": "Bangkok",
       "description": "Chinese",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/58fc9236-a032-4dc8-5dea-d424cbb63f00/public",
       "page": "jumama.html",
       "drive_folder": "Jumama",
-      "website_folder_id": "1qJNTPgW5P44YizRWnwrfP1vVbyHKT3pK"
+      "website_folder_id": "1qJNTPgW5P44YizRWnwrfP1vVbyHKT3pK",
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/58fc9236-a032-4dc8-5dea-d424cbb63f00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d019e79d-ea82-4f1b-bb42-e06b50586f00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/fc50bfb9-e061-48a9-ddd1-91ebbec4d300/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/37f7bcc4-508f-497d-91dc-14888cf3df00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/213694a8-ec70-483f-a065-d1e779f36800/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c30fd1ac-e83a-40f1-0ee5-3a47faa58800/public"
+      ],
+      "videos": [
+        "766c6830499c738a87ec04c2e710bc1d",
+        "954591b340af7d33662f461d474fcbe2",
+        "68ae95208a8ef655806cfa9057979418",
+        "18c6ab06ad7499196ac4b4b63e12bb34",
+        "f76a63e02c158ca5b9d2edae72d4580c",
+        "4b9bc8e9ae0fc745fc6732a2c33bdd91"
+      ],
+      "last_updated": "2026-04-17"
     },
     {
       "name": "Kaneumi",
