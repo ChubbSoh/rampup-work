@@ -96,13 +96,13 @@ export default async function GrabSalesPage() {
         {/* ── Results ── */}
         <section className="py-20 md:py-24">
           <div className="max-w-site mx-auto px-5 md:px-12">
-            <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3 text-center">
+            <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3">
               Results
             </p>
-            <h2 className="font-sora font-extrabold text-3xl md:text-4xl text-dark tracking-tight mb-3 text-center">
+            <h2 className="font-sora font-extrabold text-3xl md:text-4xl text-dark tracking-tight mb-3">
               Real Restaurants<br />Real Results
             </h2>
-            <p className="font-poppins text-sm text-muted text-center mb-12">
+            <p className="font-poppins text-sm text-muted mb-12">
               Actual revenue growth from restaurants we work with
             </p>
 
