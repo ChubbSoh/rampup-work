@@ -141,10 +141,10 @@ export default async function GrabSalesPage() {
               }}
             >
               {[
-                { before: '฿120K', after: '฿380K', growth: '+216%', monthly: '+฿87K / month' },
-                { before: '฿95K',  after: '฿210K', growth: '+121%', monthly: '+฿38K / month' },
-                { before: '฿150K', after: '฿420K', growth: '+180%', monthly: '+฿90K / month' },
-                { before: '฿80K',  after: '฿230K', growth: '+188%', monthly: '+฿50K / month' },
+                { before: '฿665K', after: '฿1.25M', timeframe: '2 months', growth: '+81.6%', monthly: '+฿295K / month', beforeImg: '/results/card1-before.png', afterImg: '/results/card1-after.png' },
+                { before: '฿95K',  after: '฿210K',  timeframe: '3 months', growth: '+121%',  monthly: '+฿38K / month',  beforeImg: '',                        afterImg: '' },
+                { before: '฿150K', after: '฿420K',  timeframe: '3 months', growth: '+180%',  monthly: '+฿90K / month',  beforeImg: '',                        afterImg: '' },
+                { before: '฿80K',  after: '฿230K',  timeframe: '3 months', growth: '+188%',  monthly: '+฿50K / month',  beforeImg: '',                        afterImg: '' },
               ].map((card) => (
                 <div
                   key={card.before}
@@ -156,17 +156,24 @@ export default async function GrabSalesPage() {
                     {card.before} → {card.after}
                   </p>
                   <p className="font-poppins text-[11px] text-muted/70 mb-4">
-                    Results achieved in 3 months
+                    Results achieved in {card.timeframe}
                   </p>
 
-                  {/* Before / After placeholders */}
+                  {/* Before / After images */}
                   <div className="grid grid-cols-2 gap-2 mb-5">
-                    {(['BEFORE', 'AFTER'] as const).map((label) => (
+                    {([
+                      { label: 'BEFORE' as const, src: card.beforeImg },
+                      { label: 'AFTER'  as const, src: card.afterImg  },
+                    ]).map(({ label, src }) => (
                       <div
                         key={label}
                         className="relative rounded-[12px] overflow-hidden bg-[#E4E4E4]"
                         style={{ aspectRatio: '9/16' }}
                       >
+                        {src && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={src} alt={label} className="absolute inset-0 w-full h-full object-cover object-top" />
+                        )}
                         <span
                           className={`absolute top-2 left-2 font-poppins text-[10px] font-bold px-2 py-1 rounded-full text-white z-10 ${
                             label === 'BEFORE' ? 'bg-[#9E9E9E]' : 'bg-[#3DBE5A]'
