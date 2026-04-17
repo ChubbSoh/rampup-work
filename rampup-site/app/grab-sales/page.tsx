@@ -101,7 +101,7 @@ export default async function GrabSalesPage() {
                 { value: '3x', label: 'Average revenue growth' },
                 { value: '0', label: 'Risk' },
                 { value: '18+', label: 'Restaurant clients' },
-                { value: '0', label: 'Lock-in contracts' },
+                { value: '50M+', label: 'THB Generated' },
               ].map((s) => (
                 <div key={s.label} className="text-center">
                   <div className="font-sora font-extrabold text-3xl md:text-4xl text-green mb-1">
