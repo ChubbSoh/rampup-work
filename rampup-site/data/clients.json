@@ -315,10 +315,27 @@
       "location": "Bangkok",
       "description": "Mexican & Bar",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/86b2989c-7094-4f33-6f1e-b3e4c2d00400/public",
       "page": "sudo-social.html",
       "drive_folder": "Sudo Social",
-      "website_folder_id": "13mtXyFAKaHu8Ja98vbDsUfpYO7678DzM"
+      "website_folder_id": "13mtXyFAKaHu8Ja98vbDsUfpYO7678DzM",
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/86b2989c-7094-4f33-6f1e-b3e4c2d00400/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/12a0b6e0-d6d2-4ff7-6814-17416f2b0c00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e0ca9528-54f2-4119-044e-547cc2261e00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/529a5d30-6564-424b-477e-b2e7bb668800/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/fb3ddbc7-2d5d-4452-a17a-0fc956ec9800/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a6430caf-82c5-4e3f-5978-94f13efb2e00/public"
+      ],
+      "videos": [
+        "84908408a5295a7ed986454896fe69c8",
+        "b452a9832a1193a2f1d93af7f5a5a418",
+        "34705a3a6ee777f1ba8efe77d25f14e4",
+        "acac7f1812e6d8d7ec43834f9be6b3de",
+        "281caab11f5e73c4cb1138167677be22",
+        "2a1c813a05af8bedac87d6605e462f1e"
+      ],
+      "last_updated": "2026-04-17"
     },
     {
       "name": "Toh Daeng",
