@@ -155,7 +155,7 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
         disabled={loading}
         className="mt-2 bg-green text-white font-poppins font-semibold text-sm px-6 py-3.5 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] disabled:opacity-60"
       >
-        {loading ? 'Sending...' : 'Get My Free Audit →'}
+        {loading ? 'Sending...' : 'Apply Today! →'}
       </button>
 
       <p className="font-poppins text-xs text-faint text-center">
