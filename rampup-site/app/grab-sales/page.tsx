@@ -93,73 +93,6 @@ export default async function GrabSalesPage() {
           </div>
         </section>
 
-        {/* ── Results ── */}
-        <section className="py-20 md:py-24">
-          <div className="max-w-site mx-auto px-5 md:px-12">
-            <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3">
-              Results
-            </p>
-            <h2 className="font-sora font-extrabold text-3xl md:text-4xl text-dark tracking-tight mb-3">
-              Real Restaurants<br />Real Results
-            </h2>
-            <p className="font-poppins text-sm text-muted mb-12">
-              Actual revenue growth from restaurants we work with
-            </p>
-
-            {/* Desktop grid / Mobile scroll */}
-            <div
-              className="flex gap-5 md:grid md:grid-cols-3 md:gap-5"
-              style={{
-                overflowX: 'auto',
-                WebkitOverflowScrolling: 'touch',
-                scrollSnapType: 'x mandatory',
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-              }}
-            >
-              {[
-                { name: 'Thai Bistro', before: '฿120K', after: '฿380K', growth: '+216%' },
-                { name: 'Sushi Bar', before: '฿95K', after: '฿210K', growth: '+121%' },
-                { name: 'BBQ House', before: '฿150K', after: '฿420K', growth: '+180%' },
-              ].map((card) => (
-                <div
-                  key={card.name}
-                  className="shrink-0 w-[80vw] md:w-auto bg-white rounded-[20px] shadow-[0_2px_16px_rgba(0,0,0,0.06)] p-5"
-                  style={{ scrollSnapAlign: 'start' }}
-                >
-                  <p className="font-sora font-bold text-[15px] text-dark mb-4">{card.name}</p>
-
-                  {/* Before / After images */}
-                  <div className="grid grid-cols-2 gap-2 mb-5">
-                    {(['BEFORE', 'AFTER'] as const).map((label) => (
-                      <div key={label} className="relative rounded-[12px] overflow-hidden bg-[#E4E4E4]" style={{ aspectRatio: '9/16' }}>
-                        {/* Label badge */}
-                        <span
-                          className={`absolute top-2 left-2 font-poppins text-[10px] font-bold px-2 py-1 rounded-full text-white z-10 ${
-                            label === 'BEFORE' ? 'bg-[#9E9E9E]' : 'bg-[#3DBE5A]'
-                          }`}
-                        >
-                          {label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Numbers */}
-                  <div className="text-center">
-                    <p className="font-poppins text-sm font-semibold text-dark mb-1">
-                      <span className="text-muted">{card.before}</span>
-                      {' → '}
-                      <span className="text-green">{card.after}</span>
-                    </p>
-                    <p className="font-sora font-extrabold text-2xl text-green">{card.growth}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* ── Stats bar ── */}
         <div className="bg-dark py-10">
           <div className="max-w-site mx-auto px-5 md:px-12">
@@ -182,6 +115,80 @@ export default async function GrabSalesPage() {
             </div>
           </div>
         </div>
+
+        {/* ── Results ── */}
+        <section className="py-20 md:py-24">
+          <div className="max-w-site mx-auto px-5 md:px-12">
+            <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3">
+              Results
+            </p>
+            <h2 className="font-sora font-extrabold text-3xl md:text-4xl text-dark tracking-tight mb-3">
+              Real Restaurants<br />Real Results
+            </h2>
+            <p className="font-poppins text-sm text-muted mb-12">
+              Actual revenue growth from restaurants we work with
+            </p>
+
+            {/* Desktop grid / Mobile horizontal scroll */}
+            <div
+              className="flex gap-5 md:grid md:grid-cols-3 md:gap-5"
+              style={{
+                overflowX: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                scrollSnapType: 'x mandatory',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+              }}
+            >
+              {[
+                { header: 'From 120K to 380K in 3 months', before: '฿120K', after: '฿380K', growth: '+216%', monthly: '+฿87K / month' },
+                { header: 'From 95K to 210K in 3 months',  before: '฿95K',  after: '฿210K', growth: '+121%', monthly: '+฿38K / month' },
+                { header: 'From 150K to 420K in 3 months', before: '฿150K', after: '฿420K', growth: '+180%', monthly: '+฿90K / month' },
+              ].map((card) => (
+                <div
+                  key={card.header}
+                  className="shrink-0 w-[80vw] md:w-auto bg-white rounded-[20px] shadow-[0_2px_16px_rgba(0,0,0,0.06)] p-5"
+                  style={{ scrollSnapAlign: 'start' }}
+                >
+                  {/* Card header */}
+                  <p className="font-sora font-bold text-[14px] text-dark text-center mb-4 leading-snug">
+                    {card.header}
+                  </p>
+
+                  {/* Before / After placeholders */}
+                  <div className="grid grid-cols-2 gap-2 mb-5">
+                    {(['BEFORE', 'AFTER'] as const).map((label) => (
+                      <div
+                        key={label}
+                        className="relative rounded-[12px] overflow-hidden bg-[#E4E4E4]"
+                        style={{ aspectRatio: '9/16' }}
+                      >
+                        <span
+                          className={`absolute top-2 left-2 font-poppins text-[10px] font-bold px-2 py-1 rounded-full text-white z-10 ${
+                            label === 'BEFORE' ? 'bg-[#9E9E9E]' : 'bg-[#3DBE5A]'
+                          }`}
+                        >
+                          {label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Numbers */}
+                  <div className="text-center">
+                    <p className="font-poppins text-sm font-semibold text-dark mb-1">
+                      <span className="text-muted">{card.before}</span>
+                      {' → '}
+                      <span className="text-green">{card.after}</span>
+                    </p>
+                    <p className="font-sora font-extrabold text-2xl text-green mb-1">{card.growth}</p>
+                    <p className="font-poppins text-xs text-muted">{card.monthly}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* ── How it works ── */}
         <section className="max-w-site mx-auto px-5 md:px-12 py-20 md:py-28">
