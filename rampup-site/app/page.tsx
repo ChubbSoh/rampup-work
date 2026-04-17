@@ -58,9 +58,8 @@ export default function Home() {
 
   return (
     <main className="min-h-[100dvh] bg-[#EDEDED]">
-      {/* ── Minimal top bar (no full nav) ── */}
+      {/* ── Top bar ── */}
       <div className="px-5 md:px-12 py-5 flex items-center justify-between max-w-site mx-auto">
-        {/* Logo image */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/logo-rampup-accent.svg"
@@ -75,10 +74,10 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* ── Hero ── */}
+      {/* ── 1. HERO (with form) ── */}
       <section className="max-w-site mx-auto px-5 md:px-12 pt-10 pb-16 md:pt-16 md:pb-24">
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-20">
-          {/* Left: headline + form */}
+          {/* Left: headline */}
           <div className="flex-1 max-w-xl">
             <div className="inline-flex items-center gap-2 bg-green-light border border-green/20 rounded-tag px-3 py-1 mb-6">
               <span className="w-2 h-2 rounded-full bg-green animate-pulse" />
@@ -107,10 +106,10 @@ export default function Home() {
             </div>
 
             {/* Social proof icons */}
-            <p className="font-poppins text-xs text-faint italic mb-3">
+            <p className="font-poppins text-xs text-faint italic mb-3 text-center md:text-left">
               Get seen on these platforms
             </p>
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-5 justify-center md:justify-start">
               {/* Instagram */}
               <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-muted">
                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
@@ -130,7 +129,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right: lead form card */}
+          {/* Right: lead form card — FORM 1 */}
           <div className="mt-12 lg:mt-0 w-full lg:w-[400px] shrink-0">
             <div className="bg-white rounded-card shadow-[0_4px_24px_rgba(0,0,0,0.07)] p-6 md:p-8">
               <h2 className="font-sora font-bold text-xl text-dark mb-1">
@@ -145,24 +144,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Ticker ── */}
-      <div className="bg-dark py-4 overflow-hidden">
-        <div className="ticker-wrap">
-          <div className="ticker-track">
-            {[...tickerItems, ...tickerItems].map((item, i) => (
-              <span key={i} className="inline-flex items-center gap-4 mx-6">
-                <span className="font-poppins font-semibold text-sm text-white/80 uppercase tracking-widest whitespace-nowrap">
-                  {item}
-                </span>
-                <span className="text-green text-lg">✦</span>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Trusted by these restaurants (carousel) ── */}
-      <section className="pt-16 md:pt-24 pb-8 md:pb-12 overflow-hidden">
+      {/* ── 2. TRUSTED BY THESE RESTAURANTS (carousel) ── */}
+      <section className="pt-8 pb-8 md:pb-12 overflow-hidden">
         <div className="max-w-site mx-auto px-5 md:px-12 mb-8">
           <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3 text-center">
             Our Clients
@@ -206,24 +189,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Stats ── */}
+      {/* ── 3. TWO WAYS WE GROW ── */}
       <section className="max-w-site mx-auto px-5 md:px-12 py-16 md:py-24">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-          {stats.map((s) => (
-            <div key={s.label} className="bg-white rounded-card p-6 md:p-8">
-              <div className="font-sora font-extrabold text-3xl md:text-4xl text-dark mb-2">
-                {s.value}
-              </div>
-              <div className="font-poppins text-sm text-muted leading-snug">
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Services ── */}
-      <section className="max-w-site mx-auto px-5 md:px-12 pb-16 md:pb-24">
         <div className="mb-10">
           <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3">
             What We Do
@@ -264,6 +231,51 @@ export default function Home() {
               </Link>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── 4. SOCIAL SLIDER (ticker) ── */}
+      <div className="bg-dark py-4 overflow-hidden">
+        <div className="ticker-wrap">
+          <div className="ticker-track">
+            {[...tickerItems, ...tickerItems].map((item, i) => (
+              <span key={i} className="inline-flex items-center gap-4 mx-6">
+                <span className="font-poppins font-semibold text-sm text-white/80 uppercase tracking-widest whitespace-nowrap">
+                  {item}
+                </span>
+                <span className="text-green text-lg">✦</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── 5. STATS CARDS ── */}
+      <section className="max-w-site mx-auto px-5 md:px-12 py-16 md:py-24">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+          {stats.map((s) => (
+            <div key={s.label} className="bg-white rounded-card p-6 md:p-8">
+              <div className="font-sora font-extrabold text-3xl md:text-4xl text-dark mb-2">
+                {s.value}
+              </div>
+              <div className="font-poppins text-sm text-muted leading-snug">
+                {s.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── 6. BOTTOM FORM (Apply Today) — FORM 2 ── */}
+      <section className="max-w-site mx-auto px-5 md:px-12 pb-24">
+        <div className="bg-white rounded-card shadow-[0_4px_24px_rgba(0,0,0,0.07)] p-6 md:p-12 max-w-xl mx-auto">
+          <h2 className="font-sora font-bold text-2xl md:text-3xl text-dark mb-2">
+            Apply Today
+          </h2>
+          <p className="font-poppins text-sm text-muted mb-8">
+            We&apos;ll review your Grab store and social pages — no commitment.
+          </p>
+          <LeadForm />
         </div>
       </section>
 
