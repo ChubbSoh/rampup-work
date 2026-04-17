@@ -35,4 +35,16 @@
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
+
+  .carousel-wrap {
+    overflow: hidden;
+  }
+  .carousel-track {
+    display: inline-flex;
+    gap: 1rem;
+    animation: ticker 35s linear infinite;
+  }
+  .carousel-wrap:hover .carousel-track {
+    animation-play-state: paused;
+  }
 }

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import LeadForm from '@/components/LeadForm'
 import Footer from '@/components/Footer'
+import { getAllClients } from '@/lib/clients'
 
 const tickerItems = [
   'Grab',
@@ -52,14 +53,20 @@ const services = [
 ]
 
 export default function Home() {
+  const allClients = getAllClients()
+  const carouselClients = allClients.filter((c) => c.cover)
+
   return (
     <main className="min-h-[100dvh] bg-[#EDEDED]">
       {/* ── Minimal top bar (no full nav) ── */}
       <div className="px-5 md:px-12 py-5 flex items-center justify-between max-w-site mx-auto">
-        <div className="font-sora font-extrabold text-xl tracking-tight">
-          <span className="text-dark">RAMP</span>
-          <span className="text-green">UP</span>
-        </div>
+        {/* Logo image */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/logo-rampup-accent.svg"
+          alt="RampUp"
+          className="h-8 md:h-9 w-auto object-contain"
+        />
         <Link
           href="/work"
           className="font-poppins text-sm font-medium text-body hover:text-dark transition-colors"
@@ -100,6 +107,9 @@ export default function Home() {
             </div>
 
             {/* Social proof icons */}
+            <p className="font-poppins text-xs text-faint italic mb-3">
+              Get seen on these platforms
+            </p>
             <div className="flex items-center gap-5">
               {/* Instagram */}
               <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-muted">
@@ -124,7 +134,7 @@ export default function Home() {
           <div className="mt-12 lg:mt-0 w-full lg:w-[400px] shrink-0">
             <div className="bg-white rounded-card shadow-[0_4px_24px_rgba(0,0,0,0.07)] p-6 md:p-8">
               <h2 className="font-sora font-bold text-xl text-dark mb-1">
-                Get a free audit
+                Apply Today!
               </h2>
               <p className="font-poppins text-sm text-muted mb-6">
                 We&apos;ll review your Grab store and social pages — no commitment.
@@ -136,28 +146,65 @@ export default function Home() {
       </section>
 
       {/* ── Ticker ── */}
-      <div className="bg-dark py-4">
-        <div
-          className="flex items-center justify-center gap-0 px-4 md:px-0"
-          style={{
-            overflowX: 'auto',
-            WebkitOverflowScrolling: 'touch',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-          }}
-        >
-          {tickerItems.map((item, i) => (
-            <span key={i} className="inline-flex items-center gap-4 px-4 shrink-0">
-              <span className="font-poppins font-semibold text-sm text-white/80 uppercase tracking-widest whitespace-nowrap">
-                {item}
-              </span>
-              {i < tickerItems.length - 1 && (
+      <div className="bg-dark py-4 overflow-hidden">
+        <div className="ticker-wrap">
+          <div className="ticker-track">
+            {[...tickerItems, ...tickerItems].map((item, i) => (
+              <span key={i} className="inline-flex items-center gap-4 mx-6">
+                <span className="font-poppins font-semibold text-sm text-white/80 uppercase tracking-widest whitespace-nowrap">
+                  {item}
+                </span>
                 <span className="text-green text-lg">✦</span>
-              )}
-            </span>
-          ))}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
+
+      {/* ── Trusted by these restaurants (carousel) ── */}
+      <section className="pt-16 md:pt-24 pb-8 md:pb-12 overflow-hidden">
+        <div className="max-w-site mx-auto px-5 md:px-12 mb-8">
+          <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3 text-center">
+            Our Clients
+          </p>
+          <h2 className="font-sora font-extrabold text-3xl md:text-4xl text-dark tracking-tight text-center">
+            Trusted by these restaurants
+          </h2>
+        </div>
+        <div className="carousel-wrap py-2">
+          <div className="carousel-track">
+            {[...carouselClients, ...carouselClients].map((client, i) => (
+              <Link
+                key={i}
+                href={`/work/${client.slug}`}
+                className="shrink-0 w-[200px] bg-white rounded-[16px] overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.06)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-200 block"
+              >
+                <div className="relative w-full aspect-[4/3] bg-[#EDEDED] overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={client.cover}
+                    alt={client.name}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="px-3 py-3">
+                  <p className="font-sora font-bold text-[13px] text-dark truncate">{client.name}</p>
+                  <p className="font-poppins text-[11px] text-muted">{client.location}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className="text-center mt-8">
+          <Link
+            href="/work"
+            className="inline-block font-poppins text-sm font-semibold text-dark border border-black/10 px-6 py-2.5 rounded-pill hover:border-black/20 transition-all"
+          >
+            See All Client Work →
+          </Link>
+        </div>
+      </section>
 
       {/* ── Stats ── */}
       <section className="max-w-site mx-auto px-5 md:px-12 py-16 md:py-24">
@@ -217,41 +264,6 @@ export default function Home() {
               </Link>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* ── Client logos / proof ── */}
-      <section className="max-w-site mx-auto px-5 md:px-12 pb-16 md:pb-24">
-        <div className="bg-white rounded-card p-8 md:p-12">
-          <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-4 text-center">
-            Our Clients
-          </p>
-          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight text-center mb-10">
-            18 restaurants trust us to grow their business
-          </h2>
-          <div className="flex flex-wrap justify-center gap-3">
-            {[
-              'Okasan', 'Bacio', 'Semolina', 'Pitmaster', 'Sudo Social',
-              'Kynd Kulture', 'Kaneumi', 'Jumama', 'YUN', 'RaLuek',
-              'Toh D', 'Vstreet', 'Jagumsong', 'APG x Sinnic',
-              'Ballistic Pizza', 'Lamaya BKK', 'Royal Pizza', 'Khao Yai - Lamaya',
-            ].map((name) => (
-              <span
-                key={name}
-                className="font-poppins text-sm font-medium text-body bg-[#EDEDED] px-4 py-2 rounded-pill"
-              >
-                {name}
-              </span>
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <Link
-              href="/work"
-              className="inline-block bg-dark text-white font-poppins font-semibold text-sm px-8 py-3.5 rounded-pill hover:bg-dark/90 transition-all active:scale-[0.98]"
-            >
-              See All Client Work
-            </Link>
-          </div>
         </div>
       </section>
 
