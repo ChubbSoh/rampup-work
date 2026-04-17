@@ -1,0 +1,23 @@
+# n8n / workflow files
+rampup-workflow*.json
+wf-*.json
+patch-workflow.js
+
+# local/system
+.DS_Store
+*.log
+*.tmp
+
+# node
+node_modules/
+
+# env
+.env
+.env.local
+
+# claude
+.claude/
+
+# next.js build artifacts
+rampup-site/.next/
+rampup-site/tsconfig.tsbuildinfo

@@ -19,9 +19,13 @@ export default function Nav() {
     <nav className="sticky top-0 z-50 bg-[#EDEDED] border-b border-black/[0.08] h-16">
       <div className="max-w-site mx-auto px-5 md:px-12 h-full flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="font-sora font-extrabold text-xl tracking-tight">
-          <span className="text-dark">RAMP</span>
-          <span className="text-green">UP</span>
+        <Link href="/" className="flex items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo-rampup-accent.svg"
+            alt="RampUp"
+            className="h-8 md:h-10 w-auto object-contain"
+          />
         </Link>
 
         {/* Desktop links */}
