@@ -131,7 +131,7 @@ export default async function GrabSalesPage() {
 
             {/* Desktop grid / Mobile horizontal scroll */}
             <div
-              className="flex gap-5 md:grid md:grid-cols-3 md:gap-5"
+              className="flex gap-5 md:grid md:grid-cols-2 md:gap-5"
               style={{
                 overflowX: 'auto',
                 WebkitOverflowScrolling: 'touch',
@@ -144,6 +144,7 @@ export default async function GrabSalesPage() {
                 { before: '฿120K', after: '฿380K', growth: '+216%', monthly: '+฿87K / month' },
                 { before: '฿95K',  after: '฿210K', growth: '+121%', monthly: '+฿38K / month' },
                 { before: '฿150K', after: '฿420K', growth: '+180%', monthly: '+฿90K / month' },
+                { before: '฿80K',  after: '฿230K', growth: '+188%', monthly: '+฿50K / month' },
               ].map((card) => (
                 <div
                   key={card.before}
