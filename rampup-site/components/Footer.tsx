@@ -7,10 +7,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           {/* Logo */}
           <div>
-            <div className="font-sora font-extrabold text-xl mb-2">
-              <span className="text-white">RAMP</span>
-              <span className="text-green">UP</span>
-            </div>
+            <img src="/logo-rampup-accent.svg" alt="RampUp" className="h-8 w-auto object-contain mb-3" />
             <p className="font-poppins text-sm text-white/50 max-w-[260px]">
               Thailand&apos;s restaurant growth agency. Grab Sales + Social Media.
             </p>
