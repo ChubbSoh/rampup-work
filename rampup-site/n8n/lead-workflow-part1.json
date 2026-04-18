@@ -1,0 +1,108 @@
+{
+  "name": "RampUp Lead – Part 1 (Receive + Normalize + Validate)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "rampup-lead",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "node-webhook",
+      "name": "Receive Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const raw = $input.first().json;\n\n// Normalize: trim strings, fallback to empty string\nfunction clean(val) {\n  return (val ?? '').toString().trim();\n}\n\n// submitted_at: use provided value or generate now\nconst submittedAt = clean(raw.submitted_at) || new Date().toISOString();\n\nconst normalized = {\n  name:         clean(raw.name),\n  email:        clean(raw.email).toLowerCase(),\n  phone:        clean(raw.phone),\n  restaurant:   clean(raw.restaurant),\n  service:      clean(raw.service),\n  message:      clean(raw.message),\n  page_path:    clean(raw.page_path),\n  page_url:     clean(raw.page_url),\n  page_type:    clean(raw.page_type) || 'other',\n  form_name:    clean(raw.form_name) || 'lead',\n  submitted_at: submittedAt,\n  source:       clean(raw.source) || 'website',\n  site:         clean(raw.site) || 'rampupth',\n};\n\nreturn [{ json: normalized }];"
+      },
+      "id": "node-normalize",
+      "name": "Normalize Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-name",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty" }
+            },
+            {
+              "id": "check-email",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty" }
+            },
+            {
+              "id": "check-phone",
+              "leftValue": "={{ $json.phone }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "node-validate",
+      "name": "Validate Required Fields",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: true, message: 'Lead received', name: $json.name, submitted_at: $json.submitted_at }) }}",
+        "options": { "responseCode": 200 }
+      },
+      "id": "node-respond-ok",
+      "name": "Respond 200 OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false, error: 'Missing required fields', required: ['name', 'email', 'phone'], received: { name: $json.name, email: $json.email, phone: $json.phone } }) }}",
+        "options": { "responseCode": 422 }
+      },
+      "id": "node-respond-fail",
+      "name": "Respond 422 Invalid",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 420]
+    }
+  ],
+  "connections": {
+    "Receive Lead": {
+      "main": [[{ "node": "Normalize Fields", "type": "main", "index": 0 }]]
+    },
+    "Normalize Fields": {
+      "main": [[{ "node": "Validate Required Fields", "type": "main", "index": 0 }]]
+    },
+    "Validate Required Fields": {
+      "main": [
+        [{ "node": "Respond 200 OK",      "type": "main", "index": 0 }],
+        [{ "node": "Respond 422 Invalid", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
