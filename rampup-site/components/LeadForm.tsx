@@ -27,6 +27,15 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
       // Fire n8n webhook after successful Netlify submit — non-blocking
       const webhookUrl = process.env.NEXT_PUBLIC_N8N_LEAD_WEBHOOK_URL
       if (webhookUrl) {
+        const path = window.location.pathname.replace(/\/$/, '')
+        const pageTypeMap: Record<string, string> = {
+          '':              'homepage',
+          '/social-media': 'social-media',
+          '/grab-sales':   'grab-sales',
+          '/contact':      'contact',
+        }
+        const page_type = pageTypeMap[path] ?? 'other'
+
         const payload = {
           name:         data.get('name')        ?? '',
           restaurant:   data.get('restaurant')  ?? '',
@@ -35,6 +44,8 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
           service:      data.get('service')      ?? '',
           message:      data.get('message')      ?? '',
           page_path:    window.location.pathname,
+          page_url:     window.location.href,
+          page_type,
           form_name:    'lead',
           submitted_at: new Date().toISOString(),
           source:       'website',
