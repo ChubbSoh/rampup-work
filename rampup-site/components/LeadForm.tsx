@@ -125,10 +125,13 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label className="font-poppins text-xs font-semibold text-body">Email</label>
+        <label className="font-poppins text-xs font-semibold text-body">
+          Email <span className="text-green">*</span>
+        </label>
         <input
           name="email"
           type="email"
+          required
           placeholder="you@restaurant.com"
           className="font-poppins text-sm bg-[#EDEDED] border border-black/[0.08] rounded-xl px-4 py-3 placeholder-faint focus:outline-none focus:border-green/40 focus:bg-white transition-all"
         />
