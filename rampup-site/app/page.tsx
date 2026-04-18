@@ -271,20 +271,7 @@ export default function Home() {
         </div>
       </section>
 
-      <PricingCard />
-
-      {/* ── 6. BOTTOM FORM (Apply Today) — FORM 2 ── */}
-      <section className="max-w-site mx-auto px-5 md:px-12 pb-24">
-        <div className="bg-white rounded-card shadow-[0_4px_24px_rgba(0,0,0,0.07)] p-6 md:p-12 max-w-xl mx-auto">
-          <h2 className="font-sora font-bold text-2xl md:text-3xl text-dark mb-2">
-            Apply Today
-          </h2>
-          <p className="font-poppins text-sm text-muted mb-8">
-            We&apos;ll review your Grab store and social pages — no commitment.
-          </p>
-          <LeadForm />
-        </div>
-      </section>
+      <PricingCard hideCta />
 
       <Footer />
     </main>

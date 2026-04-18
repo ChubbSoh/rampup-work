@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import LeadForm from '@/components/LeadForm'
 
-export default function PricingCard({ contextNote }: { contextNote?: string }) {
+export default function PricingCard({ contextNote, hideCta }: { contextNote?: string; hideCta?: boolean }) {
   return (
     <section className="max-w-site mx-auto px-5 md:px-12 pb-20">
       <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3">
@@ -15,7 +15,7 @@ export default function PricingCard({ contextNote }: { contextNote?: string }) {
         <p className="font-poppins text-xs text-muted/60 mb-5">{contextNote}</p>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
         {/* Pricing card */}
         <div className="bg-white rounded-[20px] shadow-[0_2px_16px_rgba(0,0,0,0.06)] p-7 md:p-10">
           <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-2">
@@ -70,12 +70,14 @@ export default function PricingCard({ contextNote }: { contextNote?: string }) {
             </div>
           </div>
 
-          <Link
-            href="/contact"
-            className="block w-full text-center bg-green text-white font-poppins font-semibold text-sm px-6 py-3.5 rounded-pill hover:brightness-105 transition-all active:scale-[0.98]"
-          >
-            Apply Now →
-          </Link>
+          {!hideCta && (
+            <Link
+              href="/contact"
+              className="block w-full text-center bg-green text-white font-poppins font-semibold text-sm px-6 py-3.5 rounded-pill hover:brightness-105 transition-all active:scale-[0.98]"
+            >
+              Apply Now →
+            </Link>
+          )}
         </div>
 
         {/* Form */}
