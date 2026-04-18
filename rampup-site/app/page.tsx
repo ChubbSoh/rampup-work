@@ -271,7 +271,7 @@ export default function Home() {
         </div>
       </section>
 
-      <PricingCard hideCta />
+      <PricingCard hideCta stacked />
 
       <Footer />
     </main>

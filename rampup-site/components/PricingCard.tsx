@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import LeadForm from '@/components/LeadForm'
 
-export default function PricingCard({ contextNote, hideCta }: { contextNote?: string; hideCta?: boolean }) {
+export default function PricingCard({ contextNote, hideCta, stacked }: { contextNote?: string; hideCta?: boolean; stacked?: boolean }) {
   return (
     <section className="max-w-site mx-auto px-5 md:px-12 pb-20">
       <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3">
@@ -15,7 +15,7 @@ export default function PricingCard({ contextNote, hideCta }: { contextNote?: st
         <p className="font-poppins text-xs text-muted/60 mb-5">{contextNote}</p>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+      <div className={stacked ? 'flex flex-col gap-6 max-w-2xl' : 'grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch'}>
         {/* Pricing card */}
         <div className="bg-white rounded-[20px] shadow-[0_2px_16px_rgba(0,0,0,0.06)] p-7 md:p-10">
           <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-2">
