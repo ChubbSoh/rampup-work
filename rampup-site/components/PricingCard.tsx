@@ -21,10 +21,9 @@ export default function PricingCard({ contextNote, hideCta, stacked }: { context
           <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-2">
             Social Media Growth
           </p>
-          <p className="font-sora font-extrabold text-4xl md:text-5xl text-dark mb-1">
-            ฿49,990
+          <p className="font-sora font-extrabold text-4xl md:text-5xl text-dark mb-2">
+            ฿49,990 <span className="font-poppins font-normal text-lg text-muted">/ month</span>
           </p>
-          <p className="font-poppins text-sm text-muted mb-2">/ month</p>
           <p className="font-poppins text-[11px] text-muted/50 mb-7">Ad spend is not included.</p>
 
           <p className="font-poppins text-xs font-semibold text-dark/50 uppercase tracking-[1.5px] mb-4">Included</p>
