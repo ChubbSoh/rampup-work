@@ -23,6 +23,30 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data as unknown as Record<string, string>).toString(),
       })
+
+      // Fire n8n webhook after successful Netlify submit — non-blocking
+      const webhookUrl = process.env.NEXT_PUBLIC_N8N_LEAD_WEBHOOK_URL
+      if (webhookUrl) {
+        const payload = {
+          name:         data.get('name')        ?? '',
+          restaurant:   data.get('restaurant')  ?? '',
+          email:        data.get('email')        ?? '',
+          phone:        data.get('phone')        ?? '',
+          service:      data.get('service')      ?? '',
+          message:      data.get('message')      ?? '',
+          page_path:    window.location.pathname,
+          form_name:    'lead',
+          submitted_at: new Date().toISOString(),
+          source:       'website',
+          site:         'rampupth',
+        }
+        fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }).catch(() => {/* webhook failure — silent, does not affect user */})
+      }
+
       setSubmitted(true)
     } catch {
       // fail silently — still show success to not block user
