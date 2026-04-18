@@ -1,7 +1,19 @@
 import Link from 'next/link'
 import LeadForm from '@/components/LeadForm'
 
-export default function PricingCard({ contextNote, hideCta, stacked }: { contextNote?: string; hideCta?: boolean; stacked?: boolean }) {
+export default function PricingCard({
+  contextNote,
+  hideCta,
+  stacked,
+  formHeading,
+  formSubtext,
+}: {
+  contextNote?: string
+  hideCta?: boolean
+  stacked?: boolean
+  formHeading?: string
+  formSubtext?: string
+}) {
   return (
     <section className="max-w-site mx-auto px-5 md:px-12 pb-20">
       <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3">
@@ -81,8 +93,8 @@ export default function PricingCard({ contextNote, hideCta, stacked }: { context
 
         {/* Form */}
         <div className="bg-white rounded-[20px] shadow-[0_2px_16px_rgba(0,0,0,0.06)] p-7 md:p-10">
-          <h3 className="font-sora font-bold text-lg text-dark mb-1">Apply Today</h3>
-          <p className="font-poppins text-sm text-muted mb-6">No commitment. We&apos;ll be in touch within 24 hours.</p>
+          <h3 className="font-sora font-bold text-lg text-dark mb-1">{formHeading ?? 'Apply Today'}</h3>
+          <p className="font-poppins text-sm text-muted mb-6">{formSubtext ?? "No commitment. We'll be in touch within 24 hours."}</p>
           <LeadForm compact />
         </div>
       </div>
