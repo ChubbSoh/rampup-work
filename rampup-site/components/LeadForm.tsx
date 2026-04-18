@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 const services = [
   { value: 'social', label: 'Social Media Management' },
@@ -10,6 +10,7 @@ const services = [
 export default function LeadForm({ compact = false }: { compact?: boolean }) {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const webhookSent = useRef(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -26,7 +27,8 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
 
       // Fire n8n webhook after successful Netlify submit — non-blocking
       const webhookUrl = process.env.NEXT_PUBLIC_N8N_LEAD_WEBHOOK_URL
-      if (webhookUrl) {
+      if (webhookUrl && !webhookSent.current) {
+        webhookSent.current = true
         const path = window.location.pathname.replace(/\/$/, '')
         const pageTypeMap: Record<string, string> = {
           '':              'homepage',
