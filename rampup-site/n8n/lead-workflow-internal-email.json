@@ -1,0 +1,35 @@
+{
+  "name": "RampUp Lead – Internal Email (Notify Owner)",
+  "nodes": [
+    {
+      "parameters": {
+        "fromEmail": "hello@rampupth.com",
+        "toEmail": "chubb.soh@gmail.com",
+        "subject": "=🔥 New Lead — {{ $json.service }} — {{ $json.page_type }}",
+        "emailFormat": "text",
+        "text": "=New lead received via RampUp website.\n\n---\n\nName:        {{ $json.name }}\nRestaurant:  {{ $json.restaurant }}\nPhone:       {{ $json.phone }}\nEmail:       {{ $json.email }}\nService:     {{ $json.service }}\nMessage:     {{ $json.message || '(none)' }}\n\n---\n\nPage:        {{ $json.page_type }}\nURL:         {{ $json.page_url }}\nSubmitted:   {{ $json.submitted_at }}\nSource:      {{ $json.source }}\n\n---\n\nReply directly to this email to contact the lead.",
+        "options": {
+          "replyTo": "={{ $json.email || 'hello@rampupth.com' }}"
+        }
+      },
+      "id": "node-notify-owner",
+      "name": "Notify Owner",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [1120, 200],
+      "onError": "continueRegularOutput",
+      "notes": "Sends immediately after validation passes. onError: continueRegularOutput — email failure does not block confirmation email or Sheets logging. Reply-To set to lead's email so you can reply directly."
+    }
+  ],
+  "connections": {
+    "Respond 200 OK": {
+      "main": [[{ "node": "Notify Owner", "type": "main", "index": 0 }]]
+    },
+    "Notify Owner": {
+      "main": [[{ "node": "Has Email?", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
