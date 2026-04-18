@@ -53,10 +53,12 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
       name="lead"
       method="POST"
       data-netlify="true"
+      data-netlify-honeypot="bot-field"
       onSubmit={handleSubmit}
       className="flex flex-col gap-4"
     >
       <input type="hidden" name="form-name" value="lead" />
+      <div hidden><input name="bot-field" /></div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
