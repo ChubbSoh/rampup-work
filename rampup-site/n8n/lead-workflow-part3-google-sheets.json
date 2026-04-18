@@ -1,0 +1,76 @@
+{
+  "name": "RampUp Lead – Part 3 (Google Sheets Logging)",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "mode": "id",
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE"
+        },
+        "sheetName": {
+          "mode": "name",
+          "__rl": true,
+          "value": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "submitted_at": "={{ $json.submitted_at }}",
+            "name":         "={{ $json.name }}",
+            "restaurant":   "={{ $json.restaurant }}",
+            "email":        "={{ $json.email }}",
+            "phone":        "={{ $json.phone }}",
+            "service":      "={{ $json.service }}",
+            "message":      "={{ $json.message }}",
+            "page_type":    "={{ $json.page_type }}",
+            "page_path":    "={{ $json.page_path }}",
+            "page_url":     "={{ $json.page_url }}",
+            "form_name":    "={{ $json.form_name }}",
+            "source":       "={{ $json.source }}",
+            "site":         "={{ $json.site }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "submitted_at", "displayName": "submitted_at", "required": false, "defaultMatch": false, "canBeUsedToMatch": false },
+            { "id": "name",         "displayName": "name",         "required": false, "defaultMatch": false, "canBeUsedToMatch": false },
+            { "id": "restaurant",   "displayName": "restaurant",   "required": false, "defaultMatch": false, "canBeUsedToMatch": false },
+            { "id": "email",        "displayName": "email",        "required": false, "defaultMatch": false, "canBeUsedToMatch": false },
+            { "id": "phone",        "displayName": "phone",        "required": false, "defaultMatch": false, "canBeUsedToMatch": false },
+            { "id": "service",      "displayName": "service",      "required": false, "defaultMatch": false, "canBeUsedToMatch": false },
+            { "id": "message",      "displayName": "message",      "required": false, "defaultMatch": false, "canBeUsedToMatch": false },
+            { "id": "page_type",    "displayName": "page_type",    "required": false, "defaultMatch": false, "canBeUsedToMatch": false },
+            { "id": "page_path",    "displayName": "page_path",    "required": false, "defaultMatch": false, "canBeUsedToMatch": false },
+            { "id": "page_url",     "displayName": "page_url",     "required": false, "defaultMatch": false, "canBeUsedToMatch": false },
+            { "id": "form_name",    "displayName": "form_name",    "required": false, "defaultMatch": false, "canBeUsedToMatch": false },
+            { "id": "source",       "displayName": "source",       "required": false, "defaultMatch": false, "canBeUsedToMatch": false },
+            { "id": "site",         "displayName": "site",         "required": false, "defaultMatch": false, "canBeUsedToMatch": false }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-append-sheets",
+      "name": "Append Lead to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1780, 200],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "notes": "onError: continueRegularOutput — Sheets failure is silent. Lead already captured in Netlify Forms + confirmation email already sent."
+    }
+  ],
+  "connections": {
+    "Continue to Sheets": {
+      "main": [[{ "node": "Append Lead to Sheet", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
