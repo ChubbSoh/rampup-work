@@ -18,7 +18,7 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
     const form = e.currentTarget
     const data = new FormData(form)
     try {
-      await fetch('/', {
+      await fetch(window.location.pathname, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data as unknown as Record<string, string>).toString(),
