@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "n8n": {
+      "type": "http",
+      "url": "https://rampupth.app.n8n.cloud/mcp-server/http",
+      "headers": {
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MGFkOTNjOC1mODkwLTQ1ZjItYTZkZC01ZmU3YjFlOTVmZjYiLCJpc3MiOiJuOG4iLCJhdWQiOiJtY3Atc2VydmVyLWFwaSIsImp0aSI6ImJiOTQ1NzMwLTI1MjQtNGM4NS1hZTQzLTM0MzMwYTRmMjVlOCIsImlhdCI6MTc3NjU3OTI1NX0.xM6aWGnt_vk-7Txwq9XTu_ZHikSezcPo1CLQOqvMft0"
+      }
+    }
+  }
+}
