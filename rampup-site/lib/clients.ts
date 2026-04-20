@@ -4,7 +4,7 @@ import type { Client } from './types'
 // Strip server-only fields before any client data reaches the browser.
 // drive_folder and website_folder_id are only needed by server-side functions (netlify/functions/publish.js).
 function sanitize({ drive_folder: _, website_folder_id: __, ...rest }: Record<string, unknown>): Client {
-  return rest as Client
+  return rest as unknown as Client
 }
 
 export function getAllClients(): Client[] {
