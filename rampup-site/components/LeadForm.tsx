@@ -37,6 +37,7 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
           '/contact':      'contact',
         }
         const page_type = pageTypeMap[path] ?? 'other'
+        const event_id = `lead_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`
 
         const payload = {
           name:         data.get('name')        ?? '',
@@ -52,7 +53,17 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
           submitted_at: new Date().toISOString(),
           source:       'website',
           site:         'rampupth',
+          event_id,
         }
+
+        // Push to GTM dataLayer for browser-side Pixel deduplication
+        if (typeof window !== 'undefined' && (window as any).dataLayer) {
+          ;(window as any).dataLayer.push({
+            event:    'lead_form_submit',
+            event_id,
+          })
+        }
+
         fetch(webhookUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
