@@ -26,3 +26,21 @@ export function appendClient(record: ClientRecord): void {
   data.clients.push(record)
   writeClientsFile(data)
 }
+
+export function updateClientBySlug(slug: string, fields: Partial<ClientRecord>): boolean {
+  const data = readClientsFile()
+  const idx = data.clients.findIndex(c => c.slug === slug)
+  if (idx === -1) return false
+  data.clients[idx] = { ...data.clients[idx], ...fields }
+  writeClientsFile(data)
+  return true
+}
+
+export function removeClientBySlug(slug: string): boolean {
+  const data = readClientsFile()
+  const before = data.clients.length
+  data.clients = data.clients.filter(c => c.slug !== slug)
+  if (data.clients.length === before) return false
+  writeClientsFile(data)
+  return true
+}
