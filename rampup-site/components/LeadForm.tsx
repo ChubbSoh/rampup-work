@@ -25,9 +25,8 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
         body: new URLSearchParams(data as unknown as Record<string, string>).toString(),
       })
 
-      // Fire n8n webhook after successful Netlify submit — non-blocking
-      const webhookUrl = process.env.NEXT_PUBLIC_N8N_LEAD_WEBHOOK_URL
-      if (webhookUrl && !webhookSent.current) {
+      // Fire internal relay after successful Netlify submit — non-blocking
+      if (!webhookSent.current) {
         webhookSent.current = true
         const path = window.location.pathname.replace(/\/$/, '')
         const pageTypeMap: Record<string, string> = {
@@ -64,11 +63,11 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
           })
         }
 
-        fetch(webhookUrl, {
+        fetch('/api/lead-relay', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
-        }).catch(() => {/* webhook failure — silent, does not affect user */})
+        }).catch(() => {/* relay failure — silent, Netlify is source of truth */})
       }
 
       setSubmitted(true)
