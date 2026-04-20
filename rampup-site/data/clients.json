@@ -474,6 +474,23 @@
       "cover": "",
       "page": "",
       "drive_folder": ""
+    },
+    {
+      "name": "GitHub Commit Test 3",
+      "slug": "gh-test-0994",
+      "cuisine": "japanese",
+      "location": "Bangkok",
+      "description": "Testing GitHub commit flow",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-04-20",
+      "cover": "",
+      "page": "gh-test-0994.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AD4a037-CoK7Uk9PVA",
+      "website_folder_id": "1-rYum_y8Zh11lnFmpXhA_QhTjydyUDBr",
+      "brand_assets_folder_id": "1Wt4XQ_4iKWQzTEUUZoiSwoVfElFnGzcf"
     }
   ]
 }
