@@ -1,7 +1,10 @@
 [build]
   base = "rampup-site"
   command = "npm run build"
-  publish = "out"
+  publish = ".next"
 
 [functions]
   directory = "netlify/functions"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
