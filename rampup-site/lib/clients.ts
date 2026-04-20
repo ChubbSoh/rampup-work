@@ -7,8 +7,17 @@ function sanitize({ drive_folder: _, website_folder_id: __, ...rest }: Record<st
   return rest as unknown as Client
 }
 
+function hasMedia(c: Record<string, unknown>): boolean {
+  const photos = c.photos
+  const videos = c.videos
+  return (Array.isArray(photos) && photos.length > 0) ||
+         (Array.isArray(videos) && videos.length > 0)
+}
+
 export function getAllClients(): Client[] {
-  return (clientsData.clients as Record<string, unknown>[]).map(sanitize)
+  return (clientsData.clients as Record<string, unknown>[])
+    .filter(hasMedia)
+    .map(sanitize)
 }
 
 export function getClientBySlug(slug: string): Client | undefined {
