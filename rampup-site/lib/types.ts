@@ -7,11 +7,9 @@ export interface Client {
   months: number | string
   cover: string
   page: string
-  drive_folder: string
   last_updated?: string
   videos?: string[]
   photos?: string[]
-  website_folder_id?: string
 }
 
 export type CuisineFilter =
