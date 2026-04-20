@@ -4,7 +4,7 @@ import { useState, useRef } from 'react'
 import Link from 'next/link'
 import type { Client } from '@/lib/types'
 
-const CLOUDFLARE_CUSTOMER_ID = 'h038b69ef3omo1hq'
+type ClientWithSrcs = Client & { videoSrcs?: string[] }
 
 const filters = [
   { value: 'all', label: 'All' },
@@ -40,11 +40,11 @@ function CuisineTag({ cuisine }: { cuisine: string }) {
   )
 }
 
-function VideoEmbed({ videoId }: { videoId: string }) {
+function VideoEmbed({ src }: { src: string }) {
   return (
     <div className="relative w-full overflow-hidden rounded-[14px] bg-[#2D2D2D]" style={{ aspectRatio: '9/16' }}>
       <iframe
-        src={`https://customer-${CLOUDFLARE_CUSTOMER_ID}.cloudflarestream.com/${videoId}/iframe?primaryColor=3DBE5A&muted=true&autoplay=true&loop=true`}
+        src={src}
         loading="lazy"
         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
         allowFullScreen
@@ -68,11 +68,12 @@ function getSortKey(client: Client): string {
   return client.last_updated ?? '0000-00-00'
 }
 
-function ClientCard({ client }: { client: Client }) {
-  const hasVideos = client.videos && client.videos.length > 0
+function ClientCard({ client }: { client: ClientWithSrcs }) {
+  const videoSrcs = client.videoSrcs ?? []
+  const hasVideos = videoSrcs.length > 0
   const hasPhotos = client.photos && client.photos.length > 0
   const initial = client.name.charAt(0)
-  const videoSlots = hasVideos ? client.videos!.slice(0, 2) : []
+  const videoSlots = videoSrcs.slice(0, 2)
   const photoSlots = hasPhotos ? client.photos!.slice(0, 3) : []
 
   return (
@@ -93,8 +94,8 @@ function ClientCard({ client }: { client: Client }) {
         <div className="w-full">
           {hasVideos ? (
             <div className="grid grid-cols-2 gap-2">
-              {videoSlots.map((id) => (
-                <VideoEmbed key={id} videoId={id} />
+              {videoSlots.map((src) => (
+                <VideoEmbed key={src} src={src} />
               ))}
               {videoSlots.length === 1 && (
                 <div className="relative w-full rounded-[14px] bg-[#EDEDED] flex items-center justify-center" style={{ aspectRatio: '9/16' }}>
@@ -157,7 +158,7 @@ function ClientCard({ client }: { client: Client }) {
 }
 
 
-export default function WorkFeed({ clients }: { clients: Client[] }) {
+export default function WorkFeed({ clients }: { clients: ClientWithSrcs[] }) {
   const [active, setActive] = useState('all')
   const feedRef = useRef<HTMLDivElement>(null)
 

@@ -2,6 +2,7 @@ import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import WorkFeed from '@/components/WorkFeed'
 import { getAllClients } from '@/lib/clients'
+import { streamIframeSrc } from '@/lib/stream'
 
 export const metadata = {
   title: 'Our Work | Restaurant Content Creation Bangkok | RampUp',
@@ -12,7 +13,12 @@ export const metadata = {
 }
 
 export default function WorkPage() {
-  const clients = getAllClients()
+  const clients = getAllClients().map(c => ({
+    ...c,
+    videoSrcs: (c.videos ?? [])
+      .map(id => streamIframeSrc(id, { muted: true, autoplay: true, loop: true }))
+      .filter((src): src is string => src !== null),
+  }))
 
   return (
     <>

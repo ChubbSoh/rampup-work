@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import { getAllClients, getClientBySlug, getAllSlugs } from '@/lib/clients'
+import { streamIframeSrc } from '@/lib/stream'
 import type { Metadata } from 'next'
 
 interface Props {
@@ -22,8 +23,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-const CLOUDFLARE_CUSTOMER_ID = 'customer-h038b69ef3omo1hq'
-
 const MONTH_NAMES = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
@@ -40,7 +39,7 @@ function formatLastUpdated(dateStr?: string): string | null {
   return `Updated ${year}`
 }
 
-function VideoEmbed({ videoId, label }: { videoId: string; label: string }) {
+function VideoEmbed({ src, label }: { src: string; label: string }) {
   return (
     <div className="flex flex-col gap-2">
       <div
@@ -48,7 +47,7 @@ function VideoEmbed({ videoId, label }: { videoId: string; label: string }) {
         style={{ aspectRatio: '9/16' }}
       >
         <iframe
-          src={`https://customer-h038b69ef3omo1hq.cloudflarestream.com/${videoId}/iframe?primaryColor=3DBE5A`}
+          src={src}
           loading="lazy"
           allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
           allowFullScreen
@@ -112,9 +111,11 @@ export default function ClientPage({ params }: Props) {
               Videos
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {client.videos!.map((videoId, i) => (
-                <VideoEmbed key={videoId} videoId={videoId} label={`Reel ${i + 1}`} />
-              ))}
+              {client.videos!.map((videoId, i) => {
+                const src = streamIframeSrc(videoId)
+                if (!src) return null
+                return <VideoEmbed key={videoId} src={src} label={`Reel ${i + 1}`} />
+              })}
             </div>
           </section>
         )}
