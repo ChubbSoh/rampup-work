@@ -66,7 +66,10 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
         fetch('/api/lead-relay', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({
+            ...payload,
+            turnstile_token: data.get('cf-turnstile-response') ?? '',
+          }),
         }).catch(() => {/* relay failure — silent, Netlify is source of truth */})
       }
 
@@ -200,6 +203,14 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
           ))}
         </div>
       </div>
+
+      {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+        <div
+          className="cf-turnstile"
+          data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+          data-theme="light"
+        />
+      )}
 
       <button
         type="submit"
