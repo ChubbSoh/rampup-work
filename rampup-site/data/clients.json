@@ -491,6 +491,23 @@
       "drive_folder_id": "0AD4a037-CoK7Uk9PVA",
       "website_folder_id": "1-rYum_y8Zh11lnFmpXhA_QhTjydyUDBr",
       "brand_assets_folder_id": "1Wt4XQ_4iKWQzTEUUZoiSwoVfElFnGzcf"
+    },
+    {
+      "name": "Opera",
+      "slug": "opera",
+      "cuisine": "italian",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-04-20",
+      "cover": "",
+      "page": "opera.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0ANp42jlHlhd8Uk9PVA",
+      "website_folder_id": "1AbE3oTvLkFuM1KbXx7hyN-UqIOJBQjnb",
+      "brand_assets_folder_id": "1W7WjXte9sAoS5YjvAqDoBgs_qr7b6mv6"
     }
   ]
 }
