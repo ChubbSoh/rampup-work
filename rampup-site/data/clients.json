@@ -508,6 +508,23 @@
       "drive_folder_id": "0ANp42jlHlhd8Uk9PVA",
       "website_folder_id": "1AbE3oTvLkFuM1KbXx7hyN-UqIOJBQjnb",
       "brand_assets_folder_id": "1W7WjXte9sAoS5YjvAqDoBgs_qr7b6mv6"
+    },
+    {
+      "name": "Tanaka",
+      "slug": "tanaka",
+      "cuisine": "japanese",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-04-20",
+      "cover": "",
+      "page": "tanaka.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AFEO4BCwuvylUk9PVA",
+      "website_folder_id": "1SMBc8sU_jUOS_22lmqCLKv0vixZ3GnRu",
+      "brand_assets_folder_id": "1XtEUY1lwI5r53cR9J_H8r2bgo4XcpeX1"
     }
   ]
 }
