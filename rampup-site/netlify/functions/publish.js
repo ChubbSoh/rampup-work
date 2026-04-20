@@ -25,9 +25,18 @@ exports.handler = async (event) => {
     console.log('Publish requested for slug:', client_slug)
     console.log('Resolved websiteFolderId:', client.website_folder_id)
 
-    await fetch('https://rampupth.app.n8n.cloud/webhook/publish', {
+    const webhookUrl = process.env.N8N_PUBLISH_WEBHOOK_URL
+    const token = process.env.N8N_INTERNAL_WEBHOOK_TOKEN
+    if (!webhookUrl || !token) {
+      return { statusCode: 500, body: JSON.stringify({ error: 'Server misconfiguration' }) }
+    }
+
+    await fetch(webhookUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Internal-Token': token,
+      },
       body: JSON.stringify({ websiteFolderId: client.website_folder_id })
     })
 

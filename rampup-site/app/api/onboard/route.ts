@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const N8N_ONBOARD_URL = 'https://rampupth.app.n8n.cloud/webhook/onboard'
-
 export async function POST(req: NextRequest) {
+  const webhookUrl = process.env.N8N_ONBOARD_WEBHOOK_URL
+  const token = process.env.N8N_INTERNAL_WEBHOOK_TOKEN
+  if (!webhookUrl || !token) {
+    return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 })
+  }
+
   try {
     const body = await req.json()
 
@@ -11,9 +15,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const upstream = await fetch(N8N_ONBOARD_URL, {
+    const upstream = await fetch(webhookUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Internal-Token': token,
+      },
       body: JSON.stringify({ client_name, slug, cuisine, location, drive_folder }),
     })
 
