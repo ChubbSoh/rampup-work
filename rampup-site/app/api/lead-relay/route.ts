@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+export async function GET() {
+  return new NextResponse(null, { status: 405 })
+}
+
 export async function POST(req: NextRequest) {
   const webhookUrl = process.env.N8N_LEAD_WEBHOOK_URL
   const token = process.env.N8N_INTERNAL_WEBHOOK_TOKEN
