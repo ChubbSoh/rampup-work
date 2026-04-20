@@ -64,9 +64,7 @@ function PhotoPlaceholder({ initial, index }: { initial: string; index: number }
   )
 }
 
-function getSortKey(client: Client): string {
-  return client.last_updated ?? '0000-00-00'
-}
+const PRIORITY_SLUGS = ['lamaya-bkk', 'okasan', 'bacio']
 
 function ClientCard({ client }: { client: ClientWithSrcs }) {
   const videoSrcs = client.videoSrcs ?? []
@@ -169,15 +167,17 @@ export default function WorkFeed({ clients }: { clients: ClientWithSrcs[] }) {
     }
   }
 
-  // Sort by last_updated DESC
-  const sorted = [...clients].sort(
-    (a, b) => getSortKey(b).localeCompare(getSortKey(a))
-  )
+  const prioritySet = new Set(PRIORITY_SLUGS)
+  const priority = PRIORITY_SLUGS
+    .map(slug => clients.find(c => c.slug === slug))
+    .filter((c): c is ClientWithSrcs => c !== undefined)
+  const rest = clients.filter(c => !prioritySet.has(c.slug))
+  const ordered = [...priority, ...rest]
 
   const filtered =
     active === 'all'
-      ? sorted
-      : sorted.filter((c) => c.cuisine.toLowerCase() === active)
+      ? ordered
+      : ordered.filter((c) => c.cuisine.toLowerCase() === active)
 
   return (
     <div>

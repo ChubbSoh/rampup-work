@@ -12,23 +12,8 @@ export const metadata = {
     'restaurant content creation Bangkok, F&B marketing agency Bangkok, hospitality marketing agency Bangkok',
 }
 
-const PRIORITY_SLUGS = ['lamaya-bkk', 'okasan', 'bacio']
-
 export default function WorkPage() {
-  const all = getAllClients()
-
-  const priority = PRIORITY_SLUGS
-    .map(slug => all.find(c => c.slug === slug))
-    .filter((c): c is NonNullable<typeof c> => c !== undefined)
-
-  const prioritySet = new Set(PRIORITY_SLUGS)
-  const rest = all.filter(c => !prioritySet.has(c.slug))
-  for (let i = rest.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [rest[i], rest[j]] = [rest[j], rest[i]]
-  }
-
-  const clients = [...priority, ...rest].map(c => ({
+  const clients = getAllClients().map(c => ({
     ...c,
     videoSrcs: (c.videos ?? [])
       .map(id => streamIframeSrc(id, { muted: true, autoplay: true, loop: true }))
