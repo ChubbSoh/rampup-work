@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+// useState is used by OnboardSection, PublishSection; useEffect by OnboardSection
 import clientsData from '@/data/clients.json'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -324,83 +325,30 @@ function StatusSection() {
   )
 }
 
-// ─── Password Gate ────────────────────────────────────────────────────────────
-
-function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
-  const [value, setValue] = useState('')
-  const [error, setError] = useState(false)
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (value === 'rampup2026') {
-      onUnlock()
-    } else {
-      setError(true)
-      setValue('')
-    }
-  }
-
-  return (
-    <div className="min-h-[100dvh] bg-[#EDEDED] flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl shadow-sm px-8 py-10 w-full max-w-sm space-y-6">
-        <div className="space-y-1">
-          <p className="font-poppins text-[11px] font-bold text-[#3DBE5A] uppercase tracking-[2px]">
-            RampUp
-          </p>
-          <h1 className="font-sora font-extrabold text-2xl text-[#2D2D2D] tracking-tight">
-            Control Panel
-          </h1>
-          <p className="font-poppins text-sm text-[#888888]">Agency use only.</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Field label="Password">
-            <input
-              type="password"
-              className={`${inputCls} ${error ? 'border-red-400 focus:border-red-400 focus:ring-red-200' : ''}`}
-              placeholder="••••••••••"
-              value={value}
-              onChange={e => { setValue(e.target.value); setError(false) }}
-              autoFocus
-              required
-            />
-            {error && (
-              <p className="font-poppins text-xs text-red-500 mt-1">Access denied.</p>
-            )}
-          </Field>
-
-          <button
-            type="submit"
-            className="w-full bg-[#3DBE5A] text-white font-poppins font-semibold text-sm px-6 py-3 rounded-full hover:brightness-105 transition-all active:scale-[0.97]"
-          >
-            Unlock
-          </button>
-        </form>
-      </div>
-    </div>
-  )
-}
-
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function ControlPage() {
-  const [unlocked, setUnlocked] = useState(false)
-
-  if (!unlocked) {
-    return <PasswordGate onUnlock={() => setUnlocked(true)} />
-  }
-
   return (
     <div className="min-h-[100dvh] bg-[#EDEDED]">
       {/* Header */}
-      <div className="max-w-2xl mx-auto px-5 pt-10 pb-6">
-        <p className="font-poppins text-[11px] font-bold text-[#3DBE5A] uppercase tracking-[2px] mb-1">
-          RampUp
-        </p>
-        <h1 className="font-sora font-extrabold text-3xl text-[#2D2D2D] tracking-tight">
-          Control Panel
-        </h1>
-        <p className="font-poppins text-sm text-[#888888] mt-1">Agency use only.</p>
+      <div className="max-w-2xl mx-auto px-5 pt-10 pb-6 flex items-start justify-between">
+        <div>
+          <p className="font-poppins text-[11px] font-bold text-[#3DBE5A] uppercase tracking-[2px] mb-1">
+            RampUp
+          </p>
+          <h1 className="font-sora font-extrabold text-3xl text-[#2D2D2D] tracking-tight">
+            Control Panel
+          </h1>
+          <p className="font-poppins text-sm text-[#888888] mt-1">Agency use only.</p>
+        </div>
+        <form method="POST" action="/api/control-logout">
+          <button
+            type="submit"
+            className="font-poppins text-xs text-[#888888] hover:text-[#2D2D2D] transition mt-2"
+          >
+            Sign out
+          </button>
+        </form>
       </div>
 
       {/* Sections */}
