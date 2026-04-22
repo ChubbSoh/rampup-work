@@ -26,12 +26,12 @@ export default function WorkPage() {
       <main className="min-h-[100dvh] bg-[#EDEDED]">
         {/* Header */}
         <div className="px-4 md:px-12 pt-10 pb-6 max-w-site mx-auto">
-          <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-2">
-            Our Work
-          </p>
           <h1 className="font-sora font-extrabold text-3xl md:text-5xl text-dark tracking-tight">
-            Restaurant content creation<br className="hidden md:block" /> across Bangkok.
+            Restaurant owners! We run your social media for you.
           </h1>
+          <p className="font-poppins text-[15px] text-[#555555] mt-3">
+            We shoot, edit, post, and run ads — so you get more customers without doing anything.
+          </p>
         </div>
 
         <WorkFeed clients={clients} />
