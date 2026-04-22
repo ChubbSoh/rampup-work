@@ -74,14 +74,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'CAPTCHA verification failed' }, { status: 403 })
     }
 
-    // Forward to n8n — strip turnstile_token from upstream payload
+    // Collect server-side signals for Meta CAPI match quality
+    const clientIp = ip !== 'unknown' ? ip : undefined
+    const userAgent = req.headers.get('user-agent') ?? undefined
+
+    // Forward to n8n — strip turnstile_token, add server-side signals
     await fetch(webhookUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-Internal-Token': token,
       },
-      body: JSON.stringify({ name, email, phone, ...rest }),
+      body: JSON.stringify({
+        name, email, phone, ...rest,
+        ...(clientIp  ? { client_ip_address: clientIp } : {}),
+        ...(userAgent ? { client_user_agent: userAgent } : {}),
+      }),
     })
 
     return NextResponse.json({ ok: true })

@@ -12,6 +12,11 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
   const [loading, setLoading] = useState(false)
   const webhookSent = useRef(false)
 
+  function getCookie(name: string): string | undefined {
+    const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'))
+    return match ? decodeURIComponent(match[1]) : undefined
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
@@ -38,6 +43,9 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
         const page_type = pageTypeMap[path] ?? 'other'
         const event_id = `lead_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`
 
+        const fbp = getCookie('_fbp')
+        const fbc = getCookie('_fbc')
+
         const payload = {
           name:         data.get('name')        ?? '',
           restaurant:   data.get('restaurant')  ?? '',
@@ -53,6 +61,8 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
           source:       'website',
           site:         'rampupth',
           event_id,
+          ...(fbp ? { fbp } : {}),
+          ...(fbc ? { fbc } : {}),
         }
 
         // Push to GTM dataLayer for browser-side Pixel deduplication
