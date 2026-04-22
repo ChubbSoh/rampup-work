@@ -30,7 +30,6 @@ export default function WorkPage() {
             Restaurant owners!<br />We run your social media for you.
           </h1>
           <p className="font-poppins text-[15px] text-[#555555] mt-3">
-            We shoot, edit, post, and run ads.<br />
             Professional content and ads built to elevate your restaurant online.
           </p>
         </div>
