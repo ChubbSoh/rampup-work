@@ -72,22 +72,40 @@ export default function Nav() {
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile fullscreen menu */}
       <div
-        className={`md:hidden absolute top-16 left-0 right-0 bg-[#EDEDED] border-b border-black/[0.08] overflow-hidden transition-all duration-300 ${
-          open ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'
+        className={`md:hidden fixed inset-0 z-40 bg-[#EDEDED] flex flex-col transition-opacity duration-300 ${
+          open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
-        <div className="px-5 py-4 flex flex-col gap-1">
+        {/* Close button row */}
+        <div className="h-16 flex items-center justify-between px-5 border-b border-black/[0.08]">
+          <Link href="/" onClick={() => setOpen(false)}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-rampup-accent.svg" alt="RampUp" className="h-8 w-auto object-contain" />
+          </Link>
+          <button
+            className="flex flex-col gap-1.5 p-2"
+            onClick={() => setOpen(false)}
+            aria-label="Close menu"
+          >
+            <span className="block w-6 h-0.5 bg-dark rotate-45 translate-y-2 transition-transform duration-300" />
+            <span className="block w-6 h-0.5 bg-dark opacity-0" />
+            <span className="block w-6 h-0.5 bg-dark -rotate-45 -translate-y-2 transition-transform duration-300" />
+          </button>
+        </div>
+
+        {/* Links */}
+        <div className="flex-1 flex flex-col justify-center px-8 gap-2">
           {links.map((l, i) => (
             <Link
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className={`font-poppins text-base font-medium py-3 border-b border-black/[0.06] transition-colors ${
-                pathname === l.href ? 'text-green' : 'text-body'
+              className={`font-sora font-extrabold text-4xl py-3 transition-colors ${
+                pathname === l.href ? 'text-green' : 'text-dark'
               }`}
-              style={{ transitionDelay: open ? `${i * 50}ms` : '0ms' }}
+              style={{ transitionDelay: open ? `${i * 60}ms` : '0ms' }}
             >
               {l.label}
             </Link>
@@ -95,9 +113,9 @@ export default function Nav() {
           <Link
             href="/contact"
             onClick={() => setOpen(false)}
-            className="mt-3 bg-green text-white font-poppins text-sm font-semibold px-5 py-3 rounded-pill text-center"
+            className="mt-6 bg-green text-white font-poppins text-base font-semibold px-6 py-4 rounded-pill text-center"
           >
-            Apply now!
+            Apply now! →
           </Link>
         </div>
       </div>
