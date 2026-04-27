@@ -305,7 +305,7 @@ export default function OkasanFunnelPage() {
       <section className="bg-black py-10">
         <div className="max-w-site mx-auto px-5 md:px-12">
           <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight mb-2 text-center">
-            Grow your Grab sales
+            Grow Your Grab Sales
           </h2>
           <p className="font-poppins text-lg text-white/50 text-center mb-3">
             Actual revenue growth from restaurants we work with
