@@ -120,6 +120,23 @@ function LeadForm() {
       <div hidden><input name="bot-field" /></div>
 
       <div>
+        <label className={labelClass}>Your Name <span className="text-green">*</span></label>
+        <input name="name" type="text" required placeholder="John Doe" className={inputClass} />
+      </div>
+      <div>
+        <label className={labelClass}>Email <span className="text-green">*</span></label>
+        <input name="email" type="email" required placeholder="you@restaurant.com" className={inputClass} />
+      </div>
+      <div>
+        <label className={labelClass}>Phone <span className="text-green">*</span></label>
+        <input name="phone" type="tel" required placeholder="08X-XXX-XXXX" className={inputClass} />
+      </div>
+      <div>
+        <label className={labelClass}>Restaurant Name <span className="text-green">*</span></label>
+        <input name="restaurant" type="text" required placeholder="e.g. Okasan Izakaya" className={inputClass} />
+      </div>
+
+      <div>
         <label className={labelClass}>How much do you make per month on Grab?</label>
         <select name="grab_revenue" className={inputClass}>
           <option value="">Select range…</option>
@@ -174,25 +191,6 @@ function LeadForm() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className={labelClass}>Your Name <span className="text-green">*</span></label>
-          <input name="name" type="text" required placeholder="Khun Somchai" className={inputClass} />
-        </div>
-        <div>
-          <label className={labelClass}>Phone <span className="text-green">*</span></label>
-          <input name="phone" type="tel" required placeholder="08X-XXX-XXXX" className={inputClass} />
-        </div>
-      </div>
-      <div>
-        <label className={labelClass}>Email <span className="text-green">*</span></label>
-        <input name="email" type="email" required placeholder="you@restaurant.com" className={inputClass} />
-      </div>
-      <div>
-        <label className={labelClass}>Restaurant Name <span className="text-green">*</span></label>
-        <input name="restaurant" type="text" required placeholder="e.g. Okasan Izakaya" className={inputClass} />
-      </div>
-
       {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
         <div className="cf-turnstile" data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY} data-theme="light" />
       )}
@@ -201,7 +199,7 @@ function LeadForm() {
         className="w-full bg-green text-white font-poppins font-bold text-base py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] disabled:opacity-60 uppercase tracking-wide">
         {loading ? 'Sending…' : 'Get Started Now!'}
       </button>
-      <p className="font-poppins text-sm text-muted italic text-center">฿49,990 baht / per month</p>
+      <p className="font-poppins text-sm text-muted italic text-center">฿59,990 baht / per month</p>
     </form>
   )
 }
@@ -321,7 +319,7 @@ export default function OkasanFunnelPage() {
       </section>
 
       {/* ── 3. VIDEOS (Cloudflare Stream) ── */}
-      <section className="bg-dark py-10">
+      <section className="bg-black py-10">
         <div className="max-w-site mx-auto px-5 md:px-12">
           <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight mb-2 text-center">
             We Film Videos That Elevate Your Brand
@@ -365,7 +363,7 @@ export default function OkasanFunnelPage() {
       </section>
 
       {/* ── 5. RESULTS ── */}
-      <section className="bg-dark py-10">
+      <section className="bg-black py-10">
         <div className="max-w-site mx-auto px-5 md:px-12">
           <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight mb-2 text-center">
             Grow your Grab sales with us
@@ -442,7 +440,7 @@ export default function OkasanFunnelPage() {
           </ul>
           <div className="border-t border-black/[0.07] pt-6 text-center">
             <p className="font-sora font-extrabold text-3xl text-dark mb-1">
-              ฿49,990 <span className="font-poppins font-normal text-base text-muted">per month for 1 location</span>
+              ฿59,990 <span className="font-poppins font-normal text-base text-muted">per month for 1 location</span>
             </p>
             <p className="font-poppins text-sm text-muted mb-6">+฿4,995 per additional location</p>
             <a href="#apply"
