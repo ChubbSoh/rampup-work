@@ -252,35 +252,34 @@ export default function OkasanFunnelPage() {
   return (
     <main className="min-h-[100dvh] bg-[#EDEDED]">
 
-      {/* ── 1. HERO ── */}
-      <section className="bg-dark text-white">
-        <div className="max-w-site mx-auto px-5 md:px-12 pt-8 pb-12 md:pt-12 md:pb-16 flex flex-col items-center text-center">
-          <Link href="/">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-rampup-accent.svg" alt="RampUp" className="h-8 w-auto object-contain mb-8" />
-          </Link>
-          <h1 className="font-sora font-extrabold text-[clamp(2rem,6vw,3.6rem)] leading-[1.08] tracking-tight mb-4">
-            Restaurant Ramp Up —<br />2X Your Dine-in Sales
-          </h1>
-          <p className="font-poppins text-base md:text-lg text-white/70 max-w-xl mb-3">
-            Increase Your Dine-In and Grab Sales
-          </p>
-          <p className="font-poppins text-sm text-white/50 max-w-lg">
-            We create content inside your restaurant and use it to increase Grab orders and walk-ins.
-          </p>
-        </div>
-      </section>
+      {/* ── 1. HERO + FORM ── */}
+      <section id="apply" className="max-w-site mx-auto px-5 md:px-12 pt-10 pb-14 md:pt-16 md:pb-20">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
-      {/* ── 2. FORM ── */}
-      <section id="apply" className="max-w-site mx-auto px-5 md:px-12 py-14">
-        <div className="max-w-xl mx-auto">
-          <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[2px] mb-3 text-center">Apply</p>
-          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-8 text-center">
-            Enter Your Info Below To Apply
-          </h2>
-          <div className="bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-7 md:p-10">
-            <LeadForm />
+          {/* Left: headline */}
+          <div className="flex-1 max-w-xl mb-10 lg:mb-0">
+            <Link href="/">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo-rampup-accent.svg" alt="RampUp" className="h-8 w-auto object-contain mb-8" />
+            </Link>
+            <h1 className="font-sora font-extrabold text-[clamp(2rem,5vw,3.4rem)] leading-[1.08] tracking-tight text-dark mb-5">
+              Increase Your<br />Dine-In and<br />Grab Sales
+            </h1>
+            <p className="font-poppins text-base md:text-lg text-muted leading-relaxed">
+              We create content inside your restaurant and use it to increase Grab orders and walk-ins.
+            </p>
           </div>
+
+          {/* Right: form */}
+          <div className="w-full lg:w-[440px] shrink-0">
+            <div className="bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-7 md:p-10">
+              <h2 className="font-sora font-bold text-xl text-dark mb-6">
+                Enter Your Info Below To Apply
+              </h2>
+              <LeadForm />
+            </div>
+          </div>
+
         </div>
       </section>
 
