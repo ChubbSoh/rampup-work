@@ -105,27 +105,7 @@ export default function OkasanFunnelPage() {
         </section>
       )}
 
-      {/* ── 4. FEED DESIGN (photos) ── */}
-      {hasPhotos && (
-        <section className="max-w-site mx-auto px-5 md:px-12 py-10">
-          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-2 text-center">
-            Feed Design
-          </h2>
-          <p className="font-poppins text-lg text-muted text-center mb-8">
-            We create beautiful feeds that reflect your brand
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {client.photos!.map((photo, i) => (
-              <div key={i} className="rounded-2xl overflow-hidden aspect-square bg-[#E0E0E0]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={photo} alt={`Okasan ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* ── 5. FEED DESIGN IMAGE ── */}
+      {/* ── 4. FEED DESIGN ── */}
       {hasFeedDesign && (
         <section className="max-w-site mx-auto px-5 md:px-12 py-10">
           <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-2 text-center">
@@ -141,7 +121,7 @@ export default function OkasanFunnelPage() {
         </section>
       )}
 
-      {/* ── 6. MONTHLY PLAN ── */}
+      {/* ── 5. MONTHLY PLAN ── */}
       {hasMonthlyPlan && (
         <section className="max-w-site mx-auto px-5 md:px-12 py-10">
           <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-2 text-center">
@@ -155,6 +135,26 @@ export default function OkasanFunnelPage() {
               <div key={i} className="rounded-2xl overflow-hidden bg-[#E0E0E0]" style={{ aspectRatio: '16/9' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={photo} alt={`Monthly Plan ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── 6. PHOTOS ── */}
+      {hasPhotos && (
+        <section className="max-w-site mx-auto px-5 md:px-12 py-10">
+          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-2 text-center">
+            Photos
+          </h2>
+          <p className="font-poppins text-lg text-muted text-center mb-8">
+            We create beautiful content that reflects your brand
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+            {client.photos!.map((photo, i) => (
+              <div key={i} className="rounded-2xl overflow-hidden aspect-square bg-[#E0E0E0]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={photo} alt={`Okasan ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
               </div>
             ))}
           </div>
