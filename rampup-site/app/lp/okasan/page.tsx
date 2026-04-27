@@ -25,11 +25,6 @@ const CLIENT = {
   ],
 }
 
-const results = [
-  { stat: '+54.64%', label: 'Increase in Gross Sales' },
-  { stat: '+31.12%', label: 'Increase in Gross Sales' },
-  { stat: '+31.62%', label: 'Increase in Gross Sales' },
-]
 
 const inclusions = [
   '7 Reels / 11 Photos',
@@ -263,12 +258,12 @@ export default function OkasanFunnelPage() {
       </section>
 
       {/* ── 3. VIDEOS (Cloudflare Stream) ── */}
-      <section className="bg-dark py-10">
+      <section className="bg-white py-10">
         <div className="max-w-site mx-auto px-5 md:px-12">
-          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight mb-2 text-center">
+          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-2 text-center">
             We Film Videos That Elevate Your Brand
           </h2>
-          <p className="font-poppins text-lg text-white/50 text-center mb-8">
+          <p className="font-poppins text-lg text-muted text-center mb-8">
             And Run Effective Ads To Increase Dine-In Sales
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
@@ -307,19 +302,54 @@ export default function OkasanFunnelPage() {
       </section>
 
       {/* ── 5. RESULTS ── */}
-      <section className="bg-dark py-10">
+      <section className="bg-white py-10">
         <div className="max-w-site mx-auto px-5 md:px-12">
-          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight mb-2 text-center">
+          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-2 text-center">
             Grow your Grab sales with us
           </h2>
-          <p className="font-poppins text-lg text-white/50 text-center mb-8">
-            See our results in just 1 month
+          <p className="font-poppins text-lg text-muted text-center mb-3">
+            Actual revenue growth from restaurants we work with
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {results.map((r) => (
-              <div key={r.stat} className="bg-white/[0.06] rounded-[20px] p-8 text-center">
-                <div className="font-sora font-extrabold text-4xl md:text-5xl text-green mb-2">{r.stat}</div>
-                <div className="font-poppins text-base text-white/60">{r.label}</div>
+          <div
+            className="flex gap-5 md:grid md:grid-cols-2 md:gap-5"
+            style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollSnapType: 'x mandatory', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {[
+              { before: '฿665K', after: '฿1.25M', timeframe: '2 months', growth: '1.9x growth', monthly: '+฿295K / month', beforeImg: '/results/proof-1-after.jpg', afterImg: '/results/proof-1-before.jpg' },
+              { before: '฿300K', after: '฿628K',  timeframe: '2 months', growth: '2.1x growth', monthly: '+฿328K / month', beforeImg: '/results/proof-2-before.jpg', afterImg: '/results/proof-2-after.jpg' },
+              { before: '฿127K', after: '฿249K',  timeframe: '4 months', growth: '2x growth',   monthly: '+฿122K / month', beforeImg: '/results/proof-3-before.jpg', afterImg: '/results/proof-3-after.jpg' },
+              { before: '฿431K', after: '฿814K',  timeframe: '5 months', growth: '1.9x growth', monthly: '+฿383K / month', beforeImg: '/results/proof-4-before.jpg', afterImg: '/results/proof-4-after.jpg' },
+            ].map((card) => (
+              <div
+                key={card.before}
+                className="shrink-0 w-[80vw] md:w-auto bg-[#F5F5F5] rounded-[20px] shadow-[0_2px_16px_rgba(0,0,0,0.06)] p-5"
+                style={{ scrollSnapAlign: 'start' }}
+              >
+                <p className="font-sora font-bold text-[17px] text-dark leading-tight mb-0.5">
+                  {card.before} → {card.after}
+                </p>
+                <p className="font-poppins text-[11px] text-muted/70 mb-4">Results achieved in {card.timeframe}</p>
+                <div className="grid grid-cols-2 gap-2 mb-5">
+                  {([
+                    { label: 'BEFORE' as const, src: card.beforeImg },
+                    { label: 'AFTER'  as const, src: card.afterImg  },
+                  ]).map(({ label, src }) => (
+                    <div key={label} className="relative rounded-[12px] overflow-hidden bg-[#E4E4E4]" style={{ aspectRatio: '9/16' }}>
+                      {src && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={src} alt={label} className="absolute inset-0 w-full h-full object-cover object-top" />
+                      )}
+                      <div className="absolute inset-x-0 top-0 h-[20%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to bottom, rgba(255,255,255,0.85) 0%, transparent 100%)', maskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)' }} />
+                      <div className="absolute inset-x-0 bottom-0 h-[20%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(255,255,255,0.85) 0%, transparent 100%)', maskImage: 'linear-gradient(to top, black 0%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to top, black 0%, transparent 100%)' }} />
+                      <span className={`absolute top-2 left-2 font-poppins text-[10px] font-bold px-2 py-1 rounded-full text-white z-10 ${label === 'BEFORE' ? 'bg-[#9E9E9E]' : 'bg-[#3DBE5A]'}`}>
+                        {label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <p className="font-sora font-extrabold text-2xl text-green mb-0.5">{card.growth}</p>
+                <p className="font-poppins text-sm font-semibold text-dark mb-0.5">{card.monthly}</p>
+                <p className="font-poppins text-[11px] text-muted/70">Average monthly increase in revenue</p>
               </div>
             ))}
           </div>
@@ -361,8 +391,8 @@ export default function OkasanFunnelPage() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="bg-dark py-6 text-center">
-        <p className="font-poppins text-sm text-white/30">© 2025 Restaurant Ramp Up. All Rights Reserved.</p>
+      <footer className="bg-white py-6 text-center border-t border-black/[0.06]">
+        <p className="font-poppins text-sm text-muted">© 2025 Restaurant Ramp Up. All Rights Reserved.</p>
       </footer>
 
     </main>
