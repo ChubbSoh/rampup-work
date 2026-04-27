@@ -246,10 +246,12 @@ export default function OkasanFunnelPage() {
             { label: 'Lineman',   src: '/logo-lineman.svg' },
             { label: 'Google',    src: '/logo-google.svg' },
           ].map(({ label, src }) => (
-            <div key={label} className="flex flex-col items-center gap-2">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt={label} className="w-12 h-12 object-contain" />
-              <span className="font-poppins text-sm font-medium text-body">{label}</span>
+            <div key={label} className="flex flex-col items-center gap-1.5">
+              <div className="w-12 h-12 flex items-center justify-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt={label} className="w-full h-full object-contain" />
+              </div>
+              <span className="font-poppins text-xs font-medium text-body">{label}</span>
             </div>
           ))}
         </div>
