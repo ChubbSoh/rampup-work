@@ -171,9 +171,8 @@ function LeadForm() {
         <label className={labelClass}>Which service are you interested in?</label>
         <div className="flex flex-col gap-2">
           {[
-            { value: 'grab',   label: 'Only Grab' },
             { value: 'social', label: 'Social Media Management' },
-            { value: 'both',   label: 'Both' },
+            { value: 'both',   label: 'Social Media Management + Grab Sales' },
           ].map(s => (
             <label key={s.value} className="flex items-center gap-2 cursor-pointer font-poppins text-sm text-body">
               <input type="radio" name="service" value={s.value} required className="accent-green w-4 h-4" />
@@ -228,6 +227,7 @@ function LeadForm() {
         className="w-full bg-green text-white font-poppins font-bold text-base py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] disabled:opacity-60 uppercase tracking-wide">
         {loading ? 'Sending…' : 'Get Started Now!'}
       </button>
+      <p className="font-poppins text-xs text-muted italic text-center">฿49,990 baht / per month</p>
     </form>
   )
 }
@@ -257,11 +257,7 @@ export default function OkasanFunnelPage() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
           {/* Left: headline */}
-          <div className="flex-1 max-w-xl mb-10 lg:mb-0">
-            <Link href="/">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-rampup-accent.svg" alt="RampUp" className="h-8 w-auto object-contain mb-8" />
-            </Link>
+          <div className="flex-1 max-w-xl mb-10 lg:mb-0 text-center lg:text-left">
             <h1 className="font-sora font-extrabold text-[clamp(2rem,5vw,3.4rem)] leading-[1.08] tracking-tight text-dark mb-5">
               Increase Your<br />Dine-In and<br />Grab Sales
             </h1>
@@ -280,18 +276,6 @@ export default function OkasanFunnelPage() {
             </div>
           </div>
 
-        </div>
-      </section>
-
-      {/* ── 3. TAGLINE + PRICE ── */}
-      <section className="bg-dark py-12">
-        <div className="max-w-site mx-auto px-5 md:px-12 text-center">
-          <p className="font-sora font-extrabold text-2xl md:text-3xl text-green uppercase tracking-tight mb-4">
-            Grow your dine-in and Grab sales with us!
-          </p>
-          <p className="font-sora font-extrabold text-4xl md:text-5xl text-white">
-            ฿49,990 <span className="font-poppins font-normal text-xl text-white/50">/ Month</span>
-          </p>
         </div>
       </section>
 
@@ -432,18 +416,6 @@ export default function OkasanFunnelPage() {
       <footer className="bg-dark py-6 text-center">
         <p className="font-poppins text-xs text-white/30">© 2025 Restaurant Ramp Up. All Rights Reserved.</p>
       </footer>
-
-      {/* ── Sticky mobile CTA ── */}
-      <div className="fixed bottom-0 inset-x-0 z-50 bg-white border-t border-black/[0.08] px-5 py-4 flex items-center justify-between gap-4 md:hidden">
-        <div>
-          <p className="font-sora font-bold text-sm text-dark leading-tight">Like what you see?</p>
-          <p className="font-poppins text-xs text-muted">No commitment. Apply in 2 minutes.</p>
-        </div>
-        <a href="#apply"
-          className="shrink-0 bg-green text-white font-poppins font-bold text-sm px-6 py-3 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase">
-          Apply Now →
-        </a>
-      </div>
 
     </main>
   )
