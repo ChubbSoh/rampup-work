@@ -1,15 +1,13 @@
 'use client'
 
-import Link from 'next/link'
 import { useState, useRef } from 'react'
-import { streamIframeSrc } from '@/lib/stream'
 
 const CLIENT = {
   name: 'Okasan',
   cuisine: 'Yakitori & Izakaya',
   location: 'Bangkok',
-  cover: 'https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/0fb118a5-8f3f-4962-b0b6-27a3aac9fd00/public',
-  videos: [
+  // Cloudflare Stream — iframe.videodelivery.net works without customer subdomain
+  videoIds: [
     'f70a623c8453f1d41fc9776ecd499220',
     '78ce9ad58ba04d1140377b11eb0decc1',
     'a5843d1d2fd3dbb6f7938dbe44ddcb3c',
@@ -42,7 +40,7 @@ const inclusions = [
   '10–15 Menu photos',
 ]
 
-// ── Inline lead form ──────────────────────────────────────────────────────────
+// ── Lead form ─────────────────────────────────────────────────────────────────
 
 function LeadForm() {
   const [submitted, setSubmitted] = useState(false)
@@ -65,49 +63,34 @@ function LeadForm() {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data as unknown as Record<string, string>).toString(),
       })
-
       if (!webhookSent.current) {
         webhookSent.current = true
         const event_id = `lead_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`
         const fbp = getCookie('_fbp')
         const fbc = getCookie('_fbc')
-
         if (typeof window !== 'undefined' && (window as any).dataLayer) {
           ;(window as any).dataLayer.push({ event: 'lead_form_submit', event_id })
         }
-
         fetch('/api/lead-relay', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name:         data.get('name')        ?? '',
-            restaurant:   data.get('restaurant')  ?? '',
-            email:        data.get('email')        ?? '',
-            phone:        data.get('phone')        ?? '',
-            grab_revenue: data.get('grab_revenue') ?? '',
-            grab_ads:     data.get('grab_ads')     ?? '',
-            service:      data.get('service')      ?? '',
-            timeline:     data.get('timeline')     ?? '',
-            page_path:    window.location.pathname,
-            page_url:     window.location.href,
-            page_type:    'funnel-okasan',
-            form_name:    'lead',
-            submitted_at: new Date().toISOString(),
-            source:       'meta-ad',
-            site:         'rampupth',
+            name: data.get('name') ?? '', restaurant: data.get('restaurant') ?? '',
+            email: data.get('email') ?? '', phone: data.get('phone') ?? '',
+            grab_revenue: data.get('grab_revenue') ?? '', grab_ads: data.get('grab_ads') ?? '',
+            service: data.get('service') ?? '', timeline: data.get('timeline') ?? '',
+            page_path: window.location.pathname, page_url: window.location.href,
+            page_type: 'funnel-okasan', form_name: 'lead',
+            submitted_at: new Date().toISOString(), source: 'meta-ad', site: 'rampupth',
             event_id,
-            ...(fbp ? { fbp } : {}),
-            ...(fbc ? { fbc } : {}),
+            ...(fbp ? { fbp } : {}), ...(fbc ? { fbc } : {}),
             turnstile_token: data.get('cf-turnstile-response') ?? '',
           }),
         }).catch(() => {})
       }
       setSubmitted(true)
-    } catch {
-      setSubmitted(true)
-    } finally {
-      setLoading(false)
-    }
+    } catch { setSubmitted(true) }
+    finally { setLoading(false) }
   }
 
   if (submitted) {
@@ -119,13 +102,14 @@ function LeadForm() {
           </svg>
         </div>
         <h3 className="font-sora font-bold text-xl text-dark mb-2">We&apos;ll be in touch!</h3>
-        <p className="font-poppins text-sm text-muted">Our team will review your restaurant and reach out within 24 hours.</p>
+        <p className="font-poppins text-base text-muted">Our team will review your restaurant and reach out within 24 hours.</p>
       </div>
     )
   }
 
-  const inputClass = 'w-full font-poppins text-sm bg-white border border-black/[0.1] rounded-xl px-4 py-3 focus:outline-none focus:border-green/50 transition-all'
-  const labelClass = 'font-poppins text-xs font-semibold text-body mb-1.5 block'
+  const inputClass = 'w-full font-poppins text-base bg-white border border-black/[0.1] rounded-xl px-4 py-3 focus:outline-none focus:border-green/50 transition-all'
+  const labelClass = 'font-poppins text-sm font-semibold text-body mb-1.5 block'
+  const radioClass = 'flex items-center gap-2 cursor-pointer font-poppins text-base text-body'
 
   return (
     <form
@@ -140,7 +124,6 @@ function LeadForm() {
       <input type="hidden" name="source" value="meta-ad" />
       <div hidden><input name="bot-field" /></div>
 
-      {/* Grab revenue */}
       <div>
         <label className={labelClass}>How much do you make per month on Grab?</label>
         <select name="grab_revenue" className={inputClass}>
@@ -153,12 +136,11 @@ function LeadForm() {
         </select>
       </div>
 
-      {/* Running Grab Ads */}
       <div>
         <label className={labelClass}>Are you running Grab Ads?</label>
-        <div className="flex gap-4">
+        <div className="flex gap-6">
           {['Yes', 'No'].map(v => (
-            <label key={v} className="flex items-center gap-2 cursor-pointer font-poppins text-sm text-body">
+            <label key={v} className={radioClass}>
               <input type="radio" name="grab_ads" value={v.toLowerCase()} className="accent-green w-4 h-4" />
               {v}
             </label>
@@ -166,7 +148,6 @@ function LeadForm() {
         </div>
       </div>
 
-      {/* Service */}
       <div>
         <label className={labelClass}>Which service are you interested in?</label>
         <div className="flex flex-col gap-2">
@@ -174,7 +155,7 @@ function LeadForm() {
             { value: 'social', label: 'Social Media Management' },
             { value: 'both',   label: 'Social Media Management + Grab Sales' },
           ].map(s => (
-            <label key={s.value} className="flex items-center gap-2 cursor-pointer font-poppins text-sm text-body">
+            <label key={s.value} className={radioClass}>
               <input type="radio" name="service" value={s.value} required className="accent-green w-4 h-4" />
               {s.label}
             </label>
@@ -182,16 +163,15 @@ function LeadForm() {
         </div>
       </div>
 
-      {/* Timeline */}
       <div>
         <label className={labelClass}>When do you plan to get started?</label>
         <div className="flex flex-col gap-2">
           {[
-            { value: 'asap',      label: 'ASAP' },
-            { value: '1_month',   label: 'Within 1 month' },
-            { value: 'browsing',  label: 'Just browsing' },
+            { value: 'asap',     label: 'ASAP' },
+            { value: '1_month',  label: 'Within 1 month' },
+            { value: 'browsing', label: 'Just browsing' },
           ].map(s => (
-            <label key={s.value} className="flex items-center gap-2 cursor-pointer font-poppins text-sm text-body">
+            <label key={s.value} className={radioClass}>
               <input type="radio" name="timeline" value={s.value} className="accent-green w-4 h-4" />
               {s.label}
             </label>
@@ -199,7 +179,6 @@ function LeadForm() {
         </div>
       </div>
 
-      {/* Contact fields */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={labelClass}>Your Name <span className="text-green">*</span></label>
@@ -227,47 +206,29 @@ function LeadForm() {
         className="w-full bg-green text-white font-poppins font-bold text-base py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] disabled:opacity-60 uppercase tracking-wide">
         {loading ? 'Sending…' : 'Get Started Now!'}
       </button>
-      <p className="font-poppins text-xs text-muted italic text-center">฿49,990 baht / per month</p>
+      <p className="font-poppins text-sm text-muted italic text-center">฿49,990 baht / per month</p>
     </form>
-  )
-}
-
-// ── Video embed ───────────────────────────────────────────────────────────────
-
-function VideoEmbed({ src }: { src: string }) {
-  return (
-    <div className="relative w-full overflow-hidden rounded-2xl bg-dark" style={{ aspectRatio: '9/16' }}>
-      <iframe src={src} loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowFullScreen className="absolute inset-0 w-full h-full" title="Reel" />
-    </div>
   )
 }
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function OkasanFunnelPage() {
-  const videoSrcs = CLIENT.videos
-    .map(id => streamIframeSrc(id, { muted: true, autoplay: true, loop: true }))
-    .filter((s): s is string => s !== null)
-
   return (
     <main className="min-h-[100dvh] bg-[#EDEDED]">
 
       {/* ── 1. HERO + FORM ── */}
       <section id="apply" className="max-w-site mx-auto px-5 md:px-12 pt-10 pb-14 md:pt-16 md:pb-20">
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
-
-          {/* Left: headline */}
           <div className="flex-1 max-w-xl mb-10 lg:mb-0 text-center lg:text-left">
             <h1 className="font-sora font-extrabold text-[clamp(2rem,5vw,3.4rem)] leading-[1.08] tracking-tight text-dark mb-5">
               Increase Your<br />Dine-In and<br />Grab Sales
             </h1>
-            <p className="font-poppins text-base md:text-lg text-muted leading-relaxed">
+            <p className="font-poppins text-lg md:text-xl text-muted leading-relaxed">
               We create content inside your restaurant and use it to increase Grab orders and walk-ins.
             </p>
           </div>
-
-          {/* Right: form */}
-          <div className="w-full lg:w-[440px] shrink-0">
+          <div className="w-full lg:w-[460px] shrink-0">
             <div className="bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-7 md:p-10">
               <h2 className="font-sora font-bold text-xl text-dark mb-6">
                 Enter Your Info Below To Apply
@@ -275,11 +236,10 @@ export default function OkasanFunnelPage() {
               <LeadForm />
             </div>
           </div>
-
         </div>
       </section>
 
-      {/* ── 4. PLATFORMS ── */}
+      {/* ── 2. PLATFORMS ── */}
       <section className="max-w-site mx-auto px-5 md:px-12 py-10">
         <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-8 text-center">
           We manage these platforms
@@ -320,77 +280,82 @@ export default function OkasanFunnelPage() {
           ].map(({ label, icon }) => (
             <div key={label} className="flex flex-col items-center gap-2">
               <div className="w-9 h-9 flex items-center justify-center text-dark">{icon}</div>
-              <span className="font-poppins text-xs font-medium text-body">{label}</span>
+              <span className="font-poppins text-sm font-medium text-body">{label}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── 5. VIDEOS ── */}
-      {videoSrcs.length > 0 && (
-        <section className="bg-dark py-10">
-          <div className="max-w-site mx-auto px-5 md:px-12">
-            <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight mb-2 text-center">
-              We Film Videos That Elevate Your Brand
-            </h2>
-            <p className="font-poppins text-sm text-white/50 text-center mb-8">
-              And Run Effective Ads To Increase Dine-In Sales
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-              {videoSrcs.map((src, i) => (
-                <VideoEmbed key={i} src={src} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── 6. FEED DESIGN / PHOTOS ── */}
-      {CLIENT.photos.length > 0 && (
-        <section className="max-w-site mx-auto px-5 md:px-12 py-10">
-          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-2 text-center">
-            Feed Design
+      {/* ── 3. VIDEOS (Cloudflare Stream) ── */}
+      <section className="bg-dark py-10">
+        <div className="max-w-site mx-auto px-5 md:px-12">
+          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight mb-2 text-center">
+            We Film Videos That Elevate Your Brand
           </h2>
-          <p className="font-poppins text-sm text-muted text-center mb-8">
-            We create beautiful feeds that reflect your brand
+          <p className="font-poppins text-lg text-white/50 text-center mb-8">
+            And Run Effective Ads To Increase Dine-In Sales
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {CLIENT.photos.map((photo, i) => (
-              <div key={i} className="rounded-2xl overflow-hidden aspect-square bg-[#E0E0E0]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={photo} alt={`${CLIENT.name} ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+            {CLIENT.videoIds.map((id) => (
+              <div key={id} className="relative w-full overflow-hidden rounded-2xl bg-black" style={{ aspectRatio: '9/16' }}>
+                <iframe
+                  src={`https://iframe.videodelivery.net/${id}?muted=true&autoplay=true&loop=true&preload=none`}
+                  loading="lazy"
+                  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                  title="Okasan video"
+                />
               </div>
             ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
-      {/* ── 7. RESULTS ── */}
+      {/* ── 4. FEED DESIGN / PHOTOS ── */}
+      <section className="max-w-site mx-auto px-5 md:px-12 py-10">
+        <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-2 text-center">
+          Feed Design
+        </h2>
+        <p className="font-poppins text-lg text-muted text-center mb-8">
+          We create beautiful feeds that reflect your brand
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+          {CLIENT.photos.map((photo, i) => (
+            <div key={i} className="rounded-2xl overflow-hidden aspect-square bg-[#E0E0E0]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={photo} alt={`${CLIENT.name} ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── 5. RESULTS ── */}
       <section className="bg-dark py-10">
         <div className="max-w-site mx-auto px-5 md:px-12">
           <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight mb-2 text-center">
             Grow your Grab sales with us
           </h2>
-          <p className="font-poppins text-sm text-white/50 text-center mb-8">
+          <p className="font-poppins text-lg text-white/50 text-center mb-8">
             See our results in just 1 month
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {results.map((r) => (
               <div key={r.stat} className="bg-white/[0.06] rounded-[20px] p-8 text-center">
                 <div className="font-sora font-extrabold text-4xl md:text-5xl text-green mb-2">{r.stat}</div>
-                <div className="font-poppins text-sm text-white/60">{r.label}</div>
+                <div className="font-poppins text-base text-white/60">{r.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 8. INCLUSIONS ── */}
+      {/* ── 6. INCLUSIONS ── */}
       <section className="max-w-site mx-auto px-5 md:px-12 py-10">
         <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-2 text-center">
           Grab and Dine-in
         </h2>
-        <p className="font-poppins text-sm text-muted text-center mb-8">
+        <p className="font-poppins text-lg text-muted text-center mb-8">
           Get more dine-in customers from Facebook, Instagram, and TikTok
         </p>
         <div className="max-w-lg mx-auto bg-white rounded-[24px] shadow-[0_2px_16px_rgba(0,0,0,0.06)] p-8">
@@ -402,7 +367,7 @@ export default function OkasanFunnelPage() {
                     <path d="M2 5l2.5 2.5 3.5-4" stroke="#3DBE5A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </span>
-                <span className="font-poppins text-sm text-body">{item}</span>
+                <span className="font-poppins text-base text-body">{item}</span>
               </li>
             ))}
           </ul>
@@ -410,7 +375,7 @@ export default function OkasanFunnelPage() {
             <p className="font-sora font-extrabold text-3xl text-dark mb-1">
               ฿49,990 <span className="font-poppins font-normal text-base text-muted">per month for 1 location</span>
             </p>
-            <p className="font-poppins text-xs text-muted mb-6">+฿4,995 per additional location</p>
+            <p className="font-poppins text-sm text-muted mb-6">+฿4,995 per additional location</p>
             <a href="#apply"
               className="block w-full bg-green text-white font-poppins font-bold text-base py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide text-center">
               Get Started Now!
@@ -421,7 +386,7 @@ export default function OkasanFunnelPage() {
 
       {/* ── FOOTER ── */}
       <footer className="bg-dark py-6 text-center">
-        <p className="font-poppins text-xs text-white/30">© 2025 Restaurant Ramp Up. All Rights Reserved.</p>
+        <p className="font-poppins text-sm text-white/30">© 2025 Restaurant Ramp Up. All Rights Reserved.</p>
       </footer>
 
     </main>
