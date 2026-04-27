@@ -10,6 +10,8 @@ export interface Client {
   last_updated?: string
   videos?: string[]
   photos?: string[]
+  feed_design?: string
+  monthly_plan?: string[]
 }
 
 export type CuisineFilter =

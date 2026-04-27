@@ -20,6 +20,8 @@ export interface ClientRecord {
   page: string
   videos?: string[]
   photos?: string[]
+  feed_design?: string
+  monthly_plan?: string[]
 
   // ── Google Drive folder IDs (server-only) ─────────────────────────────────
   drive_folder?: string          // human-readable folder name (legacy field)
