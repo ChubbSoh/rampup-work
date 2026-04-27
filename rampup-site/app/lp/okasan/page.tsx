@@ -215,7 +215,7 @@ export default function OkasanFunnelPage() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
           <div className="flex-1 max-w-xl mb-10 lg:mb-0 text-center lg:text-left">
             <h1 className="font-sora font-extrabold text-[clamp(2rem,5vw,3.4rem)] leading-[1.08] tracking-tight text-dark mb-5">
-              Grow your<br />Grab sales
+              Increase Your<br />Dine-In and<br />Grab Sales
             </h1>
             <p className="font-poppins text-lg md:text-xl text-muted leading-relaxed">
               We create content inside your restaurant and use it to increase Grab orders and walk-ins.
