@@ -240,21 +240,16 @@ export default function OkasanFunnelPage() {
             <p className="font-sora font-extrabold text-3xl text-dark mb-1">
               ฿59,990 <span className="font-poppins font-normal text-base text-muted">per month</span>
             </p>
-            <a href="#apply"
-              className="block w-full bg-green text-white font-poppins font-bold text-base py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide text-center">
-              Apply Now
-            </a>
-            <p className="font-poppins text-sm text-muted italic mt-2">฿59,990 / month</p>
           </div>
         </div>
       </section>
 
       {/* ── APPLY FORM ── */}
       <section id="apply" className="max-w-site mx-auto px-5 md:px-12 py-10">
+        <h2 className="font-sora font-bold text-2xl text-dark mb-6 text-center">
+          Enter Your Info Below To Apply
+        </h2>
         <div className="max-w-lg mx-auto bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-7 md:p-10">
-          <h2 className="font-sora font-bold text-xl text-dark mb-6 text-center">
-            Enter Your Info Below To Apply
-          </h2>
           <LeadForm />
         </div>
       </section>
