@@ -113,18 +113,47 @@ export default function OkasanFunnelPage() {
         </section>
       )}
 
-      {/* ── 4. FEED DESIGN ── */}
-      {hasFeedDesign && (
+      {/* ── 4. FEED DESIGN + PHOTOS ── */}
+      {(hasFeedDesign || hasPhotos) && (
         <section className="max-w-site mx-auto px-5 md:px-12 py-10">
-          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-2 text-center">
-            Feed Design
-          </h2>
-          <p className="font-poppins text-lg text-muted text-center mb-8">
-            We design your entire social media feed
-          </p>
-          <div className="rounded-2xl overflow-hidden bg-[#E0E0E0]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={client.feed_design} alt="Feed Design" className="w-full h-auto" loading="lazy" />
+          <div className="flex flex-col md:flex-row gap-8 md:gap-6 items-start">
+
+            {/* Feed Design — left col */}
+            {hasFeedDesign && (
+              <div className="w-full md:w-2/5">
+                <h2 className="font-sora font-extrabold text-2xl text-dark tracking-tight mb-2">
+                  Feed Design
+                </h2>
+                <p className="font-poppins text-base text-muted mb-5">
+                  We design your entire social media feed
+                </p>
+                <div className="rounded-2xl overflow-hidden bg-[#E0E0E0] max-w-[70%] md:max-w-full">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={client.feed_design} alt="Feed Design" className="w-full h-auto" loading="lazy" />
+                </div>
+              </div>
+            )}
+
+            {/* Photos — right col */}
+            {hasPhotos && (
+              <div className="w-full md:flex-1">
+                <h2 className="font-sora font-extrabold text-2xl text-dark tracking-tight mb-2">
+                  Photos
+                </h2>
+                <p className="font-poppins text-base text-muted mb-5">
+                  We create beautiful content that reflects your brand
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  {normalPhotos.map((photo, i) => (
+                    <div key={i} className="rounded-2xl overflow-hidden aspect-square bg-[#E0E0E0]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={photo} alt={`Okasan ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
           </div>
         </section>
       )}
@@ -147,26 +176,6 @@ export default function OkasanFunnelPage() {
               Apply Now
             </a>
             <p className="font-poppins text-sm text-muted italic mt-3">฿59,990 / month</p>
-          </div>
-        </section>
-      )}
-
-      {/* ── 6. PHOTOS ── */}
-      {hasPhotos && (
-        <section className="max-w-site mx-auto px-5 md:px-12 py-10">
-          <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-2 text-center">
-            Photos
-          </h2>
-          <p className="font-poppins text-lg text-muted text-center mb-8">
-            We create beautiful content that reflects your brand
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {normalPhotos.map((photo, i) => (
-              <div key={i} className="rounded-2xl overflow-hidden aspect-square bg-[#E0E0E0]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={photo} alt={`Okasan ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
-              </div>
-            ))}
           </div>
         </section>
       )}
