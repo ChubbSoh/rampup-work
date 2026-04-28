@@ -149,39 +149,48 @@ export default function OkasanFunnelPage() {
         </section>
       )}
 
-      {/* ── 4c. FEED DESIGN + PHOTOS ── desktop only, side by side */}
+      {/* ── 4c. FEED DESIGN + PHOTOS ── desktop only */}
       {(hasFeedDesign || hasPhotos) && (
         <section className="hidden md:block max-w-site mx-auto px-12 py-10">
-          <h2 className="font-sora font-extrabold text-2xl text-dark tracking-tight mb-2">
+          <style>{`
+            @keyframes rampup-marquee {
+              0%   { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+            .rampup-marquee { animation: rampup-marquee 18s linear infinite; }
+            .rampup-marquee:hover { animation-play-state: paused; }
+          `}</style>
+
+          <h2 className="font-sora font-extrabold text-2xl text-dark tracking-tight mb-2 text-center">
             Feed Design &amp; Photos
           </h2>
-          <p className="font-poppins text-base text-muted mb-6">
+          <p className="font-poppins text-base text-muted mb-8 text-center">
             We design your feed and create content that reflects your brand
           </p>
-          {/* CSS grid stretch: both cols same height, photos clipped to match feed design */}
-          <div className="grid grid-cols-[2fr_3fr] gap-6">
 
-            {hasFeedDesign && (
-              <div className="rounded-2xl overflow-hidden bg-[#E0E0E0] self-start">
+          {/* Feed design — centered */}
+          {hasFeedDesign && (
+            <div className="flex justify-center mb-8">
+              <div className="rounded-2xl overflow-hidden bg-[#E0E0E0] w-72">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={client.feed_design} alt="Feed Design" className="w-full h-auto" loading="lazy" />
               </div>
-            )}
+            </div>
+          )}
 
-            {hasPhotos && (
-              <div className="overflow-hidden h-full">
-                <div className="grid grid-cols-2 gap-3">
-                  {normalPhotos.map((photo, i) => (
-                    <div key={i} className="rounded-2xl overflow-hidden aspect-square bg-[#E0E0E0]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={photo} alt={`Okasan ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
-                    </div>
-                  ))}
-                </div>
+          {/* Photos — auto-scrolling marquee row */}
+          {hasPhotos && (
+            <div className="overflow-hidden">
+              <div className="rampup-marquee flex gap-4" style={{ width: 'max-content' }}>
+                {[...normalPhotos, ...normalPhotos].map((photo, i) => (
+                  <div key={i} className="shrink-0 w-52 h-52 rounded-2xl overflow-hidden bg-[#E0E0E0]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={photo} alt={`Okasan ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+                  </div>
+                ))}
               </div>
-            )}
-
-          </div>
+            </div>
+          )}
         </section>
       )}
 
