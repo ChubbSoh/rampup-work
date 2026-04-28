@@ -113,36 +113,63 @@ export default function OkasanFunnelPage() {
         </section>
       )}
 
-      {/* ── 4. FEED DESIGN + PHOTOS ── */}
-      {(hasFeedDesign || hasPhotos) && (
-        <section className="max-w-site mx-auto px-5 md:px-12 py-10">
-          <div className="flex flex-col md:flex-row gap-8 md:gap-6 items-start">
+      {/* ── 4. FEED DESIGN ── mobile only */}
+      {hasFeedDesign && (
+        <section className="md:hidden max-w-site mx-auto px-5 py-10">
+          <h2 className="font-sora font-extrabold text-2xl text-dark tracking-tight mb-2 text-center">
+            Feed Design
+          </h2>
+          <p className="font-poppins text-base text-muted text-center mb-5">
+            We design your entire social media feed
+          </p>
+          <div className="rounded-2xl overflow-hidden bg-[#E0E0E0]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={client.feed_design} alt="Feed Design" className="w-full h-auto" loading="lazy" />
+          </div>
+        </section>
+      )}
 
-            {/* Feed Design — left col */}
+      {/* ── 4b. PHOTOS ── mobile only */}
+      {hasPhotos && (
+        <section className="md:hidden max-w-site mx-auto px-5 py-10">
+          <h2 className="font-sora font-extrabold text-2xl text-dark tracking-tight mb-2 text-center">
+            Photos
+          </h2>
+          <p className="font-poppins text-base text-muted text-center mb-5">
+            We create beautiful content that reflects your brand
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            {normalPhotos.map((photo, i) => (
+              <div key={i} className="rounded-2xl overflow-hidden aspect-square bg-[#E0E0E0]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={photo} alt={`Okasan ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── 4c. FEED DESIGN + PHOTOS ── desktop only, side by side */}
+      {(hasFeedDesign || hasPhotos) && (
+        <section className="hidden md:block max-w-site mx-auto px-12 py-10">
+          <h2 className="font-sora font-extrabold text-2xl text-dark tracking-tight mb-2">
+            Feed Design &amp; Photos
+          </h2>
+          <p className="font-poppins text-base text-muted mb-6">
+            We design your feed and create content that reflects your brand
+          </p>
+          {/* CSS grid stretch: both cols same height, photos clipped to match feed design */}
+          <div className="grid grid-cols-[2fr_3fr] gap-6">
+
             {hasFeedDesign && (
-              <div className="w-full md:w-2/5">
-                <h2 className="font-sora font-extrabold text-2xl text-dark tracking-tight mb-2">
-                  Feed Design
-                </h2>
-                <p className="font-poppins text-base text-muted mb-5">
-                  We design your entire social media feed
-                </p>
-                <div className="rounded-2xl overflow-hidden bg-[#E0E0E0] max-w-[70%] md:max-w-full">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={client.feed_design} alt="Feed Design" className="w-full h-auto" loading="lazy" />
-                </div>
+              <div className="rounded-2xl overflow-hidden bg-[#E0E0E0] self-start">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={client.feed_design} alt="Feed Design" className="w-full h-auto" loading="lazy" />
               </div>
             )}
 
-            {/* Photos — right col */}
             {hasPhotos && (
-              <div className="w-full md:flex-1">
-                <h2 className="font-sora font-extrabold text-2xl text-dark tracking-tight mb-2">
-                  Photos
-                </h2>
-                <p className="font-poppins text-base text-muted mb-5">
-                  We create beautiful content that reflects your brand
-                </p>
+              <div className="overflow-hidden h-full">
                 <div className="grid grid-cols-2 gap-3">
                   {normalPhotos.map((photo, i) => (
                     <div key={i} className="rounded-2xl overflow-hidden aspect-square bg-[#E0E0E0]">
