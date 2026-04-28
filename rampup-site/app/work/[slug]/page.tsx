@@ -136,7 +136,7 @@ export default function ClientPage({ params }: Props) {
             <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">
               Feed Design
             </h2>
-            <div className="rounded-2xl overflow-hidden bg-[#E0E0E0]">
+            <div className="rounded-2xl overflow-hidden bg-[#E0E0E0] max-w-[60%]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={client.feed_design}
