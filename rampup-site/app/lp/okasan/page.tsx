@@ -40,7 +40,7 @@ export default function OkasanFunnelPage() {
       {/* ── NAV ── */}
       <div className="max-w-site mx-auto px-5 md:px-12 pt-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo-rampup-accent.svg" alt="RampUp" className="h-6 w-auto" />
+        <img src="/logo-rampup-accent.svg" alt="RampUp" className="h-6 md:h-[31px] w-auto" />
       </div>
 
       {/* ── 1. HERO ── */}
@@ -75,7 +75,7 @@ export default function OkasanFunnelPage() {
             { label: 'Google',    src: '/logo-google.svg' },
           ].map(({ label, src }) => (
             <div key={label} className="flex flex-col items-center gap-1">
-              <div className="w-9 h-9 flex items-center justify-center">
+              <div className="w-9 h-9 md:w-[47px] md:h-[47px] flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src} alt={label} className="w-full h-full object-contain" />
               </div>
@@ -180,7 +180,9 @@ export default function OkasanFunnelPage() {
 
           {/* Photos — auto-scrolling marquee row */}
           {hasPhotos && (
-            <div className="overflow-hidden">
+            <div className="relative overflow-hidden">
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-24 z-10" style={{ background: 'linear-gradient(to right, #EDEDED 0%, transparent 100%)' }} />
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-24 z-10" style={{ background: 'linear-gradient(to left, #EDEDED 0%, transparent 100%)' }} />
               <div className="rampup-marquee flex gap-4" style={{ width: 'max-content' }}>
                 {[...normalPhotos, ...normalPhotos].map((photo, i) => (
                   <div key={i} className="shrink-0 w-52 h-52 rounded-2xl overflow-hidden bg-[#E0E0E0]">
