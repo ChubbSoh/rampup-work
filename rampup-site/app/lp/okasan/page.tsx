@@ -40,7 +40,7 @@ export default function OkasanFunnelPage() {
       {/* ── NAV ── */}
       <div className="max-w-site mx-auto px-5 md:px-12 pt-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo-rampup.svg" alt="RampUp" className="h-6 w-auto" />
+        <img src="/logo-rampup-accent.svg" alt="RampUp" className="h-6 w-auto" />
       </div>
 
       {/* ── 1. HERO ── */}
