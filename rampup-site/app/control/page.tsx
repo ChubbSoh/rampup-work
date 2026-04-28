@@ -232,94 +232,7 @@ function OnboardSection() {
   )
 }
 
-// ─── Section 2: Upload Assets ─────────────────────────────────────────────────
-
-function UploadSection() {
-  const clients = clientsData.clients as ClientEntry[]
-  const [slug, setSlug]             = useState(clients[0]?.slug ?? '')
-  const [uploadType, setUploadType] = useState<'feed-design' | 'monthly-plan'>('feed-design')
-  const [files, setFiles]           = useState<FileList | null>(null)
-  const [status, setStatus]         = useState<Status>({ type: 'idle' })
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!files || files.length === 0) {
-      setStatus({ type: 'error', msg: 'Select at least one file' })
-      return
-    }
-    setStatus({ type: 'loading' })
-    try {
-      const body = new FormData()
-      body.append('slug', slug)
-      body.append('upload_type', uploadType)
-      for (const file of Array.from(files)) body.append('files', file)
-
-      const res  = await fetch('/api/upload-assets', { method: 'POST', body })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Upload failed')
-      setStatus({ type: 'success', msg: `${data.count} image(s) saved to ${data.field} — site rebuilding` })
-      setFiles(null)
-      ;(e.target as HTMLFormElement).reset()
-    } catch (err) {
-      setStatus({ type: 'error', msg: String(err instanceof Error ? err.message : err) })
-    }
-  }
-
-  return (
-    <Card title="Upload Assets">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Client">
-            <select className={inputCls} value={slug} onChange={e => setSlug(e.target.value)}>
-              {clients.map(c => (
-                <option key={c.slug} value={c.slug}>{c.name}</option>
-              ))}
-            </select>
-          </Field>
-          <Field label="Upload Type">
-            <select
-              className={inputCls}
-              value={uploadType}
-              onChange={e => setUploadType(e.target.value as 'feed-design' | 'monthly-plan')}
-            >
-              <option value="feed-design">Feed Design (1 image)</option>
-              <option value="monthly-plan">Monthly Plan (7 images)</option>
-            </select>
-          </Field>
-        </div>
-
-        <Field label="Images">
-          <input
-            type="file"
-            accept="image/*"
-            multiple={uploadType === 'monthly-plan'}
-            className={inputCls + ' py-2'}
-            onChange={e => setFiles(e.target.files)}
-            required
-          />
-          <p className="font-poppins text-[11px] text-[#AAAAAA] mt-1">
-            {uploadType === 'feed-design'
-              ? 'Select 1 image — saved as feed_design'
-              : 'Select up to 7 images — saved as monthly_plan[]'}
-          </p>
-        </Field>
-
-        <div className="flex items-center justify-between pt-1 gap-4">
-          <StatusBadge status={status} />
-          <button
-            type="submit"
-            disabled={status.type === 'loading'}
-            className="ml-auto shrink-0 bg-[#3DBE5A] text-white font-poppins font-semibold text-sm px-6 py-2.5 rounded-full hover:brightness-105 transition-all active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Upload & Save
-          </button>
-        </div>
-      </form>
-    </Card>
-  )
-}
-
-// ─── Section 3: Publish Client Content ────────────────────────────────────────
+// ─── Section 2: Publish Client Content ───────────────────────────────────────
 
 function PublishSection() {
   const clients = clientsData.clients as ClientEntry[]
@@ -441,7 +354,6 @@ export default function ControlPage() {
       {/* Sections */}
       <div className="max-w-2xl mx-auto px-5 pb-20 space-y-6">
         <OnboardSection />
-        <UploadSection />
         <PublishSection />
       </div>
     </div>
