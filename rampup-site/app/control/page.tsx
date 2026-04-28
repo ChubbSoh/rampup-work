@@ -247,15 +247,26 @@ function PublishSection() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!selectedClient) {
+      setStatus({ type: 'error', msg: 'No client selected' })
+      return
+    }
     setStatus({ type: 'loading' })
     try {
       const res = await fetch('/.netlify/functions/publish', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ client_slug: clientSlug }),
+        body: JSON.stringify({
+          action: 'publish_content',
+          client_slug: clientSlug,
+          client_name: selectedClient.name,
+          source: 'control_panel',
+          requested_at: new Date().toISOString(),
+        }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Request failed')
+      if (!data.success) throw new Error(data.message ?? 'Publish workflow did not confirm success')
       setStatus({ type: 'success', msg: 'Publishing started — check Telegram for updates' })
       reset()
     } catch (err) {
