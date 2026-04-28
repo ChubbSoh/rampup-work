@@ -48,7 +48,7 @@ exports.handler = async (event) => {
         action: action ?? 'publish_content',
         client_slug,
         client_name: client_name ?? client.name,
-        website_folder_id: client.website_folder_id,
+        websiteFolderId: client.website_folder_id,
         source: source ?? 'control_panel',
         requested_at: requested_at ?? new Date().toISOString(),
       }),
