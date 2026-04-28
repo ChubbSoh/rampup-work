@@ -132,7 +132,7 @@ export default function ThClientPage({ params }: Props) {
         {hasFeedDesign && (
           <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
             <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">ดีไซน์ฟีด</h2>
-            <div className="rounded-2xl overflow-hidden bg-[#E0E0E0] max-w-[60%] mx-auto">
+            <div className="rounded-2xl overflow-hidden bg-[#E0E0E0] md:max-w-[60%] mx-auto">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={client.feed_design} alt={`${client.name} feed design`} className="w-full h-auto" loading="lazy" />
             </div>
