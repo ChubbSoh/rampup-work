@@ -41,6 +41,15 @@ export const th = {
       above300k:  '฿300,000+',
       noGrab:     'ยังไม่มีบน Grab',
     },
+    grabAdsLabel:   'คุณกำลังใช้ Grab Ads อยู่ไหม?',
+    grabAdsYes:     'ใช่',
+    grabAdsNo:      'ไม่',
+    timelineLabel:  'คุณวางแผนจะเริ่มเมื่อไหร่?',
+    timelineOptions: [
+      { value: 'asap',     label: 'เร็วที่สุด' },
+      { value: '1_month',  label: 'ภายใน 1 เดือน' },
+      { value: 'browsing', label: 'แค่ดูข้อมูลก่อน' },
+    ],
     serviceLabel: 'ฉันสนใจ',
     services: [
       { value: 'social', label: 'บริหารโซเชียลมีเดีย' },

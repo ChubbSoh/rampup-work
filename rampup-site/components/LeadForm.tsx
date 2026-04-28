@@ -56,7 +56,10 @@ export default function LeadForm({ compact = false, lang = 'en' }: { compact?: b
           restaurant:   data.get('restaurant')  ?? '',
           email:        data.get('email')        ?? '',
           phone:        data.get('phone')        ?? '',
+          grab_revenue: data.get('grab_revenue') ?? '',
+          grab_ads:     data.get('grab_ads')     ?? '',
           service:      data.get('service')      ?? '',
+          timeline:     data.get('timeline')     ?? '',
           message:      data.get('message')      ?? '',
           page_path:    window.location.pathname,
           page_url:     window.location.href,
@@ -201,6 +204,24 @@ export default function LeadForm({ compact = false, lang = 'en' }: { compact?: b
         </div>
       )}
 
+      {!compact && (
+        <div className="flex flex-col gap-2">
+          <label className="font-poppins text-xs font-semibold text-body">
+            {isTh ? t.grabAdsLabel : 'Are you running Grab Ads?'}
+          </label>
+          <div className="flex gap-6">
+            {(['yes', 'no'] as const).map(v => (
+              <label key={v} className="flex items-center gap-2 cursor-pointer font-poppins text-sm text-body">
+                <input type="radio" name="grab_ads" value={v} className="accent-green w-4 h-4" />
+                {v === 'yes'
+                  ? (isTh ? t.grabAdsYes : 'Yes')
+                  : (isTh ? t.grabAdsNo  : 'No')}
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-col gap-2">
         <label className="font-poppins text-xs font-semibold text-body">
           {isTh ? t.serviceLabel : "I'm interested in"} <span className="text-green">*</span>
@@ -222,6 +243,26 @@ export default function LeadForm({ compact = false, lang = 'en' }: { compact?: b
           ))}
         </div>
       </div>
+
+      {!compact && (
+        <div className="flex flex-col gap-2">
+          <label className="font-poppins text-xs font-semibold text-body">
+            {isTh ? t.timelineLabel : 'When do you plan to get started?'}
+          </label>
+          <div className="flex flex-col gap-2">
+            {(isTh ? t.timelineOptions : [
+              { value: 'asap',     label: 'ASAP' },
+              { value: '1_month',  label: 'Within 1 month' },
+              { value: 'browsing', label: 'Just browsing' },
+            ]).map(s => (
+              <label key={s.value} className="flex items-center gap-3 cursor-pointer group">
+                <input type="radio" name="timeline" value={s.value} className="accent-green w-4 h-4" />
+                <span className="font-poppins text-sm text-body group-hover:text-dark transition-colors">{s.label}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
 
       {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
         <div
