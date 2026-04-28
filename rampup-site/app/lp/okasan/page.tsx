@@ -130,14 +130,22 @@ export default function OkasanFunnelPage() {
           <p className="font-poppins text-lg text-muted text-center mb-8">
             A full month of content, planned and executed
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+          <div
+            className="flex gap-3 overflow-x-auto pb-2"
+            style={{ scrollSnapType: 'x mandatory', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             {client.monthly_plan!.map((photo, i) => (
-              <div key={i} className="rounded-2xl overflow-hidden bg-[#E0E0E0]" style={{ aspectRatio: '16/9' }}>
+              <div
+                key={i}
+                className="shrink-0 rounded-2xl overflow-hidden bg-[#E0E0E0]"
+                style={{ aspectRatio: '16/9', width: 'min(85vw, 480px)', scrollSnapAlign: 'start' }}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={photo} alt={`Monthly Plan ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
               </div>
             ))}
           </div>
+          <p className="font-poppins text-[11px] text-muted/60 mt-2 text-center">swipe to see more</p>
         </section>
       )}
 
