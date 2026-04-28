@@ -20,8 +20,8 @@ const config: Config = {
         border: 'rgba(0,0,0,0.08)',
       },
       fontFamily: {
-        sora: ['Sora', 'sans-serif'],
-        poppins: ['Poppins', 'sans-serif'],
+        sora: ['var(--font-sora)', 'sans-serif'],
+        poppins: ['var(--font-poppins)', 'sans-serif'],
       },
       borderRadius: {
         pill: '100px',

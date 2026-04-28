@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import Script from 'next/script'
 
 export default function LeadForm() {
   const [submitted, setSubmitted] = useState(false)
@@ -156,6 +157,10 @@ export default function LeadForm() {
         </div>
       </div>
 
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        strategy="lazyOnload"
+      />
       {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
         <div className="cf-turnstile" data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY} data-theme="light" />
       )}
