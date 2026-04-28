@@ -4,6 +4,7 @@ import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import { getAllClients, getClientBySlug, getAllSlugs } from '@/lib/clients'
 import { streamIframeSrc } from '@/lib/stream'
+import MonthlyPlanCarousel from '@/components/MonthlyPlanCarousel'
 import type { Metadata } from 'next'
 
 interface Props {
@@ -153,27 +154,7 @@ export default function ClientPage({ params }: Props) {
             <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">
               Monthly Plan
             </h2>
-            <div
-              className="flex gap-3 overflow-x-auto pb-2"
-              style={{ scrollSnapType: 'x mandatory', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              {client.monthly_plan!.map((photo, i) => (
-                <div
-                  key={i}
-                  className="shrink-0 rounded-2xl overflow-hidden bg-[#E0E0E0]"
-                  style={{ aspectRatio: '16/9', width: 'min(85vw, 480px)', scrollSnapAlign: 'start' }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={photo}
-                    alt={`${client.name} monthly plan ${i + 1}`}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
-            <p className="font-poppins text-[11px] text-muted/60 mt-2 text-center">swipe to see more</p>
+            <MonthlyPlanCarousel photos={client.monthly_plan!} clientName={client.name} />
           </section>
         )}
 
