@@ -117,9 +117,10 @@ export default function ClientPage({ params }: Props) {
         {/* ── Videos — constrained width ── */}
         {hasVideos && (
           <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
-            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">
+            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-1">
               Videos
             </h2>
+            <p className="font-poppins text-sm text-muted mb-6">We film and edit 7 videos every month</p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {client.videos!.map((videoId, i) => {
                 const src = streamIframeSrc(videoId)
@@ -136,7 +137,7 @@ export default function ClientPage({ params }: Props) {
             <h2 className="font-sora font-bold text-2xl md:text-3xl text-dark mb-8">
               We post on these platforms
             </h2>
-            <div className="flex flex-wrap justify-center gap-y-6 gap-x-10">
+            <div className="flex flex-nowrap justify-center gap-y-6 gap-x-6 md:flex-wrap md:gap-x-10">
               {[
                 { label: 'Facebook',  src: '/logo-fb.svg' },
                 { label: 'Instagram', src: '/logo-ig.svg' },
@@ -148,7 +149,7 @@ export default function ClientPage({ params }: Props) {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={src} alt={label} className="w-full h-full object-contain" />
                   </div>
-                  <span className="font-poppins text-sm text-muted">{label}</span>
+                  <span className="font-poppins text-[11px] md:text-sm text-muted">{label}</span>
                 </div>
               ))}
             </div>
@@ -158,9 +159,10 @@ export default function ClientPage({ params }: Props) {
         {/* ── Feed Design ── */}
         {hasFeedDesign && (
           <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
-            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">
+            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-1">
               Feed Design
             </h2>
+            <p className="font-poppins text-sm text-muted mb-6">We design your instagram feed</p>
             <div className="rounded-2xl overflow-hidden bg-[#E0E0E0] md:max-w-[60%] mx-auto">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -176,9 +178,10 @@ export default function ClientPage({ params }: Props) {
         {/* ── Monthly Plan ── */}
         {hasMonthlyPlan && (
           <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
-            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">
+            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-1">
               Monthly Plan
             </h2>
+            <p className="font-poppins text-sm text-muted mb-6">We write captions and plan posting schedule</p>
             <MonthlyPlanCarousel photos={client.monthly_plan!} clientName={client.name} />
           </section>
         )}
@@ -186,9 +189,10 @@ export default function ClientPage({ params }: Props) {
         {/* ── Photos ── */}
         {hasPhotos && (
           <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
-            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">
+            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-1">
               Photos
             </h2>
+            <p className="font-poppins text-sm text-muted mb-6">We take food and vibe photos. All photos will be shared to you on drive</p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
               {normalPhotos.map((photo, i) => (
                 <div key={i} className="rounded-img overflow-hidden aspect-square bg-[#E0E0E0]">

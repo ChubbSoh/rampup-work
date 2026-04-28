@@ -92,7 +92,8 @@ export default function ThClientPage({ params }: Props) {
 
         {hasVideos && (
           <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
-            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">วิดีโอ</h2>
+            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-1">วิดีโอ</h2>
+            <p className="font-poppins text-sm text-muted mb-6">We film and edit 7 videos every month</p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {client.videos!.map((videoId, i) => {
                 const src = streamIframeSrc(videoId)
@@ -109,7 +110,7 @@ export default function ThClientPage({ params }: Props) {
             <h2 className="font-sora font-bold text-2xl md:text-3xl text-dark mb-8">
               เราโพสต์บนแพลตฟอร์มเหล่านี้
             </h2>
-            <div className="flex flex-wrap justify-center gap-y-6 gap-x-10">
+            <div className="flex flex-nowrap justify-center gap-y-6 gap-x-6 md:flex-wrap md:gap-x-10">
               {[
                 { label: 'Facebook',  src: '/logo-fb.svg' },
                 { label: 'Instagram', src: '/logo-ig.svg' },
@@ -121,7 +122,7 @@ export default function ThClientPage({ params }: Props) {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={src} alt={label} className="w-full h-full object-contain" />
                   </div>
-                  <span className="font-poppins text-sm text-muted">{label}</span>
+                  <span className="font-poppins text-[11px] md:text-sm text-muted">{label}</span>
                 </div>
               ))}
             </div>
@@ -131,7 +132,8 @@ export default function ThClientPage({ params }: Props) {
         {/* ── Feed Design ── */}
         {hasFeedDesign && (
           <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
-            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">ดีไซน์ฟีด</h2>
+            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-1">ดีไซน์ฟีด</h2>
+            <p className="font-poppins text-sm text-muted mb-6">We design your instagram feed</p>
             <div className="rounded-2xl overflow-hidden bg-[#E0E0E0] md:max-w-[60%] mx-auto">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={client.feed_design} alt={`${client.name} feed design`} className="w-full h-auto" loading="lazy" />
@@ -142,7 +144,8 @@ export default function ThClientPage({ params }: Props) {
         {/* ── Monthly Plan ── */}
         {hasMonthlyPlan && (
           <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
-            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">แผนรายเดือน</h2>
+            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-1">แผนรายเดือน</h2>
+            <p className="font-poppins text-sm text-muted mb-6">We write captions and plan posting schedule</p>
             <MonthlyPlanCarousel photos={client.monthly_plan!} clientName={client.name} />
           </section>
         )}
@@ -150,7 +153,8 @@ export default function ThClientPage({ params }: Props) {
         {/* ── Photos ── */}
         {hasPhotos && (
           <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
-            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">รูปภาพ</h2>
+            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-1">รูปภาพ</h2>
+            <p className="font-poppins text-sm text-muted mb-6">We take food and vibe photos. All photos will be shared to you on drive</p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
               {normalPhotos.map((photo, i) => (
                 <div key={i} className="rounded-img overflow-hidden aspect-square bg-[#E0E0E0]">
