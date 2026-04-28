@@ -64,8 +64,17 @@ export default function ClientPage({ params }: Props) {
   const client = getClientBySlug(params.slug)
   if (!client) notFound()
 
-  const hasVideos = client.videos && client.videos.length > 0
-  const hasPhotos = client.photos && client.photos.length > 0
+  const hasVideos      = client.videos && client.videos.length > 0
+  const hasFeedDesign  = !!client.feed_design
+  const hasMonthlyPlan = client.monthly_plan && client.monthly_plan.length > 0
+
+  // Exclude feed_design and monthly_plan URLs from the Photos section
+  const specialUrls = new Set([
+    ...(client.feed_design ? [client.feed_design] : []),
+    ...(client.monthly_plan ?? []),
+  ])
+  const normalPhotos = (client.photos ?? []).filter(p => !specialUrls.has(p))
+  const hasPhotos = normalPhotos.length > 0
 
   return (
     <>
@@ -120,6 +129,46 @@ export default function ClientPage({ params }: Props) {
           </section>
         )}
 
+        {/* ── Feed Design ── */}
+        {hasFeedDesign && (
+          <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
+            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">
+              Feed Design
+            </h2>
+            <div className="rounded-2xl overflow-hidden bg-[#E0E0E0]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={client.feed_design}
+                alt={`${client.name} feed design`}
+                className="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
+          </section>
+        )}
+
+        {/* ── Monthly Plan ── */}
+        {hasMonthlyPlan && (
+          <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
+            <h2 className="font-sora font-semibold text-2xl md:text-3xl text-dark mb-6">
+              Monthly Plan
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              {client.monthly_plan!.map((photo, i) => (
+                <div key={i} className="rounded-2xl overflow-hidden bg-[#E0E0E0]" style={{ aspectRatio: '16/9' }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={photo}
+                    alt={`${client.name} monthly plan ${i + 1}`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* ── Photos ── */}
         {hasPhotos && (
           <section className="max-w-5xl mx-auto px-5 md:px-12 mb-14">
@@ -127,7 +176,7 @@ export default function ClientPage({ params }: Props) {
               Photos
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-              {client.photos!.map((photo, i) => (
+              {normalPhotos.map((photo, i) => (
                 <div key={i} className="rounded-img overflow-hidden aspect-square bg-[#E0E0E0]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -243,7 +292,7 @@ export default function ClientPage({ params }: Props) {
         </section>
 
         {/* ── Empty state ── */}
-        {!hasVideos && !hasPhotos && (
+        {!hasVideos && !hasPhotos && !hasFeedDesign && !hasMonthlyPlan && (
           <section className="max-w-site mx-auto px-5 md:px-12 mb-16">
             <div className="bg-white rounded-card p-12 text-center">
               <div className="w-16 h-16 bg-green-light rounded-2xl flex items-center justify-center mx-auto mb-5">
