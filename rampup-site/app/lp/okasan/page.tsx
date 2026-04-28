@@ -59,7 +59,7 @@ export default function OkasanFunnelPage() {
         <p className="font-poppins text-sm italic text-muted text-center mb-4">
           We manage these platforms
         </p>
-        <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+        <div className="grid grid-cols-3 gap-x-8 gap-y-5 justify-items-center max-w-xs mx-auto">
           {[
             { label: 'Instagram', src: '/logo-ig.svg' },
             { label: 'Facebook',  src: '/logo-fb.svg' },
@@ -69,7 +69,7 @@ export default function OkasanFunnelPage() {
             { label: 'Google',    src: '/logo-google.svg' },
           ].map(({ label, src }) => (
             <div key={label} className="flex flex-col items-center gap-1">
-              <div className="w-6 h-6 flex items-center justify-center">
+              <div className="w-9 h-9 flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src} alt={label} className="w-full h-full object-contain" />
               </div>
