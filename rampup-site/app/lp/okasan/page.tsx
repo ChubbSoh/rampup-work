@@ -37,6 +37,12 @@ export default function OkasanFunnelPage() {
   return (
     <main className="min-h-[100dvh] bg-[#EDEDED]">
 
+      {/* ── NAV ── */}
+      <div className="max-w-site mx-auto px-5 md:px-12 pt-4">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo-rampup.svg" alt="RampUp" className="h-6 w-auto" />
+      </div>
+
       {/* ── 1. HERO ── */}
       <section className="max-w-site mx-auto px-5 md:px-12 pt-10 pb-6 md:pt-16 md:pb-8 text-center">
         <h1 className="font-sora font-extrabold text-[clamp(2rem,5vw,3.4rem)] leading-[1.08] tracking-tight text-dark mb-5">
