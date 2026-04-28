@@ -24,33 +24,34 @@ export default function OkasanFunnelPage() {
   if (!client) notFound()
 
   const hasVideos      = client.videos      && client.videos.length > 0
-  const hasPhotos      = client.photos      && client.photos.length > 0
   const hasFeedDesign  = !!client.feed_design
   const hasMonthlyPlan = client.monthly_plan && client.monthly_plan.length > 0
+
+  const specialUrls = new Set([
+    ...(client.feed_design ? [client.feed_design] : []),
+    ...(client.monthly_plan ?? []),
+  ])
+  const normalPhotos = (client.photos ?? []).filter(p => !specialUrls.has(p))
+  const hasPhotos = normalPhotos.length > 0
 
   return (
     <main className="min-h-[100dvh] bg-[#EDEDED]">
 
-      {/* ── 1. HERO + FORM ── */}
-      <section id="apply" className="max-w-site mx-auto px-5 md:px-12 pt-10 pb-6 md:pt-16 md:pb-8">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
-          <div className="flex-1 max-w-xl mb-10 lg:mb-0 text-center lg:text-left">
-            <h1 className="font-sora font-extrabold text-[clamp(2rem,5vw,3.4rem)] leading-[1.08] tracking-tight text-dark mb-5">
-              Increase Your<br />Dine-In and<br />Grab Sales
-            </h1>
-            <p className="font-poppins text-lg md:text-xl text-muted leading-relaxed">
-              We create content inside your restaurant and use it to increase Grab orders and walk-ins.
-            </p>
-          </div>
-          <div className="w-full lg:w-[460px] shrink-0">
-            <div className="bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-7 md:p-10">
-              <h2 className="font-sora font-bold text-xl text-dark mb-6 text-center">
-                Enter Your Info Below To Apply
-              </h2>
-              <LeadForm />
-            </div>
-          </div>
-        </div>
+      {/* ── 1. HERO ── */}
+      <section className="max-w-site mx-auto px-5 md:px-12 pt-10 pb-6 md:pt-16 md:pb-8 text-center">
+        <h1 className="font-sora font-extrabold text-[clamp(2rem,5vw,3.4rem)] leading-[1.08] tracking-tight text-dark mb-5">
+          Increase Your<br />Dine-In and<br />Grab Sales
+        </h1>
+        <p className="font-poppins text-lg md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-8">
+          We create content inside your restaurant and use it to increase Grab orders and walk-ins.
+        </p>
+        <a
+          href="#apply"
+          className="inline-block bg-[#3DBE5A] text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide"
+        >
+          Apply Now
+        </a>
+        <p className="font-poppins text-sm text-muted italic mt-3">฿59,990 / month</p>
       </section>
 
       {/* ── 2. PLATFORMS ── */}
@@ -145,7 +146,7 @@ export default function OkasanFunnelPage() {
             We create beautiful content that reflects your brand
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {client.photos!.map((photo, i) => (
+            {normalPhotos.map((photo, i) => (
               <div key={i} className="rounded-2xl overflow-hidden aspect-square bg-[#E0E0E0]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={photo} alt={`Okasan ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
@@ -232,9 +233,20 @@ export default function OkasanFunnelPage() {
             </p>
             <a href="#apply"
               className="block w-full bg-green text-white font-poppins font-bold text-base py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide text-center">
-              Get Started Now!
+              Apply Now
             </a>
+            <p className="font-poppins text-sm text-muted italic mt-2">฿59,990 / month</p>
           </div>
+        </div>
+      </section>
+
+      {/* ── APPLY FORM ── */}
+      <section id="apply" className="max-w-site mx-auto px-5 md:px-12 py-10">
+        <div className="max-w-lg mx-auto bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-7 md:p-10">
+          <h2 className="font-sora font-bold text-xl text-dark mb-6 text-center">
+            Enter Your Info Below To Apply
+          </h2>
+          <LeadForm />
         </div>
       </section>
 
