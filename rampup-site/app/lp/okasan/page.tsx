@@ -56,10 +56,10 @@ export default function OkasanFunnelPage() {
 
       {/* ── 2. PLATFORMS ── */}
       <section className="max-w-site mx-auto px-5 md:px-12 pt-4 pb-8">
-        <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-8 text-center">
+        <p className="font-poppins text-sm italic text-muted text-center mb-4">
           We manage these platforms
-        </h2>
-        <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+        </p>
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6">
           {[
             { label: 'Instagram', src: '/logo-ig.svg' },
             { label: 'Facebook',  src: '/logo-fb.svg' },
@@ -68,12 +68,12 @@ export default function OkasanFunnelPage() {
             { label: 'Lineman',   src: '/logo-lineman.svg' },
             { label: 'Google',    src: '/logo-google.svg' },
           ].map(({ label, src }) => (
-            <div key={label} className="flex flex-col items-center gap-1.5">
-              <div className="w-12 h-12 flex items-center justify-center">
+            <div key={label} className="flex flex-col items-center gap-1">
+              <div className="w-6 h-6 flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src} alt={label} className="w-full h-full object-contain" />
               </div>
-              <span className="font-poppins text-xs font-medium text-body">{label}</span>
+              <span className="font-poppins text-[10px] font-medium text-muted">{label}</span>
             </div>
           ))}
         </div>
