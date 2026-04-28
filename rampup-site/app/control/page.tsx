@@ -443,7 +443,6 @@ export default function ControlPage() {
         <OnboardSection />
         <UploadSection />
         <PublishSection />
-        <StatusSection />
       </div>
     </div>
   )
