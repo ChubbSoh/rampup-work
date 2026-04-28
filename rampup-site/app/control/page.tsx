@@ -441,6 +441,7 @@ export default function ControlPage() {
       {/* Sections */}
       <div className="max-w-2xl mx-auto px-5 pb-20 space-y-6">
         <OnboardSection />
+        <UploadSection />
         <PublishSection />
         <StatusSection />
       </div>
