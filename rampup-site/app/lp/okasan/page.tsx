@@ -133,6 +133,15 @@ export default function OkasanFunnelPage() {
             A full month of content, planned and executed
           </p>
           <MonthlyPlanCarousel photos={client.monthly_plan!} clientName={client.name} />
+          <div className="text-center mt-8">
+            <a
+              href="#apply"
+              className="inline-block bg-[#3DBE5A] text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide"
+            >
+              Apply Now
+            </a>
+            <p className="font-poppins text-sm text-muted italic mt-3">฿59,990 / month</p>
+          </div>
         </section>
       )}
 
