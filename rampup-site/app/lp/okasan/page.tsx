@@ -2,6 +2,7 @@ import { getClientBySlug } from '@/lib/clients'
 import { notFound } from 'next/navigation'
 import LeadForm from './LeadForm'
 import MonthlyPlanCarousel from '@/components/MonthlyPlanCarousel'
+import FunnelVideoSection from '@/components/FunnelVideoSection'
 
 const inclusions = [
   '7 Reels / 11 Photos',
@@ -22,6 +23,8 @@ const resultCards = [
 export default function OkasanFunnelPage() {
   const client = getClientBySlug('okasan')
   if (!client) notFound()
+
+  const customerCode = process.env.CLOUDFLARE_STREAM_CUSTOMER_CODE ?? ''
 
   const hasVideos      = client.videos      && client.videos.length > 0
   const hasFeedDesign  = !!client.feed_design
@@ -95,20 +98,10 @@ export default function OkasanFunnelPage() {
             <p className="font-poppins text-lg text-white/50 text-center mb-8">
               And Run Effective Ads To Increase Dine-In Sales
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-              {client.videos!.map((id) => (
-                <div key={id} className="relative w-full overflow-hidden rounded-2xl bg-black" style={{ aspectRatio: '9/16' }}>
-                  <iframe
-                    src={`https://iframe.videodelivery.net/${id}?muted=true&autoplay=true&loop=true&preload=none`}
-                    loading="lazy"
-                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-                    allowFullScreen
-                    className="absolute inset-0 w-full h-full"
-                    title="Okasan video"
-                  />
-                </div>
-              ))}
-            </div>
+            <FunnelVideoSection
+              videoIds={client.videos!}
+              customerCode={customerCode}
+            />
           </div>
         </section>
       )}
