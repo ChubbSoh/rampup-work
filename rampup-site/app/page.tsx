@@ -131,7 +131,7 @@ export default function Home() {
           </div>
 
           {/* Right: lead form card — FORM 1 */}
-          <div className="mt-12 lg:mt-0 w-full lg:w-[400px] shrink-0">
+          <div className="mt-12 lg:mt-0 w-full lg:w-[520px] shrink-0">
             <div className="bg-white rounded-card shadow-[0_4px_24px_rgba(0,0,0,0.07)] p-6 md:p-8">
               <h2 className="font-sora font-bold text-xl text-dark mb-1">
                 Apply Today!

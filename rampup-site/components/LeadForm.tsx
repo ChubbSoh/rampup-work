@@ -160,104 +160,111 @@ export default function LeadForm({ compact = false, lang = 'en' }: { compact?: b
         </div>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label className="font-poppins text-xs font-semibold text-body">
-          {isTh ? t.emailLabel : 'Email'} <span className="text-green">*</span>
-        </label>
-        <input
-          name="email"
-          type="email"
-          required
-          placeholder="you@restaurant.com"
-          className="font-poppins text-sm bg-[#EDEDED] border border-black/[0.08] rounded-xl px-4 py-3 placeholder-faint focus:outline-none focus:border-green/40 focus:bg-white transition-all"
-        />
-      </div>
-
-      <div className="flex flex-col gap-1.5">
-        <label className="font-poppins text-xs font-semibold text-body">
-          {isTh ? t.restaurantLabel : 'Restaurant Name'} <span className="text-green">*</span>
-        </label>
-        <input
-          name="restaurant"
-          type="text"
-          required
-          placeholder={isTh ? t.restaurantPlaceholder : 'e.g. Okasan Izakaya'}
-          className="font-poppins text-sm bg-[#EDEDED] border border-black/[0.08] rounded-xl px-4 py-3 placeholder-faint focus:outline-none focus:border-green/40 focus:bg-white transition-all"
-        />
-      </div>
-
-      {!compact && (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
           <label className="font-poppins text-xs font-semibold text-body">
-            {isTh ? t.grabRevenueLabel : 'Current Grab Monthly Revenue (฿)'}
+            {isTh ? t.emailLabel : 'Email'} <span className="text-green">*</span>
           </label>
-          <select
-            name="grab_revenue"
-            className="font-poppins text-sm bg-[#EDEDED] border border-black/[0.08] rounded-xl px-4 py-3 text-body focus:outline-none focus:border-green/40 focus:bg-white transition-all appearance-none cursor-pointer"
-          >
-            <option value="">{isTh ? t.grabOptions.default : 'Select range...'}</option>
-            <option value="under_30k">{isTh ? t.grabOptions.under30k : 'Under ฿30,000'}</option>
-            <option value="30k_100k">{isTh ? t.grabOptions.r30to100 : '฿30,000 – ฿100,000'}</option>
-            <option value="100k_300k">{isTh ? t.grabOptions.r100to300 : '฿100,000 – ฿300,000'}</option>
-            <option value="300k_plus">{isTh ? t.grabOptions.above300k : '฿300,000+'}</option>
-            <option value="no_grab">{isTh ? t.grabOptions.noGrab : 'Not on Grab yet'}</option>
-          </select>
+          <input
+            name="email"
+            type="email"
+            required
+            placeholder="you@restaurant.com"
+            className="font-poppins text-sm bg-[#EDEDED] border border-black/[0.08] rounded-xl px-4 py-3 placeholder-faint focus:outline-none focus:border-green/40 focus:bg-white transition-all"
+          />
         </div>
-      )}
+        <div className="flex flex-col gap-1.5">
+          <label className="font-poppins text-xs font-semibold text-body">
+            {isTh ? t.restaurantLabel : 'Restaurant Name'} <span className="text-green">*</span>
+          </label>
+          <input
+            name="restaurant"
+            type="text"
+            required
+            placeholder={isTh ? t.restaurantPlaceholder : 'e.g. Okasan Izakaya'}
+            className="font-poppins text-sm bg-[#EDEDED] border border-black/[0.08] rounded-xl px-4 py-3 placeholder-faint focus:outline-none focus:border-green/40 focus:bg-white transition-all"
+          />
+        </div>
+      </div>
 
       {!compact && (
-        <div className="flex flex-col gap-2">
-          <label className="font-poppins text-xs font-semibold text-body">
-            {isTh ? t.grabAdsLabel : 'Are you running Grab Ads?'}
-          </label>
-          <div className="flex gap-6">
-            {(['yes', 'no'] as const).map(v => (
-              <label key={v} className="flex items-center gap-2 cursor-pointer font-poppins text-sm text-body">
-                <input type="radio" name="grab_ads" value={v} className="accent-green w-4 h-4" />
-                {v === 'yes'
-                  ? (isTh ? t.grabAdsYes : 'Yes')
-                  : (isTh ? t.grabAdsNo  : 'No')}
-              </label>
-            ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="font-poppins text-xs font-semibold text-body">
+              {isTh ? t.grabRevenueLabel : 'Grab Monthly Revenue (฿)'}
+            </label>
+            <select
+              name="grab_revenue"
+              className="font-poppins text-sm bg-[#EDEDED] border border-black/[0.08] rounded-xl px-4 py-3 text-body focus:outline-none focus:border-green/40 focus:bg-white transition-all appearance-none cursor-pointer"
+            >
+              <option value="">{isTh ? t.grabOptions.default : 'Select range...'}</option>
+              <option value="under_30k">{isTh ? t.grabOptions.under30k : 'Under ฿30,000'}</option>
+              <option value="30k_100k">{isTh ? t.grabOptions.r30to100 : '฿30,000 – ฿100,000'}</option>
+              <option value="100k_300k">{isTh ? t.grabOptions.r100to300 : '฿100,000 – ฿300,000'}</option>
+              <option value="300k_plus">{isTh ? t.grabOptions.above300k : '฿300,000+'}</option>
+              <option value="no_grab">{isTh ? t.grabOptions.noGrab : 'Not on Grab yet'}</option>
+            </select>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="font-poppins text-xs font-semibold text-body">
+              {isTh ? t.grabAdsLabel : 'Running Grab Ads?'}
+            </label>
+            <div className="flex gap-6 mt-1">
+              {(['yes', 'no'] as const).map(v => (
+                <label key={v} className="flex items-center gap-2 cursor-pointer font-poppins text-sm text-body">
+                  <input type="radio" name="grab_ads" value={v} className="accent-green w-4 h-4" />
+                  {v === 'yes'
+                    ? (isTh ? t.grabAdsYes : 'Yes')
+                    : (isTh ? t.grabAdsNo  : 'No')}
+                </label>
+              ))}
+            </div>
           </div>
         </div>
       )}
 
-      <div className="flex flex-col gap-2">
-        <label className="font-poppins text-xs font-semibold text-body">
-          {isTh ? t.serviceLabel : "I'm interested in"} <span className="text-green">*</span>
-        </label>
-        <div className="flex flex-col gap-2">
-          {services.map((s) => (
-            <label key={s.value} className="flex items-center gap-3 cursor-pointer group">
-              <input
-                type="radio"
-                name="service"
-                value={s.value}
-                required
-                className="accent-green w-4 h-4"
-              />
-              <span className="font-poppins text-sm text-body group-hover:text-dark transition-colors">
-                {s.label}
-              </span>
+      {!compact ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2">
+            <label className="font-poppins text-xs font-semibold text-body">
+              {isTh ? t.serviceLabel : "I'm interested in"} <span className="text-green">*</span>
             </label>
-          ))}
+            <div className="flex flex-col gap-2">
+              {services.map((s) => (
+                <label key={s.value} className="flex items-center gap-3 cursor-pointer group">
+                  <input type="radio" name="service" value={s.value} required className="accent-green w-4 h-4" />
+                  <span className="font-poppins text-sm text-body group-hover:text-dark transition-colors">{s.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="font-poppins text-xs font-semibold text-body">
+              {isTh ? t.timelineLabel : 'When to get started?'}
+            </label>
+            <div className="flex flex-col gap-2">
+              {(isTh ? t.timelineOptions : [
+                { value: 'asap',     label: 'ASAP' },
+                { value: '1_month',  label: 'Within 1 month' },
+                { value: 'browsing', label: 'Just browsing' },
+              ]).map(s => (
+                <label key={s.value} className="flex items-center gap-3 cursor-pointer group">
+                  <input type="radio" name="timeline" value={s.value} className="accent-green w-4 h-4" />
+                  <span className="font-poppins text-sm text-body group-hover:text-dark transition-colors">{s.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-
-      {!compact && (
+      ) : (
         <div className="flex flex-col gap-2">
           <label className="font-poppins text-xs font-semibold text-body">
-            {isTh ? t.timelineLabel : 'When do you plan to get started?'}
+            {isTh ? t.serviceLabel : "I'm interested in"} <span className="text-green">*</span>
           </label>
           <div className="flex flex-col gap-2">
-            {(isTh ? t.timelineOptions : [
-              { value: 'asap',     label: 'ASAP' },
-              { value: '1_month',  label: 'Within 1 month' },
-              { value: 'browsing', label: 'Just browsing' },
-            ]).map(s => (
+            {services.map((s) => (
               <label key={s.value} className="flex items-center gap-3 cursor-pointer group">
-                <input type="radio" name="timeline" value={s.value} className="accent-green w-4 h-4" />
+                <input type="radio" name="service" value={s.value} required className="accent-green w-4 h-4" />
                 <span className="font-poppins text-sm text-body group-hover:text-dark transition-colors">{s.label}</span>
               </label>
             ))}
