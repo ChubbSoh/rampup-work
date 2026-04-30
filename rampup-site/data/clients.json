@@ -248,28 +248,37 @@
       "location": "Bangkok",
       "description": "Western",
       "months": 0,
-      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/7b217cd9-957f-401a-577f-07512557e600/public",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/3d1b2c72-d038-47fb-ca05-3dd05730ee00/public",
       "page": "lamaya-bkk.html",
       "drive_folder": "LAMAYA BKK",
       "website_folder_id": "12t-ZTnHG0Tl6kxlz4M-8yv6fxXc25PLn",
       "photos": [
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/7b217cd9-957f-401a-577f-07512557e600/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/74f3a257-e0cb-4194-0d85-4b2b05bb5800/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/85da3f39-17f6-4052-a7e3-0555c30e1c00/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/7241a222-eb17-4e4b-8060-bc72a5ce4900/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/276b1980-2b9c-4e97-9321-1f4a41cc7200/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e7e61377-8386-485e-29c8-0c86b542b600/public",
-        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/54747cc9-7417-471f-0321-54ce47d2cd00/public"
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/3d1b2c72-d038-47fb-ca05-3dd05730ee00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e03a31b6-9d40-4c30-5ef2-605625c16200/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/8e001ef6-891a-4fd0-8ba9-4ce109b96b00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/544157a1-8790-411a-b6ec-9a6492d80600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/b83097cf-f69a-44f3-a706-5888045e8000/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/1adcd503-688f-4389-9c95-009743653800/public"
       ],
       "videos": [
-        "fd5208a386f494aca024ce7e694acc71",
-        "f954926378b2164d0c1799a9c49d310f",
-        "ab8b163378ace3dde6a6e4a9bb0e32ac",
-        "6eb1592fa57ee4c76fbb29eee265bcf1",
-        "880da4a3f710b8ff8c369f352e1dadf8",
-        "87d2be60a431eee3a31e70d685e71278"
+        "8f55c39424c3a8f9787bac64fbc155b6",
+        "c8b1d83d3aa0d2f4fa088c0cb2e684ad",
+        "0239eec0d98d0a30e0ea537a5a1911fa",
+        "f5d913a92e75e5a4db12c8399faf4e74",
+        "4b68ec6ad3665e90ccf49021fd09ed8a",
+        "e76bbaa09d9f7d61327f14a5749c36a6"
       ],
-      "last_updated": "2026-04-16"
+      "last_updated": "2026-04-30",
+      "feed_design": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ec32bbeb-c5dd-48b2-c4aa-adbfd8c14800/public",
+      "monthly_plan": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/da901819-ba22-4f16-6d7a-2142a7912a00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/7cfc584b-883e-4466-4ae0-3c8f31984600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/92ea55c1-0de5-401a-ef1d-9abc16927a00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/90fd573a-4491-4354-9a8c-be3929f78500/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/916cd95e-bbeb-432b-2a47-222e263aed00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/6f1c3a69-78d0-4a99-cab6-f03bc7173000/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a79600fe-9aa0-446b-c54a-5dcac81e8700/public"
+      ]
     },
     {
       "name": "Pitmaster",
