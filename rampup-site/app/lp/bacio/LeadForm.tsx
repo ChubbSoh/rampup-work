@@ -32,6 +32,9 @@ export default function LeadForm() {
         if (typeof window !== 'undefined' && (window as any).dataLayer) {
           ;(window as any).dataLayer.push({ event: 'lead_form_submit', event_id })
         }
+        if (typeof window !== 'undefined' && (window as any).fbq) {
+          ;(window as any).fbq('track', 'Lead', {}, { eventID: event_id })
+        }
         fetch('/api/lead-relay', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

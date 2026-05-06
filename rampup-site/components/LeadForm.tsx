@@ -81,6 +81,9 @@ export default function LeadForm({ compact = false, lang = 'en' }: { compact?: b
             event_id,
           })
         }
+        if (typeof window !== 'undefined' && (window as any).fbq) {
+          ;(window as any).fbq('track', 'Lead', {}, { eventID: event_id })
+        }
 
         fetch('/api/lead-relay', {
           method: 'POST',
