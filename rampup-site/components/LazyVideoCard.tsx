@@ -11,8 +11,15 @@ interface Props {
 export default function LazyVideoCard({ videoId, customerCode, label }: Props) {
   const [playing, setPlaying] = useState(false)
 
-  const thumbnailUrl = `https://customer-${customerCode}.cloudflarestream.com/${videoId}/thumbnails/thumbnail.jpg?height=360`
-  const iframeSrc    = `https://customer-${customerCode}.cloudflarestream.com/${videoId}/iframe?primaryColor=3DBE5A&muted=true&autoplay=true`
+  const thumbBase       = `https://customer-${customerCode}.cloudflarestream.com/${videoId}/thumbnails/thumbnail.jpg`
+  const thumbnailUrl    = `${thumbBase}?width=640`
+  const thumbnailSrcSet = [
+    `${thumbBase}?width=320 320w`,
+    `${thumbBase}?width=480 480w`,
+    `${thumbBase}?width=640 640w`,
+    `${thumbBase}?width=800 800w`,
+  ].join(', ')
+  const iframeSrc       = `https://customer-${customerCode}.cloudflarestream.com/${videoId}/iframe?primaryColor=3DBE5A&muted=true&autoplay=true`
 
   return (
     <div
@@ -33,6 +40,8 @@ export default function LazyVideoCard({ videoId, customerCode, label }: Props) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={thumbnailUrl}
+            srcSet={thumbnailSrcSet}
+            sizes="(max-width: 768px) 50vw, 33vw"
             alt={label}
             loading="lazy"
             decoding="async"
