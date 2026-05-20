@@ -19,11 +19,18 @@ export default function LeadForm() {
     const form = e.currentTarget
     const data = new FormData(form)
     try {
-      await fetch(window.location.pathname, {
+      const netlifyRes = await fetch(window.location.pathname, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data as unknown as Record<string, string>).toString(),
       })
+      if (!netlifyRes.ok) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn('[Lead] Netlify form submit failed — skipping Lead event', netlifyRes.status)
+        }
+        setSubmitted(true)
+        return
+      }
       if (!webhookSent.current) {
         webhookSent.current = true
         const event_id = `lead_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`
@@ -34,6 +41,9 @@ export default function LeadForm() {
         }
         if (typeof window !== 'undefined' && (window as any).fbq) {
           ;(window as any).fbq('track', 'Lead', {}, { eventID: event_id })
+        }
+        if (process.env.NODE_ENV !== 'production') {
+          console.info('[Lead] fired', { event_id, page_type: 'funnel-okasan', fbq: typeof (window as any).fbq === 'function' })
         }
         fetch('/api/lead-relay', {
           method: 'POST',
