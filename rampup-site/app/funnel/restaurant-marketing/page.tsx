@@ -44,9 +44,30 @@ const proofStatsCompact = [
 ]
 
 const secretCards = [
-  { title: 'Vibe',    blurb: 'People, space, atmosphere.',     bg: '/funnel/vibe.jpg' },
-  { title: 'Ads',     blurb: 'Reels and Stories that convert.', bg: '/funnel/ads.jpg' },
-  { title: 'Results', blurb: 'More orders, more bookings.',     bg: '/funnel/results.jpg' },
+  {
+    n: '01',
+    title: 'Make The Food Craveable',
+    body: 'We film your food in a way that makes people stop scrolling and want to eat.',
+    detail: 'Pasta pulls, sizzling dishes, sushi, cocktails, desserts, and chef moments.',
+  },
+  {
+    n: '02',
+    title: 'Sell The Restaurant Vibe',
+    body: 'People don’t only choose food. They choose the feeling of the place.',
+    detail: 'Date nights, group dinners, rooftop drinks, birthdays, private rooms, and nightlife.',
+  },
+  {
+    n: '03',
+    title: 'Retarget People Who Show Interest',
+    body: 'We use your best videos and photos for Facebook, Instagram, TikTok, and Google.',
+    detail: 'Then we retarget people who watched, clicked, or engaged — and push them to book through IG messages, Facebook messages, or Google Maps search ads.',
+  },
+  {
+    n: '04',
+    title: 'Bring In Customers',
+    body: 'The goal is not just views. The goal is more people visiting, booking, ordering, and remembering your brand.',
+    detail: 'More attention, more cravings, more bookings, and more Grab sales.',
+  },
 ]
 
 const restaurantBlocks = [
@@ -306,75 +327,41 @@ export default function RestaurantMarketingFunnel() {
 
       {/* ── 2. THE SECRET ── */}
       <section className="bg-black py-14 md:py-20">
-        <div className="max-w-site mx-auto px-5 md:px-12 text-center">
-          <h2 className="font-sora font-extrabold text-2xl md:text-4xl text-white tracking-tight mb-3 max-w-2xl mx-auto">
-            The Secret Behind Our Restaurant Marketing System
-          </h2>
-          <p className="font-poppins text-base md:text-lg text-white/60 max-w-2xl mx-auto mb-10">
-            We create content people actually want to watch, then turn it into cravings, visits, and orders.
-          </p>
-
-          {/* Big vertical 9:16 video */}
-          <div className="mx-auto mb-8 w-full max-w-[280px] md:max-w-[340px]">
-            <div
-              className="relative rounded-2xl overflow-hidden bg-[#1a1a1a]"
-              style={{
-                aspectRatio: '9/16',
-                backgroundImage: "url('/funnel/craving.jpg')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            >
-              {/* Bottom gradient + label */}
-              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-              <div className="absolute inset-x-0 bottom-5 px-5 text-center">
-                <p className="font-poppins text-[10px] font-bold text-white/60 uppercase tracking-[2px] mb-1">
-                  The Goal
-                </p>
-                <p className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight">
-                  Make People Crave
-                </p>
-              </div>
-              {/* Play indicator (visual only — replace block with iframe when real video is wired up) */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-14 h-14 rounded-full bg-white/85 flex items-center justify-center shadow-lg">
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                    <path d="M7 4.5l12 7-12 7V4.5z" fill="#2D2D2D" />
-                  </svg>
-                </div>
-              </div>
-            </div>
+        <div className="max-w-site mx-auto px-5 md:px-12">
+          <div className="text-center mb-10">
+            <h2 className="font-sora font-extrabold text-2xl md:text-4xl text-white tracking-tight mb-3 max-w-2xl mx-auto">
+              The Secret Behind Our Restaurant Marketing System
+            </h2>
+            <p className="font-poppins text-base md:text-lg text-white/60 max-w-2xl mx-auto">
+              We create content people actually want to watch, then turn it into cravings, visits, and orders.
+            </p>
           </div>
 
-          {/* 3 small horizontal cards */}
-          <div className="grid grid-cols-3 gap-2 md:gap-4 max-w-2xl mx-auto mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-10">
             {secretCards.map((c) => (
-              <div
-                key={c.title}
-                className="relative rounded-xl overflow-hidden aspect-[4/3] flex flex-col justify-end p-3 md:p-4 text-left"
-                style={{
-                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%), url('${c.bg}')`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundColor: '#1a1a1a',
-                }}
-              >
-                <p className="font-sora font-bold text-sm md:text-lg text-white leading-tight">
+              <div key={c.n} className="bg-white/[0.06] border border-white/10 rounded-2xl p-6 md:p-7 text-left">
+                <p className="font-sora font-extrabold text-2xl text-green mb-3">{c.n}</p>
+                <h3 className="font-sora font-bold text-lg md:text-xl text-white mb-2 leading-tight">
                   {c.title}
+                </h3>
+                <p className="font-poppins text-sm md:text-base text-white/75 leading-relaxed mb-3">
+                  {c.body}
                 </p>
-                <p className="hidden md:block font-poppins text-[11px] text-white/60 mt-1">
-                  {c.blurb}
+                <p className="font-poppins text-xs md:text-sm text-white/45 leading-relaxed">
+                  {c.detail}
                 </p>
               </div>
             ))}
           </div>
 
-          <a
-            href="#apply"
-            className="inline-block bg-[#3DBE5A] text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide"
-          >
-            Apply Today
-          </a>
+          <div className="text-center">
+            <a
+              href="#apply"
+              className="inline-block bg-[#3DBE5A] text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide"
+            >
+              Apply Today
+            </a>
+          </div>
         </div>
       </section>
 
