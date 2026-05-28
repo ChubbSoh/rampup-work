@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer'
 import LeadForm from './LeadForm'
+import LazyVideoCard from '@/components/LazyVideoCard'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -8,48 +9,71 @@ export const metadata: Metadata = {
     'Premium videos, photos, posts, and ads for restaurants that want more attention, bookings, and online sales.',
 }
 
-const cuisineCards = [
-  {
-    label: 'Italian',
-    blurb: 'Food, wine, interiors, premium dining.',
-    bg: 'linear-gradient(135deg, #6B2D2D 0%, #3D1818 100%)',
-    accent: '#E8B65A',
-  },
-  {
-    label: 'Japanese',
-    blurb: 'Izakaya, sushi, drinks, group dining.',
-    bg: 'linear-gradient(135deg, #1A2540 0%, #0E1626 100%)',
-    accent: '#E55353',
-  },
-  {
-    label: 'Party / Nightlife',
-    blurb: 'Cocktails, people, lights, weekend energy.',
-    bg: 'linear-gradient(135deg, #2A0E40 0%, #14062A 100%)',
-    accent: '#C99CFF',
-  },
+const igFollowerStrips = [
+  { img: '/funnel/ig-followers-1.jpg', label: 'Client 1' },
+  { img: '/funnel/ig-followers-2.jpg', label: 'Client 2' },
+  { img: '/funnel/ig-followers-3.jpg', label: 'Client 3' },
+  { img: '/funnel/ig-followers-4.jpg', label: 'Client 4' },
 ]
 
-const positioningCards = [
-  { title: 'Food',  blurb: 'Menu and dish content.' },
-  { title: 'Vibe',  blurb: 'People, space, atmosphere.' },
-  { title: 'Sales', blurb: 'Ads, bookings, Grab, LINE MAN.' },
+const viewsCards = [
+  { img: '/funnel/views-1.jpg', label: 'Reel views' },
+  { img: '/funnel/views-2.jpg', label: 'Reel views' },
+  { img: '/funnel/views-3.jpg', label: 'Reel views' },
+  { img: '/funnel/views-4.jpg', label: 'Reel views' },
+]
+
+const proofCuisineCards = [
+  { label: 'Italian',   videoId: '8bdba9b6311127b6cb436011a72437c1' }, // Bacio
+  { label: 'Japanese',  videoId: 'e46ed58ab9797e6d75305b29c7daf78c' }, // Okasan
+  { label: 'Nightlife', videoId: '9123991d33686a667c769cd643648cbe' }, // Lamaya BKK
+  { label: 'Thai',      videoId: 'dc607b4317bc7a778e1212777ca49c89' }, // Raluek
+]
+
+const proofScreenshots = [
+  { label: 'Meta Ads Result',   img: '/funnel/proof-ads.jpg' },
+  { label: 'Grab Sales Result', img: '/funnel/proof-grab.jpg' },
+]
+
+const proofStatsCompact = [
+  { value: '18+',  label: 'Restaurant Clients' },
+  { value: '10M+', label: 'Content Views Generated' },
+  { value: '3x',   label: 'Average Grab Revenue Growth' },
+]
+
+const secretCards = [
+  { title: 'Vibe',    blurb: 'People, space, atmosphere.',     bg: '/funnel/vibe.jpg' },
+  { title: 'Ads',     blurb: 'Reels and Stories that convert.', bg: '/funnel/ads.jpg' },
+  { title: 'Results', blurb: 'More orders, more bookings.',     bg: '/funnel/results.jpg' },
 ]
 
 const restaurantBlocks = [
   {
     title: 'Italian Restaurants',
+    images: [
+      'https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/33414344-41d4-4f97-8799-30fb63221900/public',
+      'https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/24e81406-7f9c-4dd5-a516-5ec39e8b4600/public',
+    ],
     focus: 'Pasta, wine, chef plating, warm interiors, date nights, desserts.',
     angle: 'Premium, relaxed, appetizing.',
     highlight: 'Make people crave the meal before they book the table.',
   },
   {
     title: 'Japanese / Izakaya Restaurants',
+    images: [
+      'https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/b498f63b-7d1f-49cd-7e03-ff9cd27b7d00/public',
+      'https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/6338cab8-78f9-4a5b-dd98-7628616a0000/public',
+    ],
     focus: 'Sushi, skewers, highballs, beer, private rooms, chef hands, group dining.',
     angle: 'Social, detailed, energetic.',
     highlight: 'Food, drinks, and atmosphere made for nights out.',
   },
   {
     title: 'Party / Nightlife Restaurants',
+    images: [
+      'https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a82abda7-cead-4c9e-bf43-112fc9fbfd00/public',
+      'https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/1c00e65c-451d-4ea2-6335-eb403bd86f00/public',
+    ],
     focus: 'Cocktails, lights, people, music, birthdays, groups, events.',
     angle: 'Energy, experience, FOMO.',
     highlight: 'Not just dinner. A night people want to be part of.',
@@ -67,6 +91,7 @@ const adChannels = [
   { title: 'Facebook Ads',       blurb: 'Local awareness, promos, events, bookings, retargeting.' },
   { title: 'Instagram Ads',      blurb: 'Visuals, brand image, Reels, lifestyle, discovery.' },
   { title: 'TikTok Ads',         blurb: 'Short videos, food discovery, younger audiences, viral content.' },
+  { title: 'Google Ads',         blurb: 'Search, Maps, and intent-based traffic looking for your cuisine.' },
   { title: 'Grab & LINE MAN Ads',blurb: 'For restaurants that want more delivery orders.' },
 ]
 
@@ -75,14 +100,6 @@ const systemSteps = [
   { n: '02', title: 'Shoot',      blurb: 'We film and photograph your food, space, people, and vibe.' },
   { n: '03', title: 'Post',       blurb: 'We turn it into monthly social media content.' },
   { n: '04', title: 'Advertise',  blurb: 'We run ads to bring more people to your restaurant.' },
-]
-
-const proofStats = [
-  { value: '18+',    label: 'Restaurant Clients' },
-  { value: '10M+',   label: 'Content Views' },
-  { value: '3x',     label: 'Avg Grab Revenue Growth' },
-  { value: 'Premium',label: 'Monthly Production' },
-  { value: 'Social + Paid', label: 'Ads Strategy' },
 ]
 
 const beforeAfter = {
@@ -114,18 +131,8 @@ function PrimaryCta({ label = 'Apply Now', href = '#apply' }: { label?: string; 
   )
 }
 
-function SecondaryCta({ label = 'See Our Work', href = '/work' }: { label?: string; href?: string }) {
-  return (
-    <a
-      href={href}
-      className="inline-block font-poppins font-semibold text-sm text-dark border border-black/15 px-8 py-3.5 rounded-pill hover:border-black/30 transition-all"
-    >
-      {label}
-    </a>
-  )
-}
-
 export default function RestaurantMarketingFunnel() {
+  const customerCode = process.env.CLOUDFLARE_STREAM_CUSTOMER_CODE ?? ''
   return (
     <main className="min-h-[100dvh] bg-[#EDEDED] scroll-smooth">
 
@@ -136,63 +143,219 @@ export default function RestaurantMarketingFunnel() {
       </div>
 
       {/* ── 1. HERO ── */}
-      <section className="max-w-site mx-auto px-5 md:px-12 pt-10 pb-10 md:pt-16 md:pb-16 text-center">
-        <div className="inline-flex items-center gap-2 bg-green-light border border-green/20 rounded-tag px-3 py-1 mb-6">
-          <span className="w-2 h-2 rounded-full bg-green animate-pulse" />
-          <span className="font-poppins text-[11px] font-bold text-green uppercase tracking-[1.5px]">
-            Restaurants Only
-          </span>
-        </div>
-
-        <h1 className="font-sora font-extrabold text-[clamp(2rem,5vw,3.6rem)] leading-[1.08] tracking-tight text-dark mb-5 max-w-3xl mx-auto">
-          Restaurant Marketing Built Only For Restaurants
+      <section className="max-w-site mx-auto px-5 md:px-12 pt-8 pb-12 md:pt-14 md:pb-16 text-center">
+        <h1 className="font-sora font-extrabold text-[clamp(1.9rem,5.5vw,3.6rem)] leading-[1.08] tracking-tight text-dark mb-4 max-w-3xl mx-auto">
+          More Dine-In Customers.<br />More Grab Orders.
         </h1>
-        <p className="font-poppins text-lg md:text-xl text-muted leading-relaxed max-w-2xl mx-auto mb-10">
-          Premium videos, photos, posts, and ads for restaurants that want more attention, bookings, and online sales.
+        <p className="font-poppins text-base md:text-xl text-muted leading-relaxed max-w-2xl mx-auto mb-8">
+          From Instagram and TikTok to Google and Grab, we manage the channels that bring customers to your restaurant.
         </p>
 
-        {/* Cuisine cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-          {cuisineCards.map((c) => (
-            <div
-              key={c.label}
-              className="relative rounded-2xl overflow-hidden p-6 md:p-8 text-left aspect-[4/5] sm:aspect-[3/4] flex flex-col justify-end"
-              style={{ background: c.bg }}
-            >
-              <div className="absolute top-4 right-4 w-8 h-8 rounded-full" style={{ background: c.accent, opacity: 0.85 }} />
-              <h3 className="font-sora font-extrabold text-2xl md:text-3xl text-white mb-2">
-                {c.label}
-              </h3>
-              <p className="font-poppins text-sm text-white/70 leading-relaxed">
-                {c.blurb}
-              </p>
-            </div>
-          ))}
-        </div>
+        <PrimaryCta />
+        <p className="font-poppins text-sm italic text-muted mt-4">
+          Trusted by 20+ restaurants
+        </p>
+      </section>
 
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
-          <PrimaryCta />
-          <SecondaryCta />
+      {/* ── 1a. SOCIAL PROOF (followers + views) ── */}
+      <section className="bg-[#EDEDED] pb-10 md:pb-16">
+        <div className="max-w-site mx-auto px-5 md:px-12">
+          {/* 4 thin IG follower strips */}
+          <p className="font-poppins text-[11px] font-bold text-muted uppercase tracking-[1.5px] mb-3 px-1">
+            Real Client IG Growth
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+            {igFollowerStrips.map((s) => (
+              <div
+                key={s.label}
+                className="relative rounded-xl overflow-hidden bg-white shadow-[0_2px_8px_rgba(0,0,0,0.05)] aspect-[5/1]"
+                style={{
+                  backgroundImage: `url('${s.img}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              />
+            ))}
+          </div>
+
+          {/* 2 vertical 9:16 view screenshots */}
+          <p className="font-poppins text-[11px] font-bold text-muted uppercase tracking-[1.5px] mb-3 px-1">
+            Content That Performs
+          </p>
+          <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-2xl mx-auto">
+            {viewsCards.map((v, i) => (
+              <div
+                key={i}
+                className="relative rounded-2xl overflow-hidden bg-[#1a1a1a] shadow-[0_2px_16px_rgba(0,0,0,0.06)]"
+                style={{
+                  aspectRatio: '9/16',
+                  backgroundImage: `url('${v.img}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ── 2. POSITIONING ── */}
-      <section className="bg-black py-14 md:py-20">
-        <div className="max-w-site mx-auto px-5 md:px-12 text-center">
-          <h2 className="font-sora font-extrabold text-2xl md:text-4xl text-white tracking-tight mb-3 max-w-2xl mx-auto">
-            We don&apos;t do every industry. We do restaurants.
-          </h2>
-          <p className="font-poppins text-base md:text-lg text-white/60 max-w-2xl mx-auto mb-10">
-            We understand food, vibe, menus, promotions, bookings, delivery apps, and what makes people choose where to eat.
+      {/* ── 1b. PROOF ── */}
+      <section className="bg-[#EDEDED] pb-12 md:pb-20">
+        <div className="max-w-site mx-auto px-5 md:px-12">
+          {/* Cuisine carousel */}
+          <p className="font-poppins text-[11px] font-bold text-muted uppercase tracking-[1.5px] mb-3 px-1">
+            Restaurant Content We Create
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
-            {positioningCards.map((p) => (
-              <div key={p.title} className="bg-white/[0.06] border border-white/10 rounded-2xl p-6 text-left">
-                <h3 className="font-sora font-bold text-xl text-white mb-2">{p.title}</h3>
-                <p className="font-poppins text-sm text-white/60">{p.blurb}</p>
+          <div
+            className="-mx-5 px-5 md:mx-0 md:px-0 mb-10 flex gap-3 md:grid md:grid-cols-4 md:gap-4"
+            style={{
+              overflowX: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              scrollSnapType: 'x mandatory',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            }}
+          >
+            {proofCuisineCards.map((c) => (
+              <div
+                key={c.label}
+                className="shrink-0 w-[70vw] md:w-auto relative"
+                style={{ scrollSnapAlign: 'start' }}
+              >
+                <LazyVideoCard
+                  videoId={c.videoId}
+                  customerCode={customerCode}
+                  label={c.label}
+                />
+                <span className="absolute top-3 left-3 z-10 font-poppins text-[11px] font-bold uppercase tracking-[1px] bg-black/55 text-white px-2.5 py-1 rounded-full backdrop-blur-sm pointer-events-none">
+                  {c.label}
+                </span>
               </div>
             ))}
           </div>
+
+          {/* Screenshot carousel */}
+          <p className="font-poppins text-[11px] font-bold text-muted uppercase tracking-[1.5px] mb-3 px-1">
+            Content, Ads & Sales Proof
+          </p>
+          <div
+            className="-mx-5 px-5 md:mx-0 md:px-0 mb-10 flex gap-3 md:grid md:grid-cols-2 md:gap-4 md:max-w-3xl md:mx-auto"
+            style={{
+              overflowX: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              scrollSnapType: 'x mandatory',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            }}
+          >
+            {proofScreenshots.map((s) => (
+              <div
+                key={s.label}
+                className="shrink-0 w-[82vw] md:w-auto bg-white rounded-2xl overflow-hidden shadow-[0_2px_16px_rgba(0,0,0,0.06)]"
+                style={{ scrollSnapAlign: 'start' }}
+              >
+                <div
+                  className="relative aspect-[4/5] bg-[#E0E0E0]"
+                  style={{
+                    backgroundImage: `url('${s.img}')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'top center',
+                  }}
+                />
+                <div className="px-4 py-3 border-t border-black/[0.05]">
+                  <p className="font-poppins text-sm font-semibold text-dark">{s.label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Compact stat row */}
+          <div className="grid grid-cols-3 gap-2 md:gap-4">
+            {proofStatsCompact.map((s) => (
+              <div key={s.label} className="bg-white rounded-2xl p-4 md:p-6 text-center">
+                <div className="font-sora font-extrabold text-2xl md:text-4xl text-dark mb-1">
+                  {s.value}
+                </div>
+                <div className="font-poppins text-[11px] md:text-sm text-muted leading-tight">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 2. THE SECRET ── */}
+      <section className="bg-black py-14 md:py-20">
+        <div className="max-w-site mx-auto px-5 md:px-12 text-center">
+          <h2 className="font-sora font-extrabold text-2xl md:text-4xl text-white tracking-tight mb-3 max-w-2xl mx-auto">
+            The Secret Behind Our Restaurant Marketing System
+          </h2>
+          <p className="font-poppins text-base md:text-lg text-white/60 max-w-2xl mx-auto mb-10">
+            We create content people actually want to watch, then turn it into cravings, visits, and orders.
+          </p>
+
+          {/* Big vertical 9:16 video */}
+          <div className="mx-auto mb-8 w-full max-w-[280px] md:max-w-[340px]">
+            <div
+              className="relative rounded-2xl overflow-hidden bg-[#1a1a1a]"
+              style={{
+                aspectRatio: '9/16',
+                backgroundImage: "url('/funnel/craving.jpg')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              {/* Bottom gradient + label */}
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+              <div className="absolute inset-x-0 bottom-5 px-5 text-center">
+                <p className="font-poppins text-[10px] font-bold text-white/60 uppercase tracking-[2px] mb-1">
+                  The Goal
+                </p>
+                <p className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight">
+                  Make People Crave
+                </p>
+              </div>
+              {/* Play indicator (visual only — replace block with iframe when real video is wired up) */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full bg-white/85 flex items-center justify-center shadow-lg">
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                    <path d="M7 4.5l12 7-12 7V4.5z" fill="#2D2D2D" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 3 small horizontal cards */}
+          <div className="grid grid-cols-3 gap-2 md:gap-4 max-w-2xl mx-auto mb-10">
+            {secretCards.map((c) => (
+              <div
+                key={c.title}
+                className="relative rounded-xl overflow-hidden aspect-[4/3] flex flex-col justify-end p-3 md:p-4 text-left"
+                style={{
+                  backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%), url('${c.bg}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundColor: '#1a1a1a',
+                }}
+              >
+                <p className="font-sora font-bold text-sm md:text-lg text-white leading-tight">
+                  {c.title}
+                </p>
+                <p className="hidden md:block font-poppins text-[11px] text-white/60 mt-1">
+                  {c.blurb}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <a
+            href="#apply"
+            className="inline-block bg-[#3DBE5A] text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide"
+          >
+            Apply Today
+          </a>
         </div>
       </section>
 
@@ -209,6 +372,19 @@ export default function RestaurantMarketingFunnel() {
           {restaurantBlocks.map((b) => (
             <div key={b.title} className="bg-white rounded-card p-7 flex flex-col gap-4">
               <h3 className="font-sora font-bold text-xl text-dark">{b.title}</h3>
+              <div className="grid grid-cols-2 gap-2">
+                {b.images.map((src) => (
+                  <div
+                    key={src}
+                    className="rounded-xl overflow-hidden aspect-square bg-[#E0E0E0]"
+                    style={{
+                      backgroundImage: `url('${src}')`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  />
+                ))}
+              </div>
               <div>
                 <p className="font-poppins text-[11px] font-bold text-green uppercase tracking-[1.5px] mb-1">Creative Focus</p>
                 <p className="font-poppins text-sm text-body leading-relaxed">{b.focus}</p>
@@ -257,7 +433,7 @@ export default function RestaurantMarketingFunnel() {
         <p className="font-poppins text-base text-muted text-center mb-10 max-w-xl mx-auto">
           One system. From shoot to sales.
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
           {adChannels.map((a) => (
             <div key={a.title} className="bg-white rounded-2xl p-6 flex flex-col gap-2">
               <h3 className="font-sora font-bold text-lg text-dark">{a.title}</h3>
@@ -285,25 +461,6 @@ export default function RestaurantMarketingFunnel() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── 7. PROOF ── */}
-      <section className="max-w-site mx-auto px-5 md:px-12 py-14 md:py-20">
-        <h2 className="font-sora font-extrabold text-2xl md:text-4xl text-dark tracking-tight mb-10 text-center">
-          Built for real restaurant marketing
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
-          {proofStats.map((s) => (
-            <div key={s.label} className="bg-white rounded-2xl p-5 md:p-6">
-              <div className="font-sora font-extrabold text-2xl md:text-3xl text-dark mb-1">
-                {s.value}
-              </div>
-              <div className="font-poppins text-xs md:text-sm text-muted leading-snug">
-                {s.label}
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -355,21 +512,19 @@ export default function RestaurantMarketingFunnel() {
         <p className="font-poppins text-base md:text-lg text-muted text-center mb-10 max-w-xl mx-auto">
           Tell us about your restaurant and we&apos;ll see how we can help.
         </p>
-        <div className="max-w-xl mx-auto bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-7 md:p-10">
-          <LeadForm />
-        </div>
-      </section>
-
-      {/* ── 10. FINAL CTA ── */}
-      <section className="max-w-site mx-auto px-5 md:px-12 pb-20">
-        <div className="bg-dark rounded-card p-8 md:p-14 text-center">
-          <h2 className="font-sora font-extrabold text-2xl md:text-4xl text-white tracking-tight mb-4 max-w-2xl mx-auto">
-            Make your restaurant look as good online as it feels in real life.
-          </h2>
-          <p className="font-poppins text-base md:text-lg text-white/60 mb-8 max-w-2xl mx-auto">
-            Premium content, better ads, and a restaurant marketing system built to help you grow.
-          </p>
-          <PrimaryCta />
+        <div className="max-w-xl mx-auto bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] overflow-hidden">
+          {/* Price header */}
+          <div className="bg-dark text-white text-center px-7 py-6 md:px-10 md:py-7">
+            <p className="font-poppins text-[11px] font-bold uppercase tracking-[2px] text-green mb-1">
+              Grab and Socials
+            </p>
+            <p className="font-sora font-extrabold text-3xl md:text-4xl tracking-tight">
+              ฿59,990 <span className="font-poppins font-normal text-base text-white/60">/ month</span>
+            </p>
+          </div>
+          <div className="p-7 md:p-10">
+            <LeadForm />
+          </div>
         </div>
       </section>
 
