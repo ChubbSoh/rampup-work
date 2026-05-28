@@ -6,19 +6,23 @@ interface Props {
   videoId: string
   customerCode: string
   label: string
+  /** Tailwind-style sizes hint; defaults match a 2-col mobile / 3-col desktop layout. */
+  sizes?: string
+  /** Cap the largest srcset width. Smaller = faster load, less sharp on big screens. Default 800. */
+  maxThumbWidth?: 320 | 480 | 640 | 800
 }
 
-export default function LazyVideoCard({ videoId, customerCode, label }: Props) {
+export default function LazyVideoCard({
+  videoId, customerCode, label,
+  sizes = '(max-width: 768px) 50vw, 33vw',
+  maxThumbWidth = 800,
+}: Props) {
   const [playing, setPlaying] = useState(false)
 
-  const thumbBase       = `https://customer-${customerCode}.cloudflarestream.com/${videoId}/thumbnails/thumbnail.jpg`
-  const thumbnailUrl    = `${thumbBase}?width=640`
-  const thumbnailSrcSet = [
-    `${thumbBase}?width=320 320w`,
-    `${thumbBase}?width=480 480w`,
-    `${thumbBase}?width=640 640w`,
-    `${thumbBase}?width=800 800w`,
-  ].join(', ')
+  const thumbBase = `https://customer-${customerCode}.cloudflarestream.com/${videoId}/thumbnails/thumbnail.jpg`
+  const allWidths: number[] = [320, 480, 640, 800].filter(w => w <= maxThumbWidth)
+  const thumbnailUrl    = `${thumbBase}?width=${allWidths[allWidths.length - 1]}`
+  const thumbnailSrcSet = allWidths.map(w => `${thumbBase}?width=${w} ${w}w`).join(', ')
   const iframeSrc       = `https://customer-${customerCode}.cloudflarestream.com/${videoId}/iframe?primaryColor=3DBE5A&muted=true&autoplay=true`
 
   return (
@@ -41,7 +45,7 @@ export default function LazyVideoCard({ videoId, customerCode, label }: Props) {
           <img
             src={thumbnailUrl}
             srcSet={thumbnailSrcSet}
-            sizes="(max-width: 768px) 50vw, 33vw"
+            sizes={sizes}
             alt={label}
             loading="lazy"
             decoding="async"
