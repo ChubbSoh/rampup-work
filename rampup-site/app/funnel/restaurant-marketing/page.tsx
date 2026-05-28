@@ -227,7 +227,6 @@ export default function RestaurantMarketingFunnel() {
                   customerCode={customerCode}
                   label={c.label}
                   sizes="(max-width: 768px) 70vw, 25vw"
-                  maxThumbWidth={480}
                 />
                 <span className="absolute top-3 left-3 z-10 font-poppins text-[11px] font-bold uppercase tracking-[1px] bg-black/55 text-white px-2.5 py-1 rounded-full backdrop-blur-sm pointer-events-none">
                   {c.label}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface Props {
   videoId: string
@@ -18,18 +18,45 @@ export default function LazyVideoCard({
   maxThumbWidth = 800,
 }: Props) {
   const [playing, setPlaying] = useState(false)
+  const [warmed,  setWarmed]  = useState(false)
+  const didWarm = useRef(false)
 
-  const thumbBase = `https://customer-${customerCode}.cloudflarestream.com/${videoId}/thumbnails/thumbnail.jpg`
+  const streamOrigin = `https://customer-${customerCode}.cloudflarestream.com`
+  const thumbBase = `${streamOrigin}/${videoId}/thumbnails/thumbnail.jpg`
   const allWidths: number[] = [320, 480, 640, 800].filter(w => w <= maxThumbWidth)
   const thumbnailUrl    = `${thumbBase}?width=${allWidths[allWidths.length - 1]}`
   const thumbnailSrcSet = allWidths.map(w => `${thumbBase}?width=${w} ${w}w`).join(', ')
-  const iframeSrc       = `https://customer-${customerCode}.cloudflarestream.com/${videoId}/iframe?primaryColor=3DBE5A&muted=true&autoplay=true`
+  const iframeSrc       = `${streamOrigin}/${videoId}/iframe?primaryColor=3DBE5A&muted=true&autoplay=true`
+
+  // Preconnect to Stream origin once when the card mounts — saves DNS+TLS
+  // handshake when the user finally clicks play.
+  useEffect(() => {
+    if (!customerCode) return
+    const existing = document.head.querySelector(`link[data-stream-preconnect="${customerCode}"]`)
+    if (existing) return
+    const link = document.createElement('link')
+    link.rel = 'preconnect'
+    link.href = streamOrigin
+    link.crossOrigin = 'anonymous'
+    link.setAttribute('data-stream-preconnect', customerCode)
+    document.head.appendChild(link)
+  }, [customerCode, streamOrigin])
+
+  // Warm up the iframe URL on hover/touch — starts loading the player JS
+  // before the user actually clicks, so click-to-play feels instant.
+  function warmUp() {
+    if (didWarm.current) return
+    didWarm.current = true
+    setWarmed(true)
+  }
 
   return (
     <div
       className="relative w-full overflow-hidden rounded-2xl bg-black cursor-pointer"
       style={{ aspectRatio: '9/16' }}
       onClick={() => setPlaying(true)}
+      onMouseEnter={warmUp}
+      onTouchStart={warmUp}
     >
       {playing ? (
         <iframe
@@ -58,6 +85,17 @@ export default function LazyVideoCard({
               </svg>
             </div>
           </div>
+          {warmed && (
+            // Hidden warm-up iframe — preloads the Stream player JS
+            // so the click-to-play swap feels instant.
+            <iframe
+              src={iframeSrc.replace('autoplay=true', 'autoplay=false')}
+              aria-hidden
+              tabIndex={-1}
+              className="absolute -left-[9999px] top-0 w-px h-px opacity-0 pointer-events-none"
+              title=""
+            />
+          )}
         </>
       )}
     </div>
