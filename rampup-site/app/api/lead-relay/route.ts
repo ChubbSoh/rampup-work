@@ -64,7 +64,9 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { name, email, phone, turnstile_token, ...rest } = body
 
-    if (!name || !email || !phone) {
+    // Require name + at least one contact channel (phone OR email).
+    // Some funnels (e.g. grab-offer) collect phone/LINE only and skip email.
+    if (!name || (!email && !phone)) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
