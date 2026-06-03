@@ -115,8 +115,8 @@ export default function GrabOfferPage() {
         </p>
         <div className="flex flex-col gap-3 md:gap-5 max-w-2xl mx-auto">
           {[
-            { before: '/results/proof-1-before.jpg', after: '/results/proof-1-after.jpg' },
-            { before: '/results/proof-2-before.jpg', after: '/results/proof-2-after.jpg' },
+            { before: '/funnel/Grabstore-before-1.jpg', after: '/funnel/Grabstore-after-1.jpg' },
+            { before: '/funnel/Grabstore-before-2.jpg', after: '/funnel/Grabstore-after-2.jpg' },
           ].map((pair, idx) => (
             <div key={idx} className="grid grid-cols-2 gap-3 md:gap-5">
               {([
