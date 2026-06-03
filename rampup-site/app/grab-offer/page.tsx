@@ -126,8 +126,6 @@ export default function GrabOfferPage() {
                 <div key={label} className="relative rounded-2xl overflow-hidden bg-[#E4E4E4] shadow-[0_2px_16px_rgba(0,0,0,0.06)]" style={{ aspectRatio: '9/16' }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={src} alt={label} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover object-top" />
-                  <div className="absolute inset-x-0 top-0 h-[18%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to bottom, rgba(255,255,255,0.85) 0%, transparent 100%)' }} />
-                  <div className="absolute inset-x-0 bottom-0 h-[18%] z-10 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(255,255,255,0.85) 0%, transparent 100%)' }} />
                   <span className={`absolute top-3 left-3 font-poppins text-[11px] font-bold px-2.5 py-1 rounded-full text-white z-10 ${label === 'BEFORE' ? 'bg-[#9E9E9E]' : 'bg-[#3DBE5A]'}`}>
                     {label}
                   </span>
