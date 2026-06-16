@@ -572,6 +572,23 @@
       "drive_folder_id": "0AMUHXAiE0l0HUk9PVA",
       "website_folder_id": "1-W1wVRBRuyjvvtmmsHtDwievbktkSy3t",
       "brand_assets_folder_id": "1eABlZCIUbMRlRbV7KNhmduQ_ztsl5DnH"
+    },
+    {
+      "name": "51bakery",
+      "slug": "51bakery",
+      "cuisine": "cafe",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-06-16",
+      "cover": "",
+      "page": "51bakery.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AKHSiSFECdC7Uk9PVA",
+      "website_folder_id": "173CLYPoCSzmx3uxn1DXQ2U4qoA1nrLtK",
+      "brand_assets_folder_id": "1tVKtH8uDUZryW5xdW60nToUWC2TrXG7z"
     }
   ]
 }
