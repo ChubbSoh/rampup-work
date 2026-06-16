@@ -589,6 +589,23 @@
       "drive_folder_id": "0AKHSiSFECdC7Uk9PVA",
       "website_folder_id": "173CLYPoCSzmx3uxn1DXQ2U4qoA1nrLtK",
       "brand_assets_folder_id": "1tVKtH8uDUZryW5xdW60nToUWC2TrXG7z"
+    },
+    {
+      "name": "hanger",
+      "slug": "hanger",
+      "cuisine": "western",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-06-16",
+      "cover": "",
+      "page": "hanger.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AJGsYsCL-ICtUk9PVA",
+      "website_folder_id": "1rWJryB4r3tOjvkFF4zwDQg3xidL9wkC4",
+      "brand_assets_folder_id": "1Y8Xl3J4o0tiljzt_b1wfmmxOaTRxsoQI"
     }
   ]
 }
