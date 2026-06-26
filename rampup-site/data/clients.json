@@ -606,6 +606,23 @@
       "drive_folder_id": "0AJGsYsCL-ICtUk9PVA",
       "website_folder_id": "1rWJryB4r3tOjvkFF4zwDQg3xidL9wkC4",
       "brand_assets_folder_id": "1Y8Xl3J4o0tiljzt_b1wfmmxOaTRxsoQI"
+    },
+    {
+      "name": "Savoey",
+      "slug": "savoey",
+      "cuisine": "thai",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-06-26",
+      "cover": "",
+      "page": "savoey.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AF8SEEs_zeMeUk9PVA",
+      "website_folder_id": "1hKeQ5saIltojA9C7D-6VXzErpF1Hh5Ur",
+      "brand_assets_folder_id": "1Dd9QcSWhpFpfkf6hfvc5IBbkvyvdYHzH"
     }
   ]
 }
