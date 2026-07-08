@@ -346,10 +346,36 @@
       "location": "Bangkok",
       "description": "Italian",
       "months": 0,
-      "cover": "",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/165aec7d-1e0a-4ba8-ed91-36f81ae67700/public",
       "page": "semolina.html",
       "drive_folder": "Semolina",
-      "website_folder_id": "1vaWGSVUUqqKzhGhlnJTh_d0csJ9BO4Ca"
+      "website_folder_id": "1vaWGSVUUqqKzhGhlnJTh_d0csJ9BO4Ca",
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/165aec7d-1e0a-4ba8-ed91-36f81ae67700/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c3ceb355-65ab-4796-7088-0b18eda13800/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/33f52608-5043-459f-4e00-0bd04d5c0500/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/3dc4f9c7-b214-46b0-0793-3f1e057ba800/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/1259cd4f-6acd-4c12-24cf-281637663e00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/1fd92cc7-541a-4a32-b831-647bb979f300/public"
+      ],
+      "videos": [
+        "4f3edcdf8e11202099189c63ea1ba0a9",
+        "539d5bb8b9cd31268daec35d1bbf44b8",
+        "349a8f603428ddb48fa974f4a78c0d17",
+        "9d157564afc5dc110f72e10baa414946",
+        "a14e76aa663cf741d4597e17198e3955",
+        "e40292d3fc2de3e7397cd33edc4b7081"
+      ],
+      "last_updated": "2026-07-08",
+      "feed_design": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/239a5e1c-53ba-4e7a-c729-092d3f045500/public",
+      "monthly_plan": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/09928ad1-2872-4cf9-0f5b-a6ef6d293900/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/948b46e8-9402-4ac4-9b4b-3a6c079fe600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d045a57e-4043-45ce-2c24-ebb046e1ac00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/754189ed-907c-4702-bc44-cf9cf1f7fe00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e998bd42-31d5-4031-5b5c-f5958b909400/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/eeb78291-e429-419b-7d90-81f493d63400/public"
+      ]
     },
     {
       "name": "Sudo Social",
