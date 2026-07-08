@@ -556,14 +556,36 @@
       "description": "",
       "months": 0,
       "active": false,
-      "last_updated": "2026-04-20",
-      "cover": "",
+      "last_updated": "2026-07-08",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a54ab178-479a-41ca-6c4a-d9c7cdd44e00/public",
       "page": "opera.html",
-      "photos": [],
-      "videos": [],
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a54ab178-479a-41ca-6c4a-d9c7cdd44e00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ad807e70-4cb8-4d0b-1553-0b59faf93900/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/6e427ce1-3bc6-4aab-b339-3d9d18a95b00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/8d900f86-ccd8-4825-a9af-2a5888bfaf00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/b3fa4f74-3a44-4872-4a03-e3d0b781b300/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/6a13fffe-2f0b-448c-d835-8d8b89cce300/public"
+      ],
+      "videos": [
+        "1e7940b268628e78b8de9173cc5a513d",
+        "6522f514da2cc1834604a955942e71ab",
+        "6280f80835c7b69c9a86e534850cf588",
+        "31255f7c5b98073b38eebb5346009472",
+        "340dce5b021345b2b432cf31f35bfa07",
+        "1e748b309286da81a9ec661512990078"
+      ],
       "drive_folder_id": "0ANp42jlHlhd8Uk9PVA",
       "website_folder_id": "1AbE3oTvLkFuM1KbXx7hyN-UqIOJBQjnb",
-      "brand_assets_folder_id": "1W7WjXte9sAoS5YjvAqDoBgs_qr7b6mv6"
+      "brand_assets_folder_id": "1W7WjXte9sAoS5YjvAqDoBgs_qr7b6mv6",
+      "feed_design": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/fda3972a-1483-49f5-a2c4-c60559ee6e00/public",
+      "monthly_plan": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/9a62dfc5-f37a-4ca3-9f80-8f5ffb34cd00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/71434378-fba2-40ac-4081-3ea3c968c400/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/753c9756-5054-4c0e-cd48-684172e13600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/53e11768-4f99-4cca-f625-45843f6f5500/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a8fe52c4-fbe4-46a7-e978-17c203116d00/public"
+      ]
     },
     {
       "name": "Tanaka",
