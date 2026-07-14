@@ -715,6 +715,23 @@
       "drive_folder_id": "0AIu-VDqFVfk1Uk9PVA",
       "website_folder_id": "1OTIreAWB5Gy92bPmOjoQxD6Zzq1R8KZN",
       "brand_assets_folder_id": "1UYqKmAWkZVgfgmPo--EpBu6Zz2eNSoWw"
+    },
+    {
+      "name": "Napha",
+      "slug": "napha",
+      "cuisine": "thai",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-07-14",
+      "cover": "",
+      "page": "napha.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0APy5H-xDr3PqUk9PVA",
+      "website_folder_id": "1AbwBS1-Nl65k2nIaHSdkvdGNOl2ssnzY",
+      "brand_assets_folder_id": "1T-aY5n5fb8TrpQn1dwIJAN4QeymxXP13"
     }
   ]
 }
