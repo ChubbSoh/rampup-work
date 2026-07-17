@@ -728,6 +728,23 @@
       "drive_folder_id": "0APy5H-xDr3PqUk9PVA",
       "website_folder_id": "1AbwBS1-Nl65k2nIaHSdkvdGNOl2ssnzY",
       "brand_assets_folder_id": "1T-aY5n5fb8TrpQn1dwIJAN4QeymxXP13"
+    },
+    {
+      "name": "Brewave Ari",
+      "slug": "brewave-ari",
+      "cuisine": "japanese",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-07-17",
+      "cover": "",
+      "page": "brewave-ari.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AKzEM19YIgqSUk9PVA",
+      "website_folder_id": "1DLOqpcYmMrcuOU8yOg7Ni62WFepOVphg",
+      "brand_assets_folder_id": "1Iz0VKV-cztxI-9xRvAPHmqKlIj0_CbwU"
     }
   ]
 }
