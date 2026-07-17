@@ -19,27 +19,6 @@ const filters = [
   { value: 'mexican', label: 'Mexican' },
 ]
 
-const cuisineColors: Record<string, string> = {
-  japanese: 'bg-[#E8F8ED] text-[#3DBE5A]',
-  italian: 'bg-orange-50 text-orange-600',
-  korean: 'bg-purple-50 text-purple-600',
-  western: 'bg-blue-50 text-blue-600',
-  nightlife: 'bg-indigo-50 text-indigo-600',
-  cafe: 'bg-amber-50 text-amber-700',
-  thai: 'bg-yellow-50 text-yellow-700',
-  chinese: 'bg-rose-50 text-rose-600',
-  mexican: 'bg-red-50 text-red-600',
-}
-
-function CuisineTag({ cuisine }: { cuisine: string }) {
-  const color = cuisineColors[cuisine.toLowerCase()] ?? 'bg-[#E0E0E0] text-[#3D3D3D]'
-  return (
-    <span className={`inline-block font-poppins text-[10px] font-bold uppercase tracking-[1.5px] px-2.5 py-1 rounded-full ${color}`}>
-      {cuisine}
-    </span>
-  )
-}
-
 function VideoEmbed({ src }: { src: string }) {
   return (
     <div className="relative w-full overflow-hidden rounded-[14px] bg-[#2D2D2D]" style={{ aspectRatio: '9/16' }}>
@@ -64,7 +43,8 @@ function PhotoPlaceholder({ initial, index }: { initial: string; index: number }
   )
 }
 
-const PRIORITY_SLUGS = ['lamaya-bkk', 'okasan', 'bacio']
+const PRIORITY_SLUGS = ['okasan', 'mans-table', 'lamaya-bkk', 'ballistic-pizza', 'semolina']
+const END_SLUGS = ['yun', 'vstreet', 'long-john-silvers', 'kynd-kulture']
 
 function ClientCard({ client }: { client: ClientWithSrcs }) {
   const videoSrcs = client.videoSrcs ?? []
@@ -78,13 +58,19 @@ function ClientCard({ client }: { client: ClientWithSrcs }) {
     <article className="bg-white rounded-[16px] overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
       {/* Header — no circle logo */}
       <div className="px-4 pt-5 pb-4 flex items-center justify-between gap-3">
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <h2 className="font-sora font-bold text-[15px] text-[#2D2D2D] leading-tight truncate">
             {client.name}
           </h2>
           <span className="font-poppins text-[11px] text-[#888888]">{client.location}</span>
         </div>
-        <CuisineTag cuisine={client.cuisine} />
+        {/* Mobile-only View Work button, top-right of card */}
+        <Link
+          href={`/work/${client.slug}`}
+          className="md:hidden shrink-0 inline-flex items-center gap-1 bg-[#3DBE5A] text-white font-poppins text-[12px] font-semibold rounded-[100px] px-3.5 py-[7px] hover:brightness-105 transition-all active:scale-[0.97]"
+        >
+          View Work →
+        </Link>
       </div>
 
       {/* Videos */}
@@ -142,8 +128,8 @@ function ClientCard({ client }: { client: ClientWithSrcs }) {
         </div>
       </div>
 
-      {/* Footer — just the View Work button */}
-      <div className="px-4 pb-5 flex justify-end">
+      {/* Footer — View Work button (desktop only; mobile shows it top-right of the card) */}
+      <div className="hidden md:flex px-4 pb-5 justify-end">
         <Link
           href={`/work/${client.slug}`}
           className="shrink-0 inline-flex items-center gap-1.5 bg-[#3DBE5A] text-white font-poppins text-[13px] font-semibold rounded-[100px] px-5 py-[10px] hover:brightness-105 transition-all active:scale-[0.97]"
@@ -168,11 +154,15 @@ export default function WorkFeed({ clients }: { clients: ClientWithSrcs[] }) {
   }
 
   const prioritySet = new Set(PRIORITY_SLUGS)
+  const endSet = new Set(END_SLUGS)
   const priority = PRIORITY_SLUGS
     .map(slug => clients.find(c => c.slug === slug))
     .filter((c): c is ClientWithSrcs => c !== undefined)
-  const rest = clients.filter(c => !prioritySet.has(c.slug))
-  const ordered = [...priority, ...rest]
+  const end = END_SLUGS
+    .map(slug => clients.find(c => c.slug === slug))
+    .filter((c): c is ClientWithSrcs => c !== undefined)
+  const rest = clients.filter(c => !prioritySet.has(c.slug) && !endSet.has(c.slug))
+  const ordered = [...priority, ...rest, ...end]
 
   const filtered =
     active === 'all'
