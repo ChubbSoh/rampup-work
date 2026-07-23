@@ -745,6 +745,23 @@
       "drive_folder_id": "0AKzEM19YIgqSUk9PVA",
       "website_folder_id": "1DLOqpcYmMrcuOU8yOg7Ni62WFepOVphg",
       "brand_assets_folder_id": "1Iz0VKV-cztxI-9xRvAPHmqKlIj0_CbwU"
+    },
+    {
+      "name": "Aela",
+      "slug": "aela",
+      "cuisine": "nightlife",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-07-23",
+      "cover": "",
+      "page": "aela.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AG0WxL_e-YvEUk9PVA",
+      "website_folder_id": "1NLpux8kRVfSFh-av2bhXJB9aNCPZehTE",
+      "brand_assets_folder_id": "1gb8n4zJUgN213ICISAwkUkXCM8pWg9aF"
     }
   ]
 }
