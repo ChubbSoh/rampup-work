@@ -762,6 +762,23 @@
       "drive_folder_id": "0AG0WxL_e-YvEUk9PVA",
       "website_folder_id": "1NLpux8kRVfSFh-av2bhXJB9aNCPZehTE",
       "brand_assets_folder_id": "1gb8n4zJUgN213ICISAwkUkXCM8pWg9aF"
+    },
+    {
+      "name": "Misono",
+      "slug": "misono",
+      "cuisine": "japanese",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-07-23",
+      "cover": "",
+      "page": "misono.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AOC2HWf6ybYOUk9PVA",
+      "website_folder_id": "1yac1ksJx7VPwVmUSVIoMi79Hv16ndeXX",
+      "brand_assets_folder_id": "15A9cc856u5PalW2DhlT_PYsDfgQsJRNV"
     }
   ]
 }
