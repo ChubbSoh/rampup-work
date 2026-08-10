@@ -2,6 +2,7 @@ import Footer from '@/components/Footer'
 import LeadForm from './LeadForm'
 import LazyVideoCard from '@/components/LazyVideoCard'
 import type { Metadata } from 'next'
+import { restaurantRampUp, formatTHB } from '@/lib/pricing'
 
 export const metadata: Metadata = {
   title: 'Restaurant Marketing Built Only For Restaurants | RampUp',
@@ -107,6 +108,7 @@ const deliverables = [
   { title: '7 Videos',           blurb: 'Short-form videos for Reels, TikTok, Facebook, and ads.' },
   { title: 'Photos Every Month', blurb: 'Food, drinks, interiors, people, events, and menu photos.' },
   { title: '18 Posts',           blurb: 'Consistent content to keep your restaurant active online.' },
+  { title: 'Google Map Ads',     blurb: 'Included — get found by people searching for your cuisine nearby.' },
   { title: 'Captions & Planning',blurb: 'Content planned around your menu, offers, and brand.' },
 ]
 
@@ -525,7 +527,7 @@ export default function RestaurantMarketingFunnel() {
               Grab and Socials
             </p>
             <p className="font-sora font-extrabold text-3xl md:text-4xl tracking-tight">
-              ฿59,990 <span className="font-poppins font-normal text-base text-white/60">/ month</span>
+              ฿{formatTHB(restaurantRampUp.price)} <span className="font-poppins font-normal text-base text-white/60">/ month</span>
             </p>
           </div>
           <div className="p-7 md:p-10">

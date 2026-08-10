@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import LeadForm from './LeadForm'
 import MonthlyPlanCarousel from '@/components/MonthlyPlanCarousel'
 import FunnelVideoSection from '@/components/FunnelVideoSection'
+import { restaurantRampUp, formatTHB } from '@/lib/pricing'
 
 const inclusions = [
   '7 Reels / 11 Photos',
@@ -10,6 +11,7 @@ const inclusions = [
   '2 Dine-in Ad Campaigns',
   'Content Management for Instagram, Facebook, TikTok',
   'Ad Management',
+  'Google Map Ads',
   '10–15 Menu photos',
 ]
 
@@ -60,7 +62,7 @@ export default function BacioFunnelPage() {
         >
           Apply Now
         </a>
-        <p className="font-poppins text-sm text-muted italic mt-3">฿59,990 / month</p>
+        <p className="font-poppins text-sm text-muted italic mt-3">฿{formatTHB(restaurantRampUp.price)} / month</p>
       </section>
 
       {/* ── 2. PLATFORMS ── */}
@@ -204,7 +206,7 @@ export default function BacioFunnelPage() {
             >
               Apply Now
             </a>
-            <p className="font-poppins text-sm text-muted italic mt-3">฿59,990 / month</p>
+            <p className="font-poppins text-sm text-muted italic mt-3">฿{formatTHB(restaurantRampUp.price)} / month</p>
           </div>
         </section>
       )}
@@ -282,7 +284,7 @@ export default function BacioFunnelPage() {
           </ul>
           <div className="border-t border-black/[0.07] pt-6 text-center">
             <p className="font-sora font-extrabold text-3xl text-dark mb-1">
-              ฿59,990 <span className="font-poppins font-normal text-base text-muted">per month</span>
+              ฿{formatTHB(restaurantRampUp.price)} <span className="font-poppins font-normal text-base text-muted">per month</span>
             </p>
           </div>
         </div>

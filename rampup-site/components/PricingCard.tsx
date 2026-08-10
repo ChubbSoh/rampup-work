@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import LeadForm from '@/components/LeadForm'
 import { th, type Lang } from '@/lib/translations'
+import { restaurantRampUp, websiteBuild, formatTHB } from '@/lib/pricing'
 
 export default function PricingCard({
   contextNote,
@@ -37,6 +38,7 @@ export default function PricingCard({
     '10 menu items shot & styled',
     '18 posts per month',
     'Instagram, Facebook & TikTok management',
+    'Google Map Ads',
     'Content strategy & planning',
     'Editing, posting & optimization',
   ]
@@ -44,7 +46,6 @@ export default function PricingCard({
   const addons = isTh ? t.addons : [
     { label: 'Grow your Grab sales',          price: '฿9,990 / month' },
     { label: 'Capture Lineman demand',         price: '฿4,990 / month' },
-    { label: 'Get found on Google Maps',       price: '฿5,990 / month' },
     { label: 'Turn LINE into a sales channel', price: '฿3,990 / month' },
   ]
 
@@ -71,7 +72,7 @@ export default function PricingCard({
             {planTag}
           </p>
           <p className="font-sora font-extrabold text-4xl md:text-5xl text-dark mb-2">
-            ฿49,990 <span className="font-poppins font-normal text-lg text-muted">{perMonth}</span>
+            ฿{formatTHB(restaurantRampUp.price)} <span className="font-poppins font-normal text-lg text-muted">{perMonth}</span>
           </p>
           <p className="font-poppins text-[11px] text-muted/50 mb-7">{adNote}</p>
 
@@ -102,7 +103,7 @@ export default function PricingCard({
             </div>
             <div className="mt-4 pt-4 border-t border-black/[0.06] flex items-center justify-between">
               <span className="font-poppins text-sm text-muted">{websiteLabel}</span>
-              <span className="font-poppins text-sm font-semibold text-dark">฿79,990 <span className="font-normal text-muted text-xs">{websiteNote}</span></span>
+              <span className="font-poppins text-sm font-semibold text-dark">฿{formatTHB(websiteBuild.price)} <span className="font-normal text-muted text-xs">{websiteNote}</span></span>
             </div>
           </div>
 

@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import Script from 'next/script'
+import { restaurantRampUp, formatTHB } from '@/lib/pricing'
 
 export default function LeadForm() {
   const [submitted, setSubmitted] = useState(false)
@@ -182,7 +183,7 @@ export default function LeadForm() {
         className="w-full bg-green text-white font-poppins font-bold text-base py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] disabled:opacity-60 uppercase tracking-wide">
         {loading ? 'Sending…' : 'Get Started Now!'}
       </button>
-      <p className="font-poppins text-sm text-muted italic text-center">฿59,990 baht / per month</p>
+      <p className="font-poppins text-sm text-muted italic text-center">฿{formatTHB(restaurantRampUp.price)} baht / per month</p>
     </form>
   )
 }
