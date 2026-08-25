@@ -1,8 +1,21 @@
 const { clients } = require('../../data/clients.json')
+const { authenticate } = require('./_control-session')
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ success: false, message: 'Method not allowed' }) }
+  }
+
+  // Netlify Functions bypass Next.js middleware entirely, so this endpoint has
+  // to do its own authentication. Accepts a signed control-panel session cookie
+  // (the browser path) or X-Internal-Token (the server-to-server path).
+  const auth = authenticate(event)
+  if (!auth.ok) {
+    console.warn('Publish rejected:', auth.message)
+    return {
+      statusCode: auth.statusCode,
+      body: JSON.stringify({ success: false, message: auth.message }),
+    }
   }
 
   let body
@@ -33,7 +46,7 @@ exports.handler = async (event) => {
     return { statusCode: 500, body: JSON.stringify({ success: false, message: 'Server misconfiguration' }) }
   }
 
-  console.log('Publish requested:', { action, client_slug, client_name, source, requested_at })
+  console.log('Publish requested:', { action, client_slug, client_name, source, requested_at, auth_via: auth.via })
   console.log('website_folder_id:', client.website_folder_id)
 
   let n8nStatus

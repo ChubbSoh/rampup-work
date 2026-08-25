@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { CONTROL_COOKIE, verifySessionToken } from '@/lib/control-session'
 
 const SECURITY_HEADERS: Record<string, string> = {
   'X-Frame-Options': 'DENY',
@@ -16,17 +17,18 @@ function withSecurityHeaders(res: NextResponse): NextResponse {
   return res
 }
 
-function isAuthenticated(request: NextRequest): boolean {
-  const cookie = request.cookies.get('control_auth')
-  return cookie?.value === 'granted'
+// Verifies an HMAC-signed session token. Previously this compared the cookie to
+// the literal string 'granted', which any client could send by hand.
+async function isAuthenticated(request: NextRequest): Promise<boolean> {
+  return verifySessionToken(request.cookies.get(CONTROL_COOKIE)?.value)
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // ── /control: require auth cookie ────────────────────────────────────────
   if (pathname === '/control') {
-    if (!isAuthenticated(request)) {
+    if (!(await isAuthenticated(request))) {
       return NextResponse.redirect(new URL('/control-login', request.url))
     }
     return withSecurityHeaders(NextResponse.next())
@@ -34,7 +36,7 @@ export function middleware(request: NextRequest) {
 
   // ── /control-login: redirect to /control if already authed ───────────────
   if (pathname === '/control-login') {
-    if (isAuthenticated(request)) {
+    if (await isAuthenticated(request)) {
       return NextResponse.redirect(new URL('/control', request.url))
     }
     return withSecurityHeaders(NextResponse.next())
@@ -45,7 +47,7 @@ export function middleware(request: NextRequest) {
     if (request.method !== 'POST') {
       return new NextResponse(null, { status: 405 })
     }
-    if (!isAuthenticated(request)) {
+    if (!(await isAuthenticated(request))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
     return withSecurityHeaders(NextResponse.next())
@@ -68,6 +70,10 @@ export function middleware(request: NextRequest) {
   return withSecurityHeaders(NextResponse.next())
 }
 
+// NOTE: this matcher only covers Next.js routes. Netlify Functions are served
+// at /.netlify/functions/* by Netlify's own runtime and NEVER pass through this
+// middleware — they must authenticate themselves. See
+// netlify/functions/_control-session.js.
 export const config = {
   matcher: [
     '/control',

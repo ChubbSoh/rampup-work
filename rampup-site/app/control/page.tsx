@@ -255,6 +255,10 @@ function PublishSection() {
     try {
       const res = await fetch('/.netlify/functions/publish', {
         method: 'POST',
+        // Explicit: the function authenticates via the control_auth cookie.
+        // This is the fetch default, but stating it prevents a future refactor
+        // from silently dropping the session and 401-ing every publish.
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'publish_content',
