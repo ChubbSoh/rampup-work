@@ -23,8 +23,26 @@ async function isAuthenticated(request: NextRequest): Promise<boolean> {
   return verifySessionToken(request.cookies.get(CONTROL_COOKIE)?.value)
 }
 
+/**
+ * Canonical pathname for route comparison.
+ *
+ * next.config.js sets trailingSlash: true, so Next 308-redirects /control to
+ * /control/ BEFORE middleware runs. Every request that actually reaches this
+ * function therefore carries a trailing slash, and the exact comparisons below
+ * (pathname === '/control') never matched — every protected route fell through
+ * to the unguarded default return.
+ *
+ * Normalising here, in one place, keeps the comparisons canonical no matter
+ * which form the URL takes. This only affects the local comparison value:
+ * request.nextUrl is left untouched, so Next's own trailing-slash redirects
+ * and routing behave exactly as before.
+ */
+function canonicalPath(pathname: string): string {
+  return pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
+}
+
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  const pathname = canonicalPath(request.nextUrl.pathname)
 
   // ── /control: require auth cookie ────────────────────────────────────────
   if (pathname === '/control') {
