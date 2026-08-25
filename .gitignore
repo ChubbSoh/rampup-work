@@ -21,3 +21,10 @@ node_modules/
 # next.js build artifacts
 rampup-site/.next/
 rampup-site/tsconfig.tsbuildinfo
+
+# secrets / local agent config — NEVER commit
+# .mcp.json holds a live n8n Bearer token; it stays local only.
+.mcp.json
+.env
+.env.*
+!.env.*.example
