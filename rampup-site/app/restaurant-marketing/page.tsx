@@ -112,10 +112,11 @@ export default function RestaurantMarketingPage() {
 
       <main className="bg-bg">
         {/* ══ 01 HERO ═══════════════════════════════════════════════════════ */}
-        <section id="hero" className="px-5 md:px-12 pt-14 md:pt-20 pb-16 md:pb-24">
+        {/* Top padding is tightened (56/80 -> 40/56px) and the eyebrow removed so
+            the headline, price and CTA all sit higher in the fold. */}
+        <section id="hero" className="px-5 md:px-12 pt-10 md:pt-14 pb-16 md:pb-24">
           <div className="max-w-site mx-auto grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-center">
             <div>
-              <Eyebrow>Restaurant marketing · Bangkok</Eyebrow>
               {/* Two sentences only. The longer H1 is stepped down slightly at each
                   breakpoint so it does not dominate the fold on small screens. */}
               <h1 className="font-sora font-extrabold text-[31px] leading-[1.1] sm:text-[42px] lg:text-[54px] text-dark tracking-[-0.02em]">
