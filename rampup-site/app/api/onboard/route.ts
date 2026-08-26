@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { isValidEmail, normalizeEmailList, dedupeKey } from '@/lib/emails'
+
+/** Guard against a pasted address book turning into hundreds of Drive calls. */
+const MAX_EMAILS_PER_LIST = 50
 
 export async function POST(req: NextRequest) {
   const webhookUrl = process.env.N8N_ONBOARD_WEBHOOK_URL
@@ -18,6 +22,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { client_name, slug, cuisine, location, description, cover, photos, videos, active } = body as Record<string, unknown>
+  const { team_emails, client_emails } = body as Record<string, unknown>
 
   // Required field validation
   if (!client_name || typeof client_name !== 'string') {
@@ -31,6 +36,37 @@ export async function POST(req: NextRequest) {
   }
   if (!location || typeof location !== 'string') {
     return NextResponse.json({ error: 'location is required' }, { status: 400 })
+  }
+
+  // ── Drive access lists ──────────────────────────────────────────────────────
+  // Both are optional (an onboard with no sharing is still valid). Re-validated
+  // here because browser validation is a convenience, not a gate.
+  const teamEmails   = normalizeEmailList(team_emails)
+  const clientEmails = normalizeEmailList(client_emails)
+
+  if (teamEmails.length > MAX_EMAILS_PER_LIST || clientEmails.length > MAX_EMAILS_PER_LIST) {
+    return NextResponse.json(
+      { error: `Too many email addresses (max ${MAX_EMAILS_PER_LIST} per list)` },
+      { status: 400 }
+    )
+  }
+
+  const invalid = [...teamEmails, ...clientEmails].filter(e => !isValidEmail(e))
+  if (invalid.length) {
+    return NextResponse.json(
+      { error: `Invalid email address(es): ${invalid.join(', ')}` },
+      { status: 400 }
+    )
+  }
+
+  // Keep the two lists disjoint so nobody is granted two roles on one drive.
+  const teamKeys = new Set(teamEmails.map(dedupeKey))
+  const overlap = clientEmails.filter(e => teamKeys.has(dedupeKey(e)))
+  if (overlap.length) {
+    return NextResponse.json(
+      { error: `Address(es) in both team and client lists: ${overlap.join(', ')}` },
+      { status: 400 }
+    )
   }
 
   // Build full payload for n8n — n8n owns all persistence (Drive + Sheets + GitHub)
@@ -47,6 +83,11 @@ export async function POST(req: NextRequest) {
     months:       0,
     last_updated: new Date().toISOString().slice(0, 10),
     page:         `${slug}.html`,
+    // Drive access lists — consumed by n8n for permissions only. n8n's
+    // "Merge and Encode" builds the clients.json record field-by-field and
+    // ignores unknown keys, so these never reach public client data.
+    team_emails:   teamEmails,
+    client_emails: clientEmails,
   }
 
   try {

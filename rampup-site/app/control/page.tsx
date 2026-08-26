@@ -14,6 +14,7 @@
 // Keep the raw import server-side. Do not spread raw records into props.
 
 import clientsData from '@/data/clients.json'
+import { DEFAULT_TEAM_EMAILS } from '@/lib/team-emails'
 import ControlPanelClient, { type ControlClient } from './ControlPanelClient'
 
 export default function ControlPage() {
@@ -55,7 +56,10 @@ export default function ControlPage() {
 
       {/* Sections */}
       <div className="max-w-2xl mx-auto px-5 pb-20 space-y-6">
-        <ControlPanelClient clients={clients} />
+        {/* Team defaults are read server-side and passed in as a prop, so the
+            staff list reaches only the authenticated /control page payload and
+            never a public /_next/static chunk. */}
+        <ControlPanelClient clients={clients} defaultTeamEmails={DEFAULT_TEAM_EMAILS} />
       </div>
     </div>
   )
