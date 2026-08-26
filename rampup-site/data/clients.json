@@ -618,14 +618,27 @@
       "description": "",
       "months": 0,
       "active": false,
-      "last_updated": "2026-06-16",
-      "cover": "",
+      "last_updated": "2026-08-26",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/117c2885-4af5-44d3-a5c6-2afe7414bc00/public",
       "page": "mans-table.html",
-      "photos": [],
-      "videos": [],
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/117c2885-4af5-44d3-a5c6-2afe7414bc00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d8415e78-fe59-4279-364d-15bbbdaec700/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e88b9edb-4c34-4895-f77d-7aab603c2500/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d3e1c542-80eb-4363-c639-bdc78367f500/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/e1e96004-f80f-4c10-1e55-a79b9fa36600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d4fa708b-c4ed-4a76-17ea-8f080d4efc00/public"
+      ],
+      "videos": [
+        "36e24779c76a9f558b4ceb6dd16bc670",
+        "ed479da2a500761d36133d541270fffc",
+        "6a623b07dc80dd4332d0dc792ba74f06"
+      ],
       "drive_folder_id": "0AMUHXAiE0l0HUk9PVA",
       "website_folder_id": "1-W1wVRBRuyjvvtmmsHtDwievbktkSy3t",
-      "brand_assets_folder_id": "1eABlZCIUbMRlRbV7KNhmduQ_ztsl5DnH"
+      "brand_assets_folder_id": "1eABlZCIUbMRlRbV7KNhmduQ_ztsl5DnH",
+      "feed_design": "",
+      "monthly_plan": []
     },
     {
       "name": "51bakery",
