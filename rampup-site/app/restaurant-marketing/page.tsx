@@ -77,10 +77,12 @@ function Shot({
 }
 
 export default function RestaurantMarketingPage() {
-  // Real client work. Toh Daeng is the fully-shot case study and carries the
-  // proof rows; Okasan supplies the hero's second frame. getClientBySlug()
+  // Real client work only. All three case-study clients are now shot, so each
+  // proof card and case study uses that client's own media. getClientBySlug()
   // returns the sanitised public record, so no internal Drive IDs reach the browser.
   const tohDaeng = getClientBySlug('toh-d')
+  const aela = getClientBySlug('aela')
+  const mansTable = getClientBySlug('mans-table')
   const okasan = getClientBySlug('okasan')
 
   const heroImage = tohDaeng?.photos?.[0] ?? tohDaeng?.cover ?? ''
@@ -169,8 +171,8 @@ export default function RestaurantMarketingPage() {
               than a stock photo or another client's imagery. */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-7 mt-14">
             {[
-              { name: 'AELA', sub: 'Fairmont Bangkok', type: 'Luxury Hotel Bar', media: null },
-              { name: 'MAN TABLES', sub: 'Chef Man', type: 'Premium Chinese Fine Dining', media: null },
+              { name: 'AELA', sub: 'Fairmont Bangkok', type: 'Luxury Hotel Bar', media: aela?.photos?.[0] ?? null },
+              { name: 'MAN TABLES', sub: 'Chef Man', type: 'Premium Chinese Fine Dining', media: mansTable?.photos?.[0] ?? null },
               { name: 'Toh Daeng', sub: 'Bangkok', type: 'Michelin Guide Restaurant', media: tohDaeng?.photos?.[0] ?? null },
             ].map((c) => (
               <article key={c.name}>
@@ -241,25 +243,24 @@ export default function RestaurantMarketingPage() {
             The work behind the reservations.
           </h2>
 
-          {/* Challenge and approach copy removed — each entry is now the client
-              header, the services we actually provide, and the work itself.
-              Only Toh Daeng has video in clients.json; AELA and MAN TABLES are
-              onboarded but not yet shot, so their entries carry no video rather
-              than borrowing another client's footage. */}
+          {/* Each entry is the client header, the services we actually provide,
+              and that client's own work. AELA currently has one video in
+              clients.json rather than two, so it renders one — the grid does not
+              pad with another client's footage. */}
           {[
             {
               name: 'AELA',
               sub: 'Fairmont Bangkok',
               type: 'Luxury Hotel Bar',
               services: ['Creative Direction', 'Photography', 'Video Production', 'Social Strategy', 'Advertising'],
-              videos: [] as string[],
+              videos: (aela?.videos ?? []).slice(0, 2),
             },
             {
               name: 'MAN TABLES',
               sub: 'Chef Man',
               type: 'Premium Chinese Fine Dining',
               services: ['Creative Direction', 'Photography', 'Video Production', 'Social Management'],
-              videos: [] as string[],
+              videos: (mansTable?.videos ?? []).slice(0, 2),
             },
             {
               name: 'Toh Daeng',
