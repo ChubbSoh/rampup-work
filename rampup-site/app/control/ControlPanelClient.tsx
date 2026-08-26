@@ -132,6 +132,23 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
 
 // ─── Input / Select primitives ─────────────────────────────────────────────────
 
+// Divider + heading for a section INSIDE a card. Onboarding is one process, so
+// it lives in one card with internal steps rather than several sibling cards.
+function SectionLabel({ step, title, hint }: { step: number; title: string; hint?: string }) {
+  return (
+    <div className="pt-2 first:pt-0">
+      <div className="flex items-baseline gap-2">
+        <span className="font-poppins text-[10px] font-bold text-[#3DBE5A] tabular-nums">
+          {String(step).padStart(2, '0')}
+        </span>
+        <h3 className="font-sora font-bold text-[13px] text-[#2D2D2D] tracking-tight">{title}</h3>
+      </div>
+      {hint && <p className="font-poppins text-[11px] text-[#AAAAAA] mt-0.5">{hint}</p>}
+      <div className="h-px bg-black/[0.06] mt-2.5" />
+    </div>
+  )
+}
+
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5">
@@ -330,9 +347,10 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
     // One form spanning two Cards so Drive Access submits with the existing
     // onboarding fields in a single request. space-y-6 matches the gap the page
     // container previously applied between sections.
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit}>
       <Card title="Onboard New Client">
         <div className="space-y-4">
+        <SectionLabel step={1} title="Client Info" />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Client Name">
             <input
@@ -388,11 +406,12 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
             required
           />
         </Field>
-        </div>
-      </Card>
+          <SectionLabel
+            step={2}
+            title="Drive Access"
+            hint="Applied to the Shared Drive created for this client."
+          />
 
-      <Card title="Drive Access">
-        <div className="space-y-4">
           <Field label="Team Access">
             <EmailChips
               values={teamEmails}
