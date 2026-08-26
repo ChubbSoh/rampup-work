@@ -122,8 +122,8 @@ export default function LeadForm() {
             <path d="M6 14l6 6 10-10" stroke="#1A1A1A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
-        <h3 className="font-sora font-bold text-2xl text-dark mb-2">Thank you — we&apos;ve got it.</h3>
-        <p className="font-poppins text-[15px] text-muted max-w-sm mx-auto">
+        <h3 className="font-sora font-bold text-[34px] text-dark mb-2">Thank you — we&apos;ve got it.</h3>
+        <p className="font-poppins text-[21px] text-muted max-w-sm mx-auto">
           We&apos;ll review your restaurant and come back within one business day with where
           we think your marketing can improve.
         </p>
@@ -132,8 +132,8 @@ export default function LeadForm() {
   }
 
   const input =
-    'w-full font-poppins text-[16px] text-dark bg-white border border-black/[0.12] rounded-xl px-4 py-3.5 outline-none focus:border-[#1A1A1A] focus:ring-2 focus:ring-black/10 transition placeholder:text-faint'
-  const label = 'font-poppins text-[12px] font-semibold text-body mb-1.5 block tracking-[0.2px]'
+    'w-full font-poppins text-[22px] text-dark bg-white border border-black/[0.12] rounded-xl px-4 py-3.5 outline-none focus:border-[#1A1A1A] focus:ring-2 focus:ring-black/10 transition placeholder:text-faint'
+  const label = 'font-poppins text-[17px] font-semibold text-body mb-1.5 block tracking-[0.2px]'
 
   return (
     <form
@@ -198,11 +198,11 @@ export default function LeadForm() {
       <button
         type="submit"
         disabled={loading}
-        className="mt-1 w-full bg-[#1A1A1A] text-white font-poppins font-bold text-[15px] py-4 rounded-pill hover:bg-dark transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A1A1A] focus-visible:ring-offset-2"
+        className="mt-1 w-full bg-[#1A1A1A] text-white font-poppins font-bold text-[21px] py-4 rounded-pill hover:bg-dark transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A1A1A] focus-visible:ring-offset-2"
       >
         {loading ? 'Sending…' : 'Enquire Now'}
       </button>
-      <p className="font-poppins text-[12px] text-faint text-center leading-relaxed">
+      <p className="font-poppins text-[17px] text-faint text-center leading-relaxed">
         Full-service packages from ฿59,990/month. We reply within one business day.
       </p>
     </form>
