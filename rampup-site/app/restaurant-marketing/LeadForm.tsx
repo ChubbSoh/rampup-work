@@ -200,7 +200,7 @@ export default function LeadForm() {
         disabled={loading}
         className="mt-1 w-full bg-[#1A1A1A] text-white font-poppins font-bold text-[15px] py-4 rounded-pill hover:bg-dark transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A1A1A] focus-visible:ring-offset-2"
       >
-        {loading ? 'Sending…' : 'Get Your Marketing Plan'}
+        {loading ? 'Sending…' : 'Enquire Now'}
       </button>
       <p className="font-poppins text-[12px] text-faint text-center leading-relaxed">
         Full-service packages from ฿59,990/month. We reply within one business day.

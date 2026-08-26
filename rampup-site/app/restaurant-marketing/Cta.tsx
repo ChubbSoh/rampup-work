@@ -77,7 +77,7 @@ export function StickyCta() {
         onClick={() => (window as any).dataLayer?.push({ event: 'restaurant_lp_cta_click', cta_location: 'sticky_mobile' })}
         className="flex items-center justify-center w-full bg-[#1A1A1A] text-white font-poppins font-bold text-[15px] py-3.5 rounded-pill active:scale-[0.99] transition hover:bg-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A1A1A] focus-visible:ring-offset-2"
       >
-        Get Your Marketing Plan
+        Enquire Now
       </a>
     </div>
   )

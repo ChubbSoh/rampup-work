@@ -91,8 +91,11 @@ export default function RestaurantMarketingPage() {
   return (
     <>
       {/* ── minimal funnel header: logo + one action, no site nav ───────────── */}
+      {/* Logo only — the top-right CTA is deliberately gone so the hero carries a
+          single action. Height stays h-16 so the #plan scroll-mt-16 offset below
+          is still correct. */}
       <header className="sticky top-0 z-30 bg-bg/90 backdrop-blur border-b border-black/[0.06]">
-        <div className="max-w-site mx-auto px-5 md:px-12 h-16 flex items-center justify-between">
+        <div className="max-w-site mx-auto px-5 md:px-12 h-16 flex items-center">
           {/* /logo-rampup.svg is byte-identical to RampUp/RampUp_Dark.svg — the
               monochrome (#191919) mark. Served from public/ as an <img>, matching
               how Nav.tsx serves logos; RampUp/ is not a served directory. */}
@@ -104,9 +107,6 @@ export default function RestaurantMarketingPage() {
             height={60}
             className="h-8 md:h-9 w-auto object-contain"
           />
-          <CtaLink location="header" className="!px-5 !py-2.5 !text-[13px]">
-            Get Your Marketing Plan
-          </CtaLink>
         </div>
       </header>
 
@@ -116,30 +116,24 @@ export default function RestaurantMarketingPage() {
           <div className="max-w-site mx-auto grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-center">
             <div>
               <Eyebrow>Restaurant marketing · Bangkok</Eyebrow>
-              <h1 className="font-sora font-extrabold text-[34px] leading-[1.08] sm:text-[46px] lg:text-[58px] text-dark tracking-[-0.02em]">
-                Marketing built for restaurants worth discovering.
+              {/* Two sentences only. The longer H1 is stepped down slightly at each
+                  breakpoint so it does not dominate the fold on small screens. */}
+              <h1 className="font-sora font-extrabold text-[31px] leading-[1.1] sm:text-[42px] lg:text-[54px] text-dark tracking-[-0.02em]">
+                Premium restaurant marketing built to turn attention into reservations.
               </h1>
-              <p className="font-poppins text-[17px] md:text-[19px] text-body mt-6 leading-relaxed max-w-xl">
-                Premium restaurant marketing that turns attention into reservations.
-              </p>
-              <p className="font-poppins text-[15px] text-muted mt-4 leading-relaxed max-w-xl">
-                Content production, social media, Meta Ads and Google Ads — managed by one
-                integrated team specialising exclusively in F&amp;B.
+              <p className="font-poppins text-[16px] md:text-[18px] text-body mt-6 leading-relaxed max-w-xl">
+                One F&amp;B-specialist team for high-end content, social media, Meta Ads and
+                Google Ads.
               </p>
 
-              <div className="flex flex-wrap items-center gap-3 mt-9">
-                <CtaLink location="hero">Get Your Marketing Plan</CtaLink>
-                <a
-                  href="#work"
-                  className="inline-flex items-center justify-center font-poppins font-semibold text-[15px] text-dark px-6 py-4 rounded-pill border border-black/15 hover:border-black/35 transition-all"
-                >
-                  See Our Work
-                </a>
-              </div>
-
-              <p className="font-poppins text-[14px] text-muted mt-7">
+              {/* Price sits above the single CTA so the qualification is read first. */}
+              <p className="font-poppins text-[14px] text-muted mt-8">
                 Packages from <span className="font-bold text-dark">{PRICE}/month</span>
               </p>
+
+              <div className="mt-5">
+                <CtaLink location="hero">Enquire Now</CtaLink>
+              </div>
             </div>
 
             {/* Two-image editorial pair. The left image is the LCP element. */}
@@ -466,7 +460,7 @@ export default function RestaurantMarketingPage() {
           </article>
 
           <div className="mt-14">
-            <CtaLink location="case_studies">Get Your Marketing Plan</CtaLink>
+            <CtaLink location="case_studies">Enquire Now</CtaLink>
           </div>
         </Section>
 
