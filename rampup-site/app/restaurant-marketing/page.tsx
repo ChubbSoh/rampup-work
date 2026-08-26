@@ -174,31 +174,35 @@ export default function RestaurantMarketingPage() {
               { name: 'Toh Daeng', sub: 'Bangkok', type: 'Michelin Guide Restaurant', media: tohDaeng?.photos?.[0] ?? null },
             ].map((c) => (
               <article key={c.name}>
-                {c.media ? (
-                  <Shot
-                    src={c.media}
-                    alt={`Campaign photography produced for ${c.name} in Bangkok`}
-                    ratio="aspect-[4/3]"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="rounded-[16px]"
-                  />
-                ) : (
-                  <div className="relative aspect-[4/3] rounded-[16px] bg-[#F0F0F0] border border-black/[0.07] overflow-hidden">
-                    <div className="absolute inset-0 flex flex-col justify-end p-6">
-                      <span className="font-sora font-extrabold text-[29px] leading-[0.95] text-[#D8D8D8] tracking-tight">
-                        {c.name}
-                      </span>
-                      <span className="font-poppins text-[11px] font-bold uppercase tracking-[2px] text-[#B4B4B4] mt-2.5">
-                        {c.sub}
-                      </span>
-                    </div>
-                  </div>
-                )}
-                <p className="font-poppins text-[11px] font-bold uppercase tracking-[2px] text-[#8A8A8A] mt-5">{c.type}</p>
+                {/* Name block leads, media follows. */}
+                <p className="font-poppins text-[11px] font-bold uppercase tracking-[2px] text-[#8A8A8A]">{c.type}</p>
                 <h3 className="font-sora font-extrabold text-[24px] text-dark tracking-tight mt-2 leading-[1.1]">
                   {c.name}
                 </h3>
                 <p className="font-poppins text-[15px] text-body mt-1">{c.sub}</p>
+
+                <div className="mt-5">
+                  {c.media ? (
+                    <Shot
+                      src={c.media}
+                      alt={`Campaign photography produced for ${c.name} in Bangkok`}
+                      ratio="aspect-[4/3]"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="rounded-[16px]"
+                    />
+                  ) : (
+                    /* No shot assets for this client yet — an editorial plate in the
+                       same 4:3 box, so a real photo drops in without reflow. The name
+                       now sits above the card, so the plate carries only the venue. */
+                    <div className="relative aspect-[4/3] rounded-[16px] bg-[#F0F0F0] border border-black/[0.07] overflow-hidden">
+                      <div className="absolute inset-0 flex items-end p-6">
+                        <span className="font-poppins text-[11px] font-bold uppercase tracking-[2px] text-[#B4B4B4]">
+                          {c.sub}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </article>
             ))}
           </div>
