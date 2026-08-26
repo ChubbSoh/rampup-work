@@ -137,9 +137,9 @@ export default function LeadForm() {
   if (submitted) {
     return (
       <div className="text-center py-12 px-6" role="status" aria-live="polite">
-        <div className="w-14 h-14 bg-green-light rounded-full flex items-center justify-center mx-auto mb-5">
+        <div className="w-14 h-14 bg-[#ECECEC] rounded-full flex items-center justify-center mx-auto mb-5">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-            <path d="M6 14l6 6 10-10" stroke="#3DBE5A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M6 14l6 6 10-10" stroke="#1A1A1A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
         <h3 className="font-sora font-bold text-2xl text-dark mb-2">Thank you — we&apos;ve got it.</h3>
@@ -152,9 +152,9 @@ export default function LeadForm() {
   }
 
   const input =
-    'w-full font-poppins text-[15px] text-dark bg-white border border-black/[0.12] rounded-xl px-4 py-3 outline-none focus:border-green focus:ring-2 focus:ring-green/20 transition placeholder:text-faint'
+    'w-full font-poppins text-[15px] text-dark bg-white border border-black/[0.12] rounded-xl px-4 py-3 outline-none focus:border-[#1A1A1A] focus:ring-2 focus:ring-black/10 transition placeholder:text-faint'
   const label = 'font-poppins text-[12px] font-semibold text-body mb-1.5 block tracking-[0.2px]'
-  const req = <span className="text-green" aria-hidden="true">*</span>
+  const req = <span className="text-[#8A8A8A]" aria-hidden="true">*</span>
 
   return (
     <form
@@ -259,7 +259,7 @@ export default function LeadForm() {
       <button
         type="submit"
         disabled={loading}
-        className="mt-1 w-full bg-green text-white font-poppins font-bold text-[15px] py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed"
+        className="mt-1 w-full bg-[#1A1A1A] text-white font-poppins font-bold text-[15px] py-4 rounded-pill hover:bg-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A1A1A] focus-visible:ring-offset-2 transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? 'Sending…' : 'Get Your Marketing Plan'}
       </button>

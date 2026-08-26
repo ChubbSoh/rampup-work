@@ -10,7 +10,6 @@
 // numerical performance claims. The proof sections are built to read well
 // without them, and to accept real figures later without a redesign.
 
-import Footer from '@/components/Footer'
 import LazyVideoCard from '@/components/LazyVideoCard'
 import LeadForm from './LeadForm'
 import { CtaLink, StickyCta } from './Cta'
@@ -35,7 +34,7 @@ const CUSTOMER_CODE = process.env.CLOUDFLARE_STREAM_CUSTOMER_CODE ?? ''
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-poppins text-[11px] font-bold uppercase tracking-[2.5px] text-green mb-4">
+    <p className="font-poppins text-[11px] font-bold uppercase tracking-[2.5px] text-[#8A8A8A] mb-4">
       {children}
     </p>
   )
@@ -94,9 +93,17 @@ export default function RestaurantMarketingPage() {
       {/* ── minimal funnel header: logo + one action, no site nav ───────────── */}
       <header className="sticky top-0 z-30 bg-bg/90 backdrop-blur border-b border-black/[0.06]">
         <div className="max-w-site mx-auto px-5 md:px-12 h-16 flex items-center justify-between">
-          <span className="font-sora font-extrabold text-[17px] text-dark tracking-tight">
-            Restaurant<span className="text-green">RampUp</span>
-          </span>
+          {/* /logo-rampup.svg is byte-identical to RampUp/RampUp_Dark.svg — the
+              monochrome (#191919) mark. Served from public/ as an <img>, matching
+              how Nav.tsx serves logos; RampUp/ is not a served directory. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo-rampup.svg"
+            alt="RampUp"
+            width={73}
+            height={60}
+            className="h-8 md:h-9 w-auto object-contain"
+          />
           <CtaLink location="header" className="!px-5 !py-2.5 !text-[13px]">
             Get Your Marketing Plan
           </CtaLink>
@@ -165,35 +172,79 @@ export default function RestaurantMarketingPage() {
           <h2 className="font-sora font-extrabold text-[26px] md:text-[36px] text-dark tracking-tight max-w-3xl leading-[1.15]">
             Trusted by premium restaurants, chef-led concepts and hotel F&amp;B teams.
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 mt-12">
+
+          {/* One full-width row per client, alternating text/media on desktop for
+              rhythm. On mobile every row reads text-then-media, so the order never
+              flips unpredictably. */}
+          <div className="mt-14">
             {[
-              { name: 'AELA', sub: 'Fairmont Bangkok', type: 'Luxury Hotel Bar' },
-              { name: 'MAN TABLES', sub: 'Chef Man', type: 'Premium Chinese Fine Dining' },
-              { name: 'Toh Daeng', sub: 'Bangkok', type: 'Michelin Guide Restaurant' },
+              {
+                name: 'AELA',
+                sub: 'Fairmont Bangkok',
+                type: 'Luxury Hotel Bar',
+                note: 'A destination bar inside a luxury hotel, positioned to be sought out on its own name.',
+                media: null,
+                flip: false,
+              },
+              {
+                name: 'MAN TABLES',
+                sub: 'Chef Man',
+                type: 'Premium Chinese Fine Dining',
+                note: 'Chef-led Chinese fine dining where private rooms and business dining carry the occasion.',
+                media: null,
+                flip: true,
+              },
+              {
+                name: 'Toh Daeng',
+                sub: 'Bangkok',
+                type: 'Michelin Guide Restaurant',
+                note: 'Michelin Guide recognition turned into everyday discovery through consistent production.',
+                media: tohDaeng?.photos?.[0] ?? null,
+                flip: false,
+              },
             ].map((c) => (
-              <div key={c.name} className="border-t border-dark/15 pt-5">
-                <p className="font-sora font-extrabold text-[22px] md:text-[26px] text-dark tracking-tight">{c.name}</p>
-                <p className="font-poppins text-[14px] text-body mt-0.5">{c.sub}</p>
-                <p className="font-poppins text-[11px] font-bold uppercase tracking-[1.8px] text-green mt-3">{c.type}</p>
-              </div>
+              <article
+                key={c.name}
+                className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-8 lg:gap-16 items-center py-12 lg:py-16 border-t border-black/10 first:border-t-0 first:pt-0"
+              >
+                <div className={c.flip ? 'lg:order-2' : ''}>
+                  <p className="font-poppins text-[11px] font-bold uppercase tracking-[2px] text-[#8A8A8A]">{c.type}</p>
+                  <h3 className="font-sora font-extrabold text-[28px] md:text-[38px] text-dark tracking-tight mt-2.5 leading-[1.08]">
+                    {c.name}
+                  </h3>
+                  <p className="font-poppins text-[15px] text-body mt-1">{c.sub}</p>
+                  <p className="font-poppins text-[15px] text-body mt-5 leading-relaxed max-w-md">{c.note}</p>
+                </div>
+
+                <div className={c.flip ? 'lg:order-1' : ''}>
+                  {c.media ? (
+                    <Shot
+                      src={c.media}
+                      alt={`Campaign photography produced for ${c.name} in Bangkok`}
+                      ratio="aspect-[3/2]"
+                      sizes="(max-width: 1024px) 100vw, 620px"
+                      className="rounded-[16px]"
+                    />
+                  ) : (
+                    /* No shot assets exist for this client yet. Rather than a stock
+                       photo or a grey void, the panel becomes an editorial title
+                       plate — deliberate on its own terms, and a real image drops
+                       straight into the same 3:2 box when one is produced. */
+                    <div className="relative aspect-[3/2] rounded-[16px] bg-[#F0F0F0] border border-black/[0.07] overflow-hidden">
+                      <div className="absolute inset-0 flex flex-col justify-end p-7 md:p-9">
+                        <span className="font-sora font-extrabold text-[34px] md:text-[46px] leading-[0.95] text-[#D8D8D8] tracking-tight">
+                          {c.name}
+                        </span>
+                        <span className="font-poppins text-[11px] font-bold uppercase tracking-[2px] text-[#B4B4B4] mt-3">
+                          {c.sub}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </article>
             ))}
           </div>
-
-          {/* Real campaign stills beneath the names, so this is not a logo strip. */}
-          {tohDaeng?.photos && tohDaeng.photos.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-12">
-              {tohDaeng.photos.slice(0, 4).map((p, i) => (
-                <Shot
-                  key={p}
-                  src={p}
-                  alt={`Campaign photography produced for Toh Daeng — frame ${i + 1}`}
-                  ratio="aspect-square"
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  className="rounded-[14px]"
-                />
-              ))}
-            </div>
-          )}
         </Section>
 
         {/* ══ 03 THE PROBLEM ════════════════════════════════════════════════ */}
@@ -238,7 +289,7 @@ export default function RestaurantMarketingPage() {
             ].map(([h, p], i, arr) => (
               <li key={i} className="grid grid-cols-[44px_1fr] md:grid-cols-[80px_1fr] gap-4 md:gap-8">
                 <div className="flex flex-col items-center">
-                  <span className="font-poppins text-[12px] font-bold text-green tabular-nums pt-1">
+                  <span className="font-poppins text-[12px] font-bold text-white/45 tabular-nums pt-1">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   {i < arr.length - 1 && <span className="w-px flex-1 bg-white/15 mt-2" aria-hidden="true" />}
@@ -267,7 +318,7 @@ export default function RestaurantMarketingPage() {
           <article className="mt-16 pt-12 border-t border-black/10">
             <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-16">
               <div>
-                <p className="font-poppins text-[11px] font-bold uppercase tracking-[1.8px] text-green">Luxury Hotel Bar</p>
+                <p className="font-poppins text-[11px] font-bold uppercase tracking-[1.8px] text-[#8A8A8A]">Luxury Hotel Bar</p>
                 <h3 className="font-sora font-extrabold text-[30px] md:text-[38px] text-dark tracking-tight mt-2 leading-[1.1]">
                   AELA
                 </h3>
@@ -308,7 +359,7 @@ export default function RestaurantMarketingPage() {
           <article className="mt-14 pt-12 border-t border-black/10">
             <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-16">
               <div>
-                <p className="font-poppins text-[11px] font-bold uppercase tracking-[1.8px] text-green">Premium Chinese Fine Dining</p>
+                <p className="font-poppins text-[11px] font-bold uppercase tracking-[1.8px] text-[#8A8A8A]">Premium Chinese Fine Dining</p>
                 <h3 className="font-sora font-extrabold text-[30px] md:text-[38px] text-dark tracking-tight mt-2 leading-[1.1]">
                   MAN TABLES
                 </h3>
@@ -348,7 +399,7 @@ export default function RestaurantMarketingPage() {
           <article className="mt-14 pt-12 border-t border-black/10">
             <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-16">
               <div>
-                <p className="font-poppins text-[11px] font-bold uppercase tracking-[1.8px] text-green">Michelin Guide Restaurant</p>
+                <p className="font-poppins text-[11px] font-bold uppercase tracking-[1.8px] text-[#8A8A8A]">Michelin Guide Restaurant</p>
                 <h3 className="font-sora font-extrabold text-[30px] md:text-[38px] text-dark tracking-tight mt-2 leading-[1.1]">
                   Toh Daeng
                 </h3>
@@ -443,7 +494,7 @@ export default function RestaurantMarketingPage() {
                 'Guest acquisition', 'Social-first food content',
               ].map((s) => (
                 <li key={s} className="font-poppins text-[15px] text-body flex items-start gap-2.5 border-b border-black/[0.07] py-2.5">
-                  <span className="text-green mt-[3px] shrink-0" aria-hidden="true">—</span>
+                  <span className="text-[#B4B4B4] mt-[3px] shrink-0" aria-hidden="true">—</span>
                   <span>{s}</span>
                 </li>
               ))}
@@ -543,7 +594,7 @@ export default function RestaurantMarketingPage() {
               <h2 className="font-sora font-extrabold text-[30px] md:text-[44px] text-white tracking-tight leading-[1.1]">
                 Built for restaurants serious about growth.
               </h2>
-              <p className="font-sora font-extrabold text-[24px] md:text-[30px] text-green mt-8 leading-snug tracking-tight">
+              <p className="font-sora font-extrabold text-[24px] md:text-[30px] text-white mt-8 leading-snug tracking-tight">
                 Full-service restaurant marketing from {PRICE}/month
               </p>
               <p className="font-poppins text-[14px] text-white/55 mt-4 max-w-md leading-relaxed">
@@ -557,7 +608,7 @@ export default function RestaurantMarketingPage() {
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-x-8">
               {['Content Production', 'Photography', 'Video', 'Social Strategy', 'Social Management', 'Meta Ads', 'Google Ads'].map((s) => (
                 <li key={s} className="font-poppins text-[15px] text-white/85 flex items-center gap-3 py-3 border-b border-white/10">
-                  <span className="text-green" aria-hidden="true">✓</span>
+                  <span className="text-white/45" aria-hidden="true">✓</span>
                   {s}
                 </li>
               ))}
@@ -579,7 +630,7 @@ export default function RestaurantMarketingPage() {
               ['Improve', 'Performance informs the next campaigns and the next production cycle.'],
             ].map(([h, p], i) => (
               <div key={i} className="border-t border-dark/15 pt-5">
-                <span className="font-poppins text-[12px] font-bold text-green tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span className="font-poppins text-[12px] font-bold text-[#8A8A8A] tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                 <h3 className="font-sora font-bold text-[18px] text-dark mt-1.5 tracking-tight">{h}</h3>
                 <p className="font-poppins text-[14px] text-body mt-2 leading-relaxed">{p}</p>
               </div>
@@ -616,7 +667,31 @@ export default function RestaurantMarketingPage() {
         </Section>
       </main>
 
-      <Footer />
+      {/* Minimal funnel footer instead of the shared <Footer />. The shared one
+          carries a green CTA and a full nav pointing at /contact, /work etc. —
+          a green accent this route must not have, plus four exits out of a paid
+          funnel. Defined locally so no shared component changes and no other
+          route is affected. */}
+      <footer className="bg-dark px-5 md:px-12 py-12">
+        <div className="max-w-site mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo-rampup-light.svg"
+              alt="RampUp"
+              width={73}
+              height={60}
+              className="h-8 w-auto object-contain opacity-90"
+            />
+            <p className="font-poppins text-[13px] text-white/45 mt-4 max-w-xs leading-relaxed">
+              Restaurant marketing, production and paid media. Bangkok, Thailand.
+            </p>
+          </div>
+          <p className="font-poppins text-[12px] text-white/30">
+            © {new Date().getFullYear()} Restaurant RampUp. All rights reserved.
+          </p>
+        </div>
+      </footer>
       <StickyCta />
       {/* Sticky bar clearance so it never covers the footer's last line. */}
       <div className="h-20 md:hidden" aria-hidden="true" />
