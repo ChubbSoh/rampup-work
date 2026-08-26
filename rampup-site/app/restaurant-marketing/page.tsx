@@ -34,7 +34,7 @@ const CUSTOMER_CODE = process.env.CLOUDFLARE_STREAM_CUSTOMER_CODE ?? ''
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-poppins text-[15px] font-bold uppercase tracking-[2.5px] text-[#8A8A8A] mb-4">
+    <p className="font-poppins text-[11px] font-bold uppercase tracking-[2.5px] text-[#8A8A8A] mb-4">
       {children}
     </p>
   )
@@ -115,10 +115,10 @@ export default function RestaurantMarketingPage() {
             <div>
               {/* Two sentences only. The longer H1 is stepped down slightly at each
                   breakpoint so it does not dominate the fold on small screens. */}
-              <h1 className="font-sora font-extrabold text-[43px] leading-[1.1] sm:text-[59px] lg:text-[76px] text-dark tracking-[-0.02em]">
+              <h1 className="font-sora font-extrabold text-[30px] leading-[1.1] sm:text-[41px] lg:text-[53px] text-dark tracking-[-0.02em]">
                 Premium restaurant marketing built to turn attention into reservations.
               </h1>
-              <p className="font-poppins text-[22px] md:text-[25px] text-body mt-6 leading-relaxed max-w-xl">
+              <p className="font-poppins text-[15px] md:text-[18px] text-body mt-6 leading-relaxed max-w-xl">
                 One F&amp;B-specialist team for high-end content, social media, Meta Ads and
                 Google Ads.
               </p>
@@ -128,7 +128,7 @@ export default function RestaurantMarketingPage() {
               </div>
 
               {/* Price sits under the CTA as a qualifier on the action. */}
-              <p className="font-poppins text-[20px] text-muted mt-5">
+              <p className="font-poppins text-[14px] text-muted mt-5">
                 Packages from <span className="font-bold text-dark">{PRICE}/month</span>
               </p>
             </div>
@@ -160,7 +160,7 @@ export default function RestaurantMarketingPage() {
 
         {/* ══ 02 IMMEDIATE PROOF ════════════════════════════════════════════ */}
         <Section className="bg-white border-y border-black/[0.06]">
-          <h2 className="font-sora font-extrabold text-[36px] md:text-[50px] text-dark tracking-tight max-w-3xl leading-[1.15]">
+          <h2 className="font-sora font-extrabold text-[25px] md:text-[35px] text-dark tracking-tight max-w-3xl leading-[1.15]">
             Trusted by premium restaurants, chef-led concepts and hotel F&amp;B teams.
           </h2>
 
@@ -185,20 +185,20 @@ export default function RestaurantMarketingPage() {
                 ) : (
                   <div className="relative aspect-[4/3] rounded-[16px] bg-[#F0F0F0] border border-black/[0.07] overflow-hidden">
                     <div className="absolute inset-0 flex flex-col justify-end p-6">
-                      <span className="font-sora font-extrabold text-[42px] leading-[0.95] text-[#D8D8D8] tracking-tight">
+                      <span className="font-sora font-extrabold text-[29px] leading-[0.95] text-[#D8D8D8] tracking-tight">
                         {c.name}
                       </span>
-                      <span className="font-poppins text-[15px] font-bold uppercase tracking-[2px] text-[#B4B4B4] mt-2.5">
+                      <span className="font-poppins text-[11px] font-bold uppercase tracking-[2px] text-[#B4B4B4] mt-2.5">
                         {c.sub}
                       </span>
                     </div>
                   </div>
                 )}
-                <p className="font-poppins text-[15px] font-bold uppercase tracking-[2px] text-[#8A8A8A] mt-5">{c.type}</p>
-                <h3 className="font-sora font-extrabold text-[34px] text-dark tracking-tight mt-2 leading-[1.1]">
+                <p className="font-poppins text-[11px] font-bold uppercase tracking-[2px] text-[#8A8A8A] mt-5">{c.type}</p>
+                <h3 className="font-sora font-extrabold text-[24px] text-dark tracking-tight mt-2 leading-[1.1]">
                   {c.name}
                 </h3>
-                <p className="font-poppins text-[21px] text-body mt-1">{c.sub}</p>
+                <p className="font-poppins text-[15px] text-body mt-1">{c.sub}</p>
               </article>
             ))}
           </div>
@@ -206,7 +206,7 @@ export default function RestaurantMarketingPage() {
 
         {/* ══ 03 THE PROBLEM ════════════════════════════════════════════════ */}
         <Section>
-          <h2 className="font-sora font-extrabold text-[42px] md:text-[62px] text-dark tracking-tight max-w-2xl leading-[1.1]">
+          <h2 className="font-sora font-extrabold text-[29px] md:text-[43px] text-dark tracking-tight max-w-2xl leading-[1.1]">
             Great restaurants still need great marketing.
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-14 gap-y-10 mt-14">
@@ -218,11 +218,11 @@ export default function RestaurantMarketingPage() {
             ].map(([h, p], i) => (
               <div key={i} className="border-t border-black/10 pt-6">
                 <h3
-                  className="font-sora font-bold text-[27px] md:text-[29px] text-dark leading-snug"
+                  className="font-sora font-bold text-[19px] md:text-[20px] text-dark leading-snug"
                   dangerouslySetInnerHTML={{ __html: h }}
                 />
                 <p
-                  className="font-poppins text-[21px] text-body mt-2.5 leading-relaxed"
+                  className="font-poppins text-[15px] text-body mt-2.5 leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: p }}
                 />
               </div>
@@ -233,7 +233,7 @@ export default function RestaurantMarketingPage() {
         {/* ══ 05 CASE STUDIES ═══════════════════════════════════════════════ */}
         <Section id="work" className="bg-white border-b border-black/[0.06]">
           <Eyebrow>Selected work</Eyebrow>
-          <h2 className="font-sora font-extrabold text-[42px] md:text-[62px] text-dark tracking-tight max-w-2xl leading-[1.1]">
+          <h2 className="font-sora font-extrabold text-[29px] md:text-[43px] text-dark tracking-tight max-w-2xl leading-[1.1]">
             The work behind the reservations.
           </h2>
 
@@ -266,15 +266,15 @@ export default function RestaurantMarketingPage() {
             },
           ].map((c) => (
             <article key={c.name} className="mt-16 pt-12 border-t border-black/10">
-              <p className="font-poppins text-[15px] font-bold uppercase tracking-[1.8px] text-[#8A8A8A]">{c.type}</p>
-              <h3 className="font-sora font-extrabold text-[42px] md:text-[53px] text-dark tracking-tight mt-2 leading-[1.1]">
+              <p className="font-poppins text-[11px] font-bold uppercase tracking-[1.8px] text-[#8A8A8A]">{c.type}</p>
+              <h3 className="font-sora font-extrabold text-[29px] md:text-[37px] text-dark tracking-tight mt-2 leading-[1.1]">
                 {c.name}
               </h3>
-              <p className="font-poppins text-[21px] text-body mt-1">{c.sub}</p>
+              <p className="font-poppins text-[15px] text-body mt-1">{c.sub}</p>
 
               <div className="flex flex-wrap gap-2 mt-5">
                 {c.services.map((v) => (
-                  <span key={v} className="font-poppins text-[17px] font-medium text-body bg-[#F2F2F2] px-3 py-1.5 rounded-full">{v}</span>
+                  <span key={v} className="font-poppins text-[12px] font-medium text-body bg-[#F2F2F2] px-3 py-1.5 rounded-full">{v}</span>
                 ))}
               </div>
 
@@ -306,15 +306,15 @@ export default function RestaurantMarketingPage() {
         <Section>
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-20">
             <div>
-              <h2 className="font-sora font-extrabold text-[42px] md:text-[62px] text-dark tracking-tight leading-[1.1]">
+              <h2 className="font-sora font-extrabold text-[29px] md:text-[43px] text-dark tracking-tight leading-[1.1]">
                 We don&apos;t market everything. We market F&amp;B.
               </h2>
-              <p className="font-poppins text-[22px] text-body mt-6 leading-relaxed">
+              <p className="font-poppins text-[15px] text-body mt-6 leading-relaxed">
                 Specialising changes how we work, not just what we say. We plan around service
                 periods and seasonal covers, shoot in working kitchens without stopping service,
                 and build campaigns around dining occasions rather than generic engagement.
               </p>
-              <p className="font-sora font-extrabold text-[31px] md:text-[39px] text-dark mt-10 leading-snug tracking-tight">
+              <p className="font-sora font-extrabold text-[22px] md:text-[27px] text-dark mt-10 leading-snug tracking-tight">
                 Your restaurant shouldn&apos;t have to teach its agency how restaurants work.
               </p>
             </div>
@@ -325,7 +325,7 @@ export default function RestaurantMarketingPage() {
                 'Reservations', 'Dining occasions', 'Restaurant peak periods',
                 'Guest acquisition', 'Social-first food content',
               ].map((s) => (
-                <li key={s} className="font-poppins text-[21px] text-body flex items-start gap-2.5 border-b border-black/[0.07] py-2.5">
+                <li key={s} className="font-poppins text-[15px] text-body flex items-start gap-2.5 border-b border-black/[0.07] py-2.5">
                   <span className="text-[#B4B4B4] mt-[3px] shrink-0" aria-hidden="true">—</span>
                   <span>{s}</span>
                 </li>
@@ -339,7 +339,7 @@ export default function RestaurantMarketingPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16">
             {/* Heading only — the form does the rest of the talking. */}
             <div>
-              <h2 className="font-sora font-extrabold text-[42px] md:text-[59px] text-dark tracking-tight leading-[1.1]">
+              <h2 className="font-sora font-extrabold text-[29px] md:text-[41px] text-dark tracking-tight leading-[1.1]">
                 Ready to improve your restaurant&rsquo;s marketing?
               </h2>
             </div>
@@ -366,11 +366,11 @@ export default function RestaurantMarketingPage() {
               height={60}
               className="h-8 w-auto object-contain opacity-90"
             />
-            <p className="font-poppins text-[18px] text-white/45 mt-4 max-w-xs leading-relaxed">
+            <p className="font-poppins text-[13px] text-white/45 mt-4 max-w-xs leading-relaxed">
               Restaurant marketing, production and paid media. Bangkok, Thailand.
             </p>
           </div>
-          <p className="font-poppins text-[17px] text-white/30">
+          <p className="font-poppins text-[12px] text-white/30">
             © {new Date().getFullYear()} Restaurant RampUp. All rights reserved.
           </p>
         </div>

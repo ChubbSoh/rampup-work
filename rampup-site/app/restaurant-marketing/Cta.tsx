@@ -15,7 +15,7 @@ export function CtaLink({
   // Monochrome funnel palette: primary actions are black, hover lifts to the
   // existing `dark` charcoal token. No green anywhere on this route.
   const base =
-    'inline-flex items-center justify-center font-poppins font-bold text-[21px] px-8 py-4 rounded-pill transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A1A1A] focus-visible:ring-offset-2'
+    'inline-flex items-center justify-center font-poppins font-bold text-[15px] px-8 py-4 rounded-pill transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A1A1A] focus-visible:ring-offset-2'
   const styles = {
     solid: 'bg-[#1A1A1A] text-white hover:bg-dark',
     outline: 'bg-transparent text-dark border border-black/15 hover:border-black/40',
@@ -75,7 +75,7 @@ export function StickyCta() {
         href="#plan"
         tabIndex={show ? 0 : -1}
         onClick={() => (window as any).dataLayer?.push({ event: 'restaurant_lp_cta_click', cta_location: 'sticky_mobile' })}
-        className="flex items-center justify-center w-full bg-[#1A1A1A] text-white font-poppins font-bold text-[21px] py-3.5 rounded-pill active:scale-[0.99] transition hover:bg-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A1A1A] focus-visible:ring-offset-2"
+        className="flex items-center justify-center w-full bg-[#1A1A1A] text-white font-poppins font-bold text-[15px] py-3.5 rounded-pill active:scale-[0.99] transition hover:bg-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A1A1A] focus-visible:ring-offset-2"
       >
         Enquire Now
       </a>
