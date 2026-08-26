@@ -4,37 +4,26 @@ import { useState, useRef } from 'react'
 import Script from 'next/script'
 
 /**
- * Qualified-consultation form for the Google Ads landing page.
+ * Four-field lead form for cold Google Ads traffic.
  *
  * FIELD MAPPING — read before adding fields.
- * The live n8n "Website Lead Flow" begins with a `Normalize Fields` Code node
- * that rebuilds the payload from a FIXED whitelist. Anything outside that list
- * is discarded at the first node, before the Google Sheet. The Sheet node then
- * persists a further-reduced set of 13 columns.
+ * The live n8n "Website Lead Flow" starts with a `Normalize Fields` Code node
+ * that rebuilds the payload from a FIXED whitelist; anything outside it is
+ * dropped before the Google Sheet. Three of the four fields have a dedicated
+ * persisted column:
+ *   Name            -> name
+ *   Phone Number    -> phone
+ *   Restaurant Name -> restaurant
+ * LINE ID / WhatsApp has no column of its own, so it goes into `message`,
+ * which IS persisted and also appears in the owner notification.
  *
- * So the extra qualification answers are sent BOTH ways:
- *   1. on their own whitelisted keys where one exists (restaurant_type, main_goal)
- *   2. folded into `message`, which IS persisted to the Sheet
- * Nothing a visitor answers is silently lost. Giving position / website /
- * locations / budget their own Sheet columns needs an n8n + Sheet change, which
- * is deliberately out of scope here.
+ * EMAIL IS NO LONGER COLLECTED, and that is safe by design:
+ *   - /api/lead-relay requires name plus EITHER email OR phone
+ *   - n8n's "Validate Required Fields" checks {{ $json.email || $json.phone }}
+ *   - n8n's "Has Email?" branch skips the customer confirmation email when
+ *     there is none and continues straight to the Sheet
+ * Meta CAPI still matches on the hashed phone.
  */
-
-const POSITIONS = [
-  'F&B Director', 'Restaurant Owner', 'Restaurant Group',
-  'Marketing Director / Manager', 'General Manager', 'Other',
-]
-const TYPES = [
-  'Fine Dining', 'Casual Dining', 'Hotel F&B', 'Bar / Rooftop / Lounge',
-  'Restaurant Group', 'Cafe / Bakery', 'Other',
-]
-const LOCATIONS = ['1', '2–3', '4–10', '10+']
-const BUDGETS = ['Under ฿50,000', '฿50,000–฿100,000', '฿100,000–฿200,000', '฿200,000+']
-const CHALLENGES = [
-  'Brand Awareness', 'Reservations / Guest Acquisition', 'Content Quality',
-  'Social Media Management', 'Meta Advertising', 'Google Advertising',
-  'Restaurant Launch', 'Hotel F&B Growth', 'Not Sure Yet',
-]
 
 const FORM_NAME = 'restaurant_marketing_lp'
 
@@ -63,20 +52,14 @@ export default function LeadForm() {
     const data = new FormData(e.currentTarget)
     const g = (k: string) => String(data.get(k) ?? '').trim()
 
-    // Human-readable digest of every qualification answer, so the Sheet's
-    // `message` column carries the full picture even before discrete columns exist.
-    const message = [
-      ['Position', g('position')],
-      ['Website / Instagram', g('website_or_social')],
-      ['Restaurant type', g('restaurant_type')],
-      ['Locations', g('locations')],
-      ['Monthly marketing budget', g('budget')],
-      ['Main challenge', g('main_goal')],
-    ].filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join('\n')
+    // LINE / WhatsApp has no dedicated persisted column, so it rides in
+    // `message` rather than being silently dropped at Normalize Fields.
+    const contactHandle = g('line_whatsapp')
+    const message = contactHandle ? `LINE / WhatsApp: ${contactHandle}` : ''
 
     // Best-effort Netlify Forms capture (spam filtering + backup record).
-    // Deliberately NOT awaited as a gate: the relay below is the source of truth,
-    // so an unregistered form can never cost us the lead.
+    // Deliberately not awaited as a gate — the relay below is the source of
+    // truth, so an unregistered form can never cost us the lead.
     fetch('/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -94,13 +77,10 @@ export default function LeadForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: g('name'),
-          restaurant: g('restaurant'),
-          email: g('email'),
           phone: g('phone'),
-          restaurant_type: g('restaurant_type'),
-          main_goal: g('main_goal'),
-          service: 'Full-service restaurant marketing',
+          restaurant: g('restaurant'),
           message,
+          service: 'Full-service restaurant marketing',
           page_path: window.location.pathname,
           page_url: window.location.href,
           page_type: 'lp-restaurant-marketing',
@@ -152,9 +132,8 @@ export default function LeadForm() {
   }
 
   const input =
-    'w-full font-poppins text-[15px] text-dark bg-white border border-black/[0.12] rounded-xl px-4 py-3 outline-none focus:border-[#1A1A1A] focus:ring-2 focus:ring-black/10 transition placeholder:text-faint'
+    'w-full font-poppins text-[16px] text-dark bg-white border border-black/[0.12] rounded-xl px-4 py-3.5 outline-none focus:border-[#1A1A1A] focus:ring-2 focus:ring-black/10 transition placeholder:text-faint'
   const label = 'font-poppins text-[12px] font-semibold text-body mb-1.5 block tracking-[0.2px]'
-  const req = <span className="text-[#8A8A8A]" aria-hidden="true">*</span>
 
   return (
     <form
@@ -165,7 +144,6 @@ export default function LeadForm() {
       onSubmit={handleSubmit}
       onInput={onFirstInput}
       className="flex flex-col gap-4"
-      noValidate={false}
     >
       <input type="hidden" name="form-name" value={FORM_NAME} />
       <p hidden>
@@ -175,78 +153,39 @@ export default function LeadForm() {
         </label>
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className={label} htmlFor="rm-restaurant">Restaurant / Brand Name {req}</label>
-          <input id="rm-restaurant" name="restaurant" type="text" required autoComplete="organization"
-            placeholder="Toh Daeng" className={input} />
-        </div>
-        <div>
-          <label className={label} htmlFor="rm-web">Website or Instagram</label>
-          <input id="rm-web" name="website_or_social" type="text" autoComplete="url"
-            placeholder="@yourrestaurant" className={input} />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className={label} htmlFor="rm-name">Your Name {req}</label>
-          <input id="rm-name" name="name" type="text" required autoComplete="name"
-            placeholder="Full name" className={input} />
-        </div>
-        <div>
-          <label className={label} htmlFor="rm-position">Position {req}</label>
-          <select id="rm-position" name="position" required defaultValue="" className={input}>
-            <option value="" disabled>Select…</option>
-            {POSITIONS.map((o) => <option key={o} value={o}>{o}</option>)}
-          </select>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className={label} htmlFor="rm-phone">Phone {req}</label>
-          <input id="rm-phone" name="phone" type="tel" required autoComplete="tel"
-            placeholder="08X-XXX-XXXX" className={input} />
-        </div>
-        <div>
-          <label className={label} htmlFor="rm-email">Email {req}</label>
-          <input id="rm-email" name="email" type="email" required autoComplete="email"
-            placeholder="you@restaurant.com" className={input} />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className={label} htmlFor="rm-type">Restaurant Type {req}</label>
-          <select id="rm-type" name="restaurant_type" required defaultValue="" className={input}>
-            <option value="" disabled>Select…</option>
-            {TYPES.map((o) => <option key={o} value={o}>{o}</option>)}
-          </select>
-        </div>
-        <div>
-          <label className={label} htmlFor="rm-loc">Number of Locations</label>
-          <select id="rm-loc" name="locations" defaultValue="" className={input}>
-            <option value="" disabled>Select…</option>
-            {LOCATIONS.map((o) => <option key={o} value={o}>{o}</option>)}
-          </select>
-        </div>
+      <div>
+        <label className={label} htmlFor="rm-name">Name</label>
+        <input
+          id="rm-name" name="name" type="text" required autoComplete="name"
+          placeholder="Your name" className={input}
+        />
       </div>
 
       <div>
-        <label className={label} htmlFor="rm-budget">Current Monthly Marketing Budget</label>
-        <select id="rm-budget" name="budget" defaultValue="" className={input}>
-          <option value="" disabled>Select…</option>
-          {BUDGETS.map((o) => <option key={o} value={o}>{o}</option>)}
-        </select>
+        <label className={label} htmlFor="rm-phone">Phone Number</label>
+        {/* Deliberately no pattern/minLength — Thai, +66 and international
+            numbers with spaces or hyphens must all pass. n8n only trims. */}
+        <input
+          id="rm-phone" name="phone" type="tel" required autoComplete="tel"
+          inputMode="tel" placeholder="08X-XXX-XXXX" className={input}
+        />
       </div>
 
       <div>
-        <label className={label} htmlFor="rm-goal">Main Marketing Challenge</label>
-        <select id="rm-goal" name="main_goal" defaultValue="" className={input}>
-          <option value="" disabled>Select…</option>
-          {CHALLENGES.map((o) => <option key={o} value={o}>{o}</option>)}
-        </select>
+        <label className={label} htmlFor="rm-line">LINE ID / WhatsApp</label>
+        {/* One field on purpose — the lead supplies whichever they use. */}
+        <input
+          id="rm-line" name="line_whatsapp" type="text" required
+          placeholder="LINE ID or WhatsApp number" className={input}
+        />
+      </div>
+
+      <div>
+        <label className={label} htmlFor="rm-restaurant">Restaurant Name</label>
+        <input
+          id="rm-restaurant" name="restaurant" type="text" required autoComplete="organization"
+          placeholder="Restaurant or brand name" className={input}
+        />
       </div>
 
       {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
@@ -259,7 +198,7 @@ export default function LeadForm() {
       <button
         type="submit"
         disabled={loading}
-        className="mt-1 w-full bg-[#1A1A1A] text-white font-poppins font-bold text-[15px] py-4 rounded-pill hover:bg-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A1A1A] focus-visible:ring-offset-2 transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed"
+        className="mt-1 w-full bg-[#1A1A1A] text-white font-poppins font-bold text-[15px] py-4 rounded-pill hover:bg-dark transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A1A1A] focus-visible:ring-offset-2"
       >
         {loading ? 'Sending…' : 'Get Your Marketing Plan'}
       </button>
