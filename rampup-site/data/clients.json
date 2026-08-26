@@ -648,14 +648,38 @@
       "description": "",
       "months": 0,
       "active": false,
-      "last_updated": "2026-06-16",
-      "cover": "",
+      "last_updated": "2026-08-26",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d98a73d9-194e-42dc-9f25-4fa5ab612d00/public",
       "page": "51bakery.html",
-      "photos": [],
-      "videos": [],
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d98a73d9-194e-42dc-9f25-4fa5ab612d00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/62e41d1b-e7a3-43f2-f74f-2cfdb8350100/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/70eeda71-b185-4e2a-e059-17860dbb3600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ad1c9e46-c0e6-492f-3642-8158f85fab00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/3c80fc28-55c1-492b-c5e5-c7a88f058700/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/8816b1c7-c5bc-4b28-e337-22fba2618000/public"
+      ],
+      "videos": [
+        "d858bb95a6a4bf310a8ea7ed043ac000",
+        "be0041941cdd1756d0371d10caa7ed99",
+        "ac6cd1881c84a7b1204bed471534e278",
+        "3ebca8482a41603e14219911b4b99501",
+        "6491c2c0ca764cf63f0fec53c8c517ca",
+        "5842b739e463584ea98a5c8a74ee0f99"
+      ],
       "drive_folder_id": "0AKHSiSFECdC7Uk9PVA",
       "website_folder_id": "173CLYPoCSzmx3uxn1DXQ2U4qoA1nrLtK",
-      "brand_assets_folder_id": "1tVKtH8uDUZryW5xdW60nToUWC2TrXG7z"
+      "brand_assets_folder_id": "1tVKtH8uDUZryW5xdW60nToUWC2TrXG7z",
+      "feed_design": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/683acff4-e007-4381-5ff2-23c51b432200/public",
+      "monthly_plan": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/101ff321-ef3b-4a5b-43fb-5edb48895000/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/f8285c65-3b88-40a3-687e-a2eb0a23b000/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/06378309-a8dd-492f-3130-bbf526809a00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/0168ff47-7797-4ffb-ae1e-d6ee6f66f600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/1362b40c-02c4-4547-f718-a198472e7500/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/3fb9522c-1fa8-4c44-ce46-8bde81938400/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/f84987b0-848b-4fcc-5234-19747e021600/public"
+      ]
     },
     {
       "name": "hanger",
