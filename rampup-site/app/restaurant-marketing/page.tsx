@@ -77,20 +77,17 @@ function Shot({
 }
 
 export default function RestaurantMarketingPage() {
-  // Real client work. Toh Daeng is the fully-shot case study; the rest supply
-  // the production showcase. getClientBySlug() returns the sanitised public
-  // record, so no internal Drive IDs can reach the browser.
+  // Real client work. Toh Daeng is the fully-shot case study and carries the
+  // proof rows; Okasan supplies the hero's second frame. getClientBySlug()
+  // returns the sanitised public record, so no internal Drive IDs reach the browser.
   const tohDaeng = getClientBySlug('toh-d')
-  const showcase = ['okasan', 'opera', 'yun', 'semolina', 'lamaya-bkk', 'sudo-social']
-    .map((s) => getClientBySlug(s))
-    .filter((c): c is NonNullable<typeof c> => Boolean(c))
+  const okasan = getClientBySlug('okasan')
 
-  const heroImage = tohDaeng?.photos?.[0] ?? tohDaeng?.cover ?? showcase[0]?.cover ?? ''
-  const heroSide = showcase[0]?.photos?.[1] ?? showcase[0]?.cover ?? ''
+  const heroImage = tohDaeng?.photos?.[0] ?? tohDaeng?.cover ?? ''
+  const heroSide = okasan?.photos?.[1] ?? okasan?.cover ?? ''
 
   return (
     <>
-      {/* ── minimal funnel header: logo + one action, no site nav ───────────── */}
       {/* Logo only — the top-right CTA is deliberately gone so the hero carries a
           single action. Height stays h-16 so the #plan scroll-mt-16 offset below
           is still correct. */}
@@ -266,39 +263,6 @@ export default function RestaurantMarketingPage() {
               </div>
             ))}
           </div>
-        </Section>
-
-        {/* ══ 04 THE SYSTEM ═════════════════════════════════════════════════ */}
-        <Section className="bg-dark">
-          <Eyebrow>The RampUp system</Eyebrow>
-          <h2 className="font-sora font-extrabold text-[30px] md:text-[44px] text-white tracking-tight max-w-2xl leading-[1.1]">
-            Creative and performance, under one roof.
-          </h2>
-          <ol className="mt-14 space-y-0">
-            {[
-              ['Create', 'Photography and high-production video built specifically around food, atmosphere and experience.'],
-              ['Build desire', 'Social strategy and consistent publishing position the restaurant properly.'],
-              ['Reach the right guests', 'Meta campaigns create discovery and demand.'],
-              ['Capture intent', 'Google Ads reaches guests already searching for where to dine.'],
-              ['Measure', 'Reservations, campaign results, reach and content performance inform what happens next.'],
-            ].map(([h, p], i, arr) => (
-              <li key={i} className="grid grid-cols-[44px_1fr] md:grid-cols-[80px_1fr] gap-4 md:gap-8">
-                <div className="flex flex-col items-center">
-                  <span className="font-poppins text-[12px] font-bold text-white/45 tabular-nums pt-1">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  {i < arr.length - 1 && <span className="w-px flex-1 bg-white/15 mt-2" aria-hidden="true" />}
-                </div>
-                <div className={i < arr.length - 1 ? 'pb-10' : ''}>
-                  <h3 className="font-sora font-bold text-[20px] md:text-[24px] text-white tracking-tight">{h}</h3>
-                  <p className="font-poppins text-[15px] text-white/65 mt-2 leading-relaxed max-w-xl">{p}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-          <p className="font-poppins text-[17px] md:text-[19px] text-white mt-12 pt-10 border-t border-white/15 max-w-2xl leading-relaxed">
-            One team creates the campaign, produces the content, runs the ads and measures the result.
-          </p>
         </Section>
 
         {/* ══ 05 CASE STUDIES ═══════════════════════════════════════════════ */}
@@ -495,146 +459,6 @@ export default function RestaurantMarketingPage() {
               ))}
             </ul>
           </div>
-        </Section>
-
-        {/* ══ 07 PRODUCTION SHOWCASE ════════════════════════════════════════ */}
-        <Section className="bg-white border-y border-black/[0.06]">
-          <h2 className="font-sora font-extrabold text-[30px] md:text-[44px] text-dark tracking-tight max-w-2xl leading-[1.1]">
-            Content worthy of the experience you&apos;re selling.
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mt-12">
-            {showcase.flatMap((c) =>
-              (c.photos ?? []).slice(0, 2).map((p, i) => (
-                <Shot
-                  key={p}
-                  src={p}
-                  alt={`Food and venue photography produced for ${c.name} in ${c.location}`}
-                  ratio={i === 0 ? 'aspect-[4/5]' : 'aspect-square'}
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                  className="rounded-[14px]"
-                />
-              )),
-            )}
-          </div>
-          {CUSTOMER_CODE && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3 md:mt-4">
-              {showcase.slice(0, 4).map((c) =>
-                c.videos?.[0] ? (
-                  <LazyVideoCard
-                    key={c.slug}
-                    videoId={c.videos[0]}
-                    customerCode={CUSTOMER_CODE}
-                    label={`${c.name} social video`}
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                    maxThumbWidth={480}
-                  />
-                ) : null,
-              )}
-            </div>
-          )}
-        </Section>
-
-        {/* ══ 08 HOTEL F&B ══════════════════════════════════════════════════ */}
-        <Section>
-          <Eyebrow>For hotel F&amp;B teams</Eyebrow>
-          <h2 className="font-sora font-extrabold text-[30px] md:text-[44px] text-dark tracking-tight max-w-3xl leading-[1.1]">
-            Your restaurant shouldn&apos;t disappear behind the hotel brand.
-          </h2>
-          <p className="font-poppins text-[16px] md:text-[17px] text-body mt-6 max-w-2xl leading-relaxed">
-            Hotel outlets can have exceptional chefs, locations and service, yet still struggle to
-            build an identity strong enough to attract diners who aren&apos;t already staying at
-            the property.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 mt-14">
-            {[
-              ['Build a standalone F&B identity', 'Give the outlet a compelling reason to be visited independently of the hotel.'],
-              ['Reach local diners', 'Market beyond the hotel&apos;s existing guest database.'],
-              ['Maintain brand standards', 'Create a distinct F&B identity while respecting the standards and positioning of the parent hotel.'],
-            ].map(([h, p], i) => (
-              <div key={i} className="border-t border-dark/15 pt-5">
-                <h3 className="font-sora font-bold text-[18px] md:text-[20px] text-dark leading-snug" dangerouslySetInnerHTML={{ __html: h }} />
-                <p className="font-poppins text-[15px] text-body mt-2.5 leading-relaxed" dangerouslySetInnerHTML={{ __html: p }} />
-              </div>
-            ))}
-          </div>
-          <div className="mt-12">
-            <CtaLink location="hotel_fnb">Talk to Us About Your F&amp;B Outlet</CtaLink>
-          </div>
-        </Section>
-
-        {/* ══ 09 WHAT YOU GET ═══════════════════════════════════════════════ */}
-        <Section className="bg-white border-y border-black/[0.06]">
-          <h2 className="font-sora font-extrabold text-[30px] md:text-[44px] text-dark tracking-tight leading-[1.1]">
-            One team. One strategy.
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10 mt-14">
-            {[
-              ['Content Production', 'High-production video and photography, shot on location around your service.'],
-              ['Social Strategy & Management', 'Strategy, content planning, publishing and the consistency that holds it together.'],
-              ['Meta Advertising', 'Campaigns designed to turn creative into demand and reservations.'],
-              ['Google Advertising', 'Reach guests actively searching for restaurants and dining experiences, including Google Map Ads.'],
-            ].map(([h, p], i) => (
-              <div key={i} className="border-t border-black/10 pt-6">
-                <h3 className="font-sora font-bold text-[20px] md:text-[22px] text-dark tracking-tight">{h}</h3>
-                <p className="font-poppins text-[15px] text-body mt-2.5 leading-relaxed">{p}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        {/* ══ 10 PRICING ════════════════════════════════════════════════════ */}
-        <Section className="bg-dark">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.85fr] gap-12 lg:gap-20 items-start">
-            <div>
-              <h2 className="font-sora font-extrabold text-[30px] md:text-[44px] text-white tracking-tight leading-[1.1]">
-                Built for restaurants serious about growth.
-              </h2>
-              <p className="font-sora font-extrabold text-[24px] md:text-[30px] text-white mt-8 leading-snug tracking-tight">
-                Full-service restaurant marketing from {PRICE}/month
-              </p>
-              <p className="font-poppins text-[14px] text-white/55 mt-4 max-w-md leading-relaxed">
-                Pricing is shown up front on purpose. It&apos;s the fastest way for both of us to
-                know whether this is the right fit. Ad spend is billed separately.
-              </p>
-              <div className="mt-10">
-                <CtaLink location="pricing" variant="light">See What We Could Do for Your Restaurant</CtaLink>
-              </div>
-            </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-x-8">
-              {['Content Production', 'Photography', 'Video', 'Social Strategy', 'Social Management', 'Meta Ads', 'Google Ads'].map((s) => (
-                <li key={s} className="font-poppins text-[15px] text-white/85 flex items-center gap-3 py-3 border-b border-white/10">
-                  <span className="text-white/45" aria-hidden="true">✓</span>
-                  {s}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Section>
-
-        {/* ══ 11 PROCESS ════════════════════════════════════════════════════ */}
-        <Section>
-          <h2 className="font-sora font-extrabold text-[30px] md:text-[44px] text-dark tracking-tight max-w-2xl leading-[1.1]">
-            You run the restaurant. We run the marketing around it.
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6 mt-14">
-            {[
-              ['Understand', 'Brand, audience, commercial goals and competitive landscape.'],
-              ['Plan', 'Monthly marketing strategy, campaign direction and production plan.'],
-              ['Produce', 'Hospitality-focused content created on location.'],
-              ['Launch', 'Organic content, Meta campaigns and Google campaigns go live.'],
-              ['Improve', 'Performance informs the next campaigns and the next production cycle.'],
-            ].map(([h, p], i) => (
-              <div key={i} className="border-t border-dark/15 pt-5">
-                <span className="font-poppins text-[12px] font-bold text-[#8A8A8A] tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-                <h3 className="font-sora font-bold text-[18px] text-dark mt-1.5 tracking-tight">{h}</h3>
-                <p className="font-poppins text-[14px] text-body mt-2 leading-relaxed">{p}</p>
-              </div>
-            ))}
-          </div>
-          <p className="font-poppins text-[17px] text-dark mt-12 pt-8 border-t border-black/10 max-w-2xl leading-relaxed">
-            Strategy, production and performance handled by one team — so you&apos;re not
-            coordinating a photographer, a social agency and a media buyer who never speak.
-          </p>
         </Section>
 
         {/* ══ 12 FINAL CONVERSION ═══════════════════════════════════════════ */}
