@@ -41,13 +41,6 @@ export interface ContractDetails {
   services: ContractServices
 }
 
-/** Human labels, used for the {{SERVICES}} placeholder and the UI. */
-export const SERVICE_LABELS: Record<keyof ContractServices, string> = {
-  social_media_marketing: 'Social Media Marketing',
-  grab: 'Grab',
-  line_oa: 'LINE OA',
-  lineman: 'LINE MAN',
-}
 
 // ─── Date maths ───────────────────────────────────────────────────────────────
 // All arithmetic is done in UTC. Date.UTC + getUTC* avoids the off-by-one that
@@ -116,6 +109,16 @@ const MONTHS_SHORT = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ]
 
+/**
+ * The template's branch line is a whole line, not a bare value: it renders as
+ * `Branch: 00001`, or collapses to nothing when no branch was supplied — the
+ * signature block then closes up with no stray label.
+ */
+export function formatBranchLine(branch: string | null): string {
+  const value = (branch ?? '').trim()
+  return value ? `Branch: ${value}` : ''
+}
+
 /** '2027-02-28' becomes '28 Feb 2027'. Display only; never the stored value. */
 export function formatContractDate(isoDate: string): string {
   if (!isIsoDate(isoDate)) return ''
@@ -124,13 +127,6 @@ export function formatContractDate(isoDate: string): string {
 }
 
 // ─── Normalisation ────────────────────────────────────────────────────────────
-
-/** Ordered list of selected service labels, for the {{SERVICES}} placeholder. */
-export function selectedServiceLabels(services: ContractServices): string[] {
-  return (Object.keys(SERVICE_LABELS) as (keyof ContractServices)[])
-    .filter((key) => services[key])
-    .map((key) => SERVICE_LABELS[key])
-}
 
 /**
  * Coerces an untrusted request body fragment into ContractDetails, or reports
@@ -212,6 +208,14 @@ export function parseContractDetails(
  * Flat placeholder-to-value map for the Google Docs template, built here so the
  * mapping lives with the data model rather than inside an n8n expression.
  * agreementDate is the generation date, supplied by the caller.
+ *
+ * SIMPLE VALUES ONLY. Every entry here is a straight `replaceAllText` in the
+ * Docs template. Optional service sections are NOT placeholders — they live
+ * fully formatted in the master between {{X_BLOCK_START}} / {{X_BLOCK_END}}
+ * markers, and n8n keeps or deletes each block by index based on
+ * `contract.services`. Never add clause wording or a block marker to this map:
+ * blocks are removed by range deletion, not by text replacement, and putting
+ * legal wording here would make the app a second source of truth.
  */
 export function contractPlaceholders(
   contract: ContractDetails,
@@ -222,11 +226,13 @@ export function contractPlaceholders(
     '{{COMPANY_NAME}}':        contract.company_name,
     '{{COMPANY_ADDRESS}}':     contract.company_address,
     '{{TAX_ID}}':              contract.tax_id,
-    '{{BRANCH}}':              contract.branch ?? '',
+    '{{BRANCH_LINE}}':         formatBranchLine(contract.branch),
     '{{CONTRACT_START_DATE}}': formatContractDate(contract.start_date),
     '{{CONTRACT_END_DATE}}':   formatContractDate(contract.end_date),
     '{{CONTRACT_MONTHS}}':     String(contract.duration_months),
     '{{AGREEMENT_DATE}}':      formatContractDate(agreementDate),
-    '{{SERVICES}}':            selectedServiceLabels(contract.services).join(', '),
+    // Reserved for future optional-service payment wording. Mapped to '' so the
+    // raw token can never survive into a generated contract.
+    '{{ADDITIONAL_SERVICE_PAYMENT_TERMS}}': '',
   }
 }
