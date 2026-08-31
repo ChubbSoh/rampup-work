@@ -64,7 +64,7 @@ Conversion tracking uses a shared `event_id` generated client-side and pushed to
 The panel triggers two pipelines, both of which just relay to n8n — **this app owns no persistence**:
 
 - **Onboard** → `POST /api/onboard` → n8n. n8n owns all writes (Drive folders, Sheets, and the GitHub commit to `clients.json`).
-- **Publish** → `POST /.netlify/functions/publish` → n8n. Note this one is a **Netlify function, not a Next route**, so it does not pass through `middleware.ts` and has no auth check — it validates only that the slug exists and has a `website_folder_id`.
+- **Publish** → `POST /.netlify/functions/publish` → n8n. Note this one is a **Netlify function, not a Next route**, so it does not pass through `middleware.ts` and must authenticate itself. It does: `netlify/functions/_control-session.js` re-implements the same signed-token format as `lib/control-session.ts` with `node:crypto`, and `authenticate()` accepts either a valid `control_auth` cookie or an `X-Internal-Token` matching `N8N_INTERNAL_WEBHOOK_TOKEN`, failing closed otherwise. **Keep the two session modules in sync** — same version tag, message format and hash. It then validates that the slug exists and has a `website_folder_id`.
 
 #### Onboarding is one form with three steps
 
