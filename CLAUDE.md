@@ -66,6 +66,43 @@ The panel triggers two pipelines, both of which just relay to n8n — **this app
 - **Onboard** → `POST /api/onboard` → n8n. n8n owns all writes (Drive folders, Sheets, and the GitHub commit to `clients.json`).
 - **Publish** → `POST /.netlify/functions/publish` → n8n. Note this one is a **Netlify function, not a Next route**, so it does not pass through `middleware.ts` and has no auth check — it validates only that the slug exists and has a `website_folder_id`.
 
+#### Onboarding is one form with three steps
+
+`app/control/page.tsx` is a Server Component that maps `clients.json` down to four public
+fields and reads `DEFAULT_TEAM_EMAILS` server-side; `ControlPanelClient.tsx` is the browser
+half. Do not import `data/clients.json` or `lib/team-emails.ts` from the client component —
+that inlines Drive IDs and staff addresses into a publicly downloadable `/_next/static` chunk.
+
+`OnboardSection` renders **one `<form>` spanning one card** with three internal
+`SectionLabel` steps — 01 Client Info, 02 Drive Access, 03 Contract Details — and a single
+`Create Client` submit. There is deliberately no wizard, no tabs, and no second page: one
+submission carries client info, Drive access, and contract details together.
+
+Step 03 feeds contract generation. `lib/contract.ts` holds the shared logic — it is imported
+by **both** the client component and the route, so like `lib/emails.ts` it must stay free of
+secrets and server-only imports. It owns:
+
+- `calculateContractEnd()` — the end date is **derived, never entered**. The service period is
+  inclusive, so the rule is `(start + N months) − 1 day` with month-length clamping applied
+  first: 2026-09-01 + 6 months is **2027-02-28**, not 2027-03-01. All arithmetic is `Date.UTC`
+  based; parsing a bare `YYYY-MM-DD` as local time shifts the day either side of UTC.
+- `parseContractDetails()` — the server re-validates everything and **recalculates `end_date`**,
+  ignoring the value the browser sent. `social_media_marketing` is hardcoded `true` and never
+  read from the request body; it is typed as the literal `true` so a contract without it will
+  not compile.
+- `contractPlaceholders()` — maps the record onto the Google Docs `{{TOKENS}}`.
+
+Tax ID and branch are **strings throughout**. Never `Number()` them — leading zeros are real.
+
+**No contract wording lives in this repo.** The site submits structured service selections;
+the legal text lives in the Google Docs template n8n copies. Do not move clause text into React.
+
+The onboard payload to n8n therefore carries, on top of the client record fields:
+`drive_folder`, `team_emails`, `client_emails`, `contract` (structured), and
+`contract_placeholders` (the same data pre-mapped to `{{TOKENS}}` so n8n's `replaceAllText`
+needs no expression logic). n8n's "Merge and Encode" builds the `clients.json` record
+field-by-field and ignores unknown keys, so none of these reach public client data.
+
 ### Bilingual routing
 
 English lives at `/`, Thai at `/th/*` as parallel duplicated route files. There is no i18n framework and no locale middleware.

@@ -8,6 +8,13 @@ import {
   normalizeEmail,
   splitEmailInput,
 } from '@/lib/emails'
+import {
+  CONTRACT_DURATIONS,
+  DEFAULT_DURATION_MONTHS,
+  calculateContractEnd,
+  formatContractDate,
+  type ContractDuration,
+} from '@/lib/contract'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -163,6 +170,68 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 const inputCls =
   'w-full font-poppins text-sm text-[#2D2D2D] bg-[#F7F7F7] border border-black/[0.08] rounded-xl px-4 py-3 outline-none focus:border-[#3DBE5A] focus:ring-2 focus:ring-[#3DBE5A]/20 transition placeholder:text-[#AAAAAA]'
 
+// Mirrored value from another field. Same shape as inputCls, muted fill and no
+// focus ring, so it reads as displayed data rather than something to fill in.
+const readOnlyInputCls =
+  'w-full font-poppins text-sm text-[#888888] bg-black/[0.03] border border-black/[0.06] rounded-xl px-4 py-3 outline-none cursor-default placeholder:text-[#CCCCCC]'
+
+/** Optional-field hint, matching the email-count captions in Drive Access. */
+function Hint({ children }: { children: React.ReactNode }) {
+  return <p className="font-poppins text-[11px] text-[#AAAAAA]">{children}</p>
+}
+
+// ─── Service option box ────────────────────────────────────────────────────────
+// accent-green w-4 h-4 is the checkbox/radio treatment already used by the lead
+// forms; reused here so the control panel matches the rest of the site.
+
+function ServiceOption({
+  label,
+  detail,
+  checked,
+  onChange,
+  locked = false,
+}: {
+  label: string
+  detail?: string
+  checked: boolean
+  onChange?: (next: boolean) => void
+  /** Always-on service: still visibly checked, but not togglable. */
+  locked?: boolean
+}) {
+  return (
+    <label
+      className={`flex items-start gap-3 px-4 py-3 rounded-xl transition ${
+        locked
+          ? 'bg-[#E8F8ED] cursor-default'
+          : 'bg-[#F7F7F7] cursor-pointer hover:bg-black/[0.05]'
+      }`}
+    >
+      <input
+        type="checkbox"
+        className="accent-green w-4 h-4 mt-0.5 shrink-0"
+        checked={checked}
+        disabled={locked}
+        readOnly={locked}
+        onChange={onChange ? (e) => onChange(e.target.checked) : undefined}
+      />
+      <span className="min-w-0">
+        <span
+          className={`block font-poppins text-sm font-medium ${
+            locked ? 'text-[#3DBE5A]' : 'text-[#2D2D2D]'
+          }`}
+        >
+          {label}
+        </span>
+        {detail && (
+          <span className="block font-poppins text-[11px] text-[#AAAAAA] mt-0.5">
+            {detail}
+          </span>
+        )}
+      </span>
+    </label>
+  )
+}
+
 // ─── Email chip input ─────────────────────────────────────────────────────────
 // Plain React — no new dependency. Reuses the CuisineTag pill vocabulary so the
 // chips match the existing visual language.
@@ -277,6 +346,31 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
   const [clientEmails, setClientEmails] = useState<string[]>([])
   const [status, setStatus]       = useState<Status>({ type: 'idle' })
 
+  // ── Step 03: contract details ───────────────────────────────────────────────
+  // Client Name is not stored here — it mirrors `name` from step 01 so the two
+  // can never drift apart.
+  const [companyName, setCompanyName]       = useState('')
+  const [companyAddress, setCompanyAddress] = useState('')
+  const [taxId, setTaxId]                   = useState('')
+  const [branch, setBranch]                 = useState('')
+  const [startDate, setStartDate]           = useState('')
+  const [durationMonths, setDurationMonths] =
+    useState<ContractDuration>(DEFAULT_DURATION_MONTHS)
+  const [grab, setGrab]       = useState(false)
+  const [lineOa, setLineOa]   = useState(false)
+  const [lineman, setLineman] = useState(false)
+
+  // Derived, never stored: recalculated on every render from start + duration.
+  // The server recalculates it too and ignores whatever the browser sends.
+  const endDate = calculateContractEnd(startDate, durationMonths)
+
+  const contractIncomplete =
+    !name.trim() ||
+    !companyName.trim() ||
+    !companyAddress.trim() ||
+    !taxId.trim() ||
+    !endDate
+
   const invalidEmails = [...teamEmails, ...clientEmails].filter((e) => !isValidEmail(e))
   const teamKeys   = teamEmails.map(dedupeKey)
   const clientKeys = clientEmails.map(dedupeKey)
@@ -300,12 +394,25 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
     setDriveFolder('')
     setTeamEmails(defaultTeamEmails)
     setClientEmails([])
+    setCompanyName('')
+    setCompanyAddress('')
+    setTaxId('')
+    setBranch('')
+    setStartDate('')
+    setDurationMonths(DEFAULT_DURATION_MONTHS)
+    setGrab(false)
+    setLineOa(false)
+    setLineman(false)
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (invalidEmails.length) {
       setStatus({ type: 'error', msg: `Fix ${invalidEmails.length} invalid email address(es) first` })
+      return
+    }
+    if (contractIncomplete) {
+      setStatus({ type: 'error', msg: 'Complete the contract details before creating the client' })
       return
     }
     setStatus({ type: 'loading' })
@@ -321,6 +428,23 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
           drive_folder: driveFolder,
           team_emails: teamEmails,
           client_emails: clientEmails,
+          contract: {
+            client_name:     name,
+            company_name:    companyName,
+            company_address: companyAddress,
+            tax_id:          taxId,
+            branch:          branch.trim() || null,
+            start_date:      startDate,
+            duration_months: durationMonths,
+            // Sent for traceability only — the server recalculates it.
+            end_date:        endDate,
+            services: {
+              social_media_marketing: true,
+              grab,
+              line_oa: lineOa,
+              lineman,
+            },
+          },
         }),
       })
       const data = await res.json()
@@ -440,6 +564,123 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
             </p>
           </Field>
 
+          <SectionLabel
+            step={3}
+            title="Contract Details"
+            hint="Used to automatically generate the client contract."
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field label="Client Name">
+              {/* Mirrors step 01 — read-only so it can never be typed twice. */}
+              <input
+                className={readOnlyInputCls}
+                value={name}
+                placeholder="From Client Info above"
+                readOnly
+                tabIndex={-1}
+                aria-readonly="true"
+              />
+            </Field>
+
+            <Field label="Company Name">
+              <input
+                className={inputCls}
+                placeholder="e.g. OKASAN COMPANY LIMITED"
+                value={companyName}
+                onChange={e => setCompanyName(e.target.value)}
+                required
+              />
+            </Field>
+          </div>
+
+          <Field label="Company Address">
+            <textarea
+              className={`${inputCls} min-h-[88px] resize-y`}
+              placeholder="Registered company address"
+              value={companyAddress}
+              onChange={e => setCompanyAddress(e.target.value)}
+              rows={2}
+              required
+            />
+          </Field>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field label="Tax ID / Registration No.">
+              {/* inputMode numeric for the keypad, but the value stays a string
+                  so leading zeros survive. */}
+              <input
+                className={inputCls}
+                placeholder="0105509002238"
+                value={taxId}
+                onChange={e => setTaxId(e.target.value)}
+                inputMode="numeric"
+                required
+              />
+            </Field>
+
+            <Field label="Branch">
+              <input
+                className={inputCls}
+                placeholder="e.g. 00001"
+                value={branch}
+                onChange={e => setBranch(e.target.value)}
+                inputMode="numeric"
+              />
+              <Hint>Optional</Hint>
+            </Field>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field label="Contract Start">
+              <input
+                type="date"
+                className={inputCls}
+                value={startDate}
+                onChange={e => setStartDate(e.target.value)}
+                required
+              />
+            </Field>
+
+            <Field label="Duration">
+              <select
+                className={inputCls}
+                value={durationMonths}
+                onChange={e => setDurationMonths(Number(e.target.value) as ContractDuration)}
+              >
+                {CONTRACT_DURATIONS.map(months => (
+                  <option key={months} value={months}>{months} Months</option>
+                ))}
+              </select>
+            </Field>
+          </div>
+
+          <Field label="Contract End">
+            <p className="font-poppins text-sm font-medium text-[#2D2D2D] tabular-nums">
+              {endDate ? formatContractDate(endDate) : '—'}
+            </p>
+            <Hint>
+              {endDate
+                ? 'Calculated automatically · inclusive of the final day'
+                : 'Set a contract start date'}
+            </Hint>
+          </Field>
+
+          <Field label="Services">
+            <div className="flex flex-col gap-2">
+              <ServiceOption
+                label="Social Media Marketing"
+                detail="Facebook · TikTok · Instagram · Google"
+                checked
+                locked
+              />
+              <ServiceOption label="Grab"     checked={grab}    onChange={setGrab} />
+              <ServiceOption label="LINE OA"  checked={lineOa}  onChange={setLineOa} />
+              <ServiceOption label="LINE MAN" checked={lineman} onChange={setLineman} />
+            </div>
+            <Hint>Social Media Marketing is included in every contract.</Hint>
+          </Field>
+
           {invalidEmails.length > 0 && (
             <p className="font-poppins text-[12px] text-red-500">
               {invalidEmails.length} invalid address{invalidEmails.length === 1 ? '' : 'es'} — remove or correct before submitting.
@@ -450,7 +691,7 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
             <StatusBadge status={status} />
             <button
               type="submit"
-              disabled={status.type === 'loading' || invalidEmails.length > 0}
+              disabled={status.type === 'loading' || invalidEmails.length > 0 || contractIncomplete}
               className="ml-auto shrink-0 bg-[#3DBE5A] text-white font-poppins font-semibold text-sm px-6 py-2.5 rounded-full hover:brightness-105 transition-all active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {status.type === 'loading' ? 'Creating…' : 'Create Client'}

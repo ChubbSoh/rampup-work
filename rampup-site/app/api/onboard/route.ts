@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { isValidEmail, normalizeEmailList, dedupeKey } from '@/lib/emails'
+import { contractPlaceholders, parseContractDetails } from '@/lib/contract'
 
 /** Guard against a pasted address book turning into hundreds of Drive calls. */
 const MAX_EMAILS_PER_LIST = 50
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { client_name, slug, cuisine, location, description, cover, photos, videos, active } = body as Record<string, unknown>
-  const { team_emails, client_emails } = body as Record<string, unknown>
+  const { team_emails, client_emails, drive_folder, contract } = body as Record<string, unknown>
 
   // Required field validation
   if (!client_name || typeof client_name !== 'string') {
@@ -36,6 +37,25 @@ export async function POST(req: NextRequest) {
   }
   if (!location || typeof location !== 'string') {
     return NextResponse.json({ error: 'location is required' }, { status: 400 })
+  }
+  // The control panel marks this required and has always submitted it, but the
+  // payload below used to omit it, so the Drive folder name never reached n8n.
+  if (!drive_folder || typeof drive_folder !== 'string' || !drive_folder.trim()) {
+    return NextResponse.json({ error: 'drive_folder is required' }, { status: 400 })
+  }
+
+  // ── Contract details (step 03) ──────────────────────────────────────────────
+  // Structured selections only. All wording lives in the Google Docs template
+  // that n8n copies — this route never composes contract text.
+  const parsedContract = parseContractDetails(contract)
+  if (!parsedContract.ok) {
+    return NextResponse.json({ error: parsedContract.error }, { status: 400 })
+  }
+  // client_name on the contract mirrors step 01; trust the top-level field so
+  // the two can never disagree.
+  const contractDetails = {
+    ...parsedContract.contract,
+    client_name: (client_name as string).trim(),
   }
 
   // ── Drive access lists ──────────────────────────────────────────────────────
@@ -69,6 +89,10 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  // The date the contract is generated, which is this request. Same UTC slice
+  // format as last_updated below.
+  const agreementDate = new Date().toISOString().slice(0, 10)
+
   // Build full payload for n8n — n8n owns all persistence (Drive + Sheets + GitHub)
   const payload = {
     client_name:  (client_name as string).trim(),
@@ -88,6 +112,18 @@ export async function POST(req: NextRequest) {
     // ignores unknown keys, so these never reach public client data.
     team_emails:   teamEmails,
     client_emails: clientEmails,
+    // Human-readable Drive folder name (ClientRecord.drive_folder).
+    drive_folder: drive_folder.trim(),
+    // Contract data for the Google Docs generation step. `contract` is the
+    // structured record; `contract_placeholders` is the same data pre-mapped to
+    // the template's {{TOKENS}} so n8n's replaceAllText step needs no
+    // expression logic. Both are ignored by "Merge and Encode", so neither
+    // reaches public client data.
+    contract: {
+      ...contractDetails,
+      agreement_date: agreementDate,
+    },
+    contract_placeholders: contractPlaceholders(contractDetails, agreementDate),
   }
 
   try {
