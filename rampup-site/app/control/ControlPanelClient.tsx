@@ -375,6 +375,11 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
   const teamKeys   = teamEmails.map(dedupeKey)
   const clientKeys = clientEmails.map(dedupeKey)
 
+  // Order-insensitive: re-adding someone in a different position still counts
+  // as matching the defaults.
+  const sortedKeys = (list: string[]) => list.map(dedupeKey).sort().join(',')
+  const teamMatchesDefaults = sortedKeys(teamEmails) === sortedKeys(defaultTeamEmails)
+
   // Auto-generate slug from name unless user has manually edited it
   useEffect(() => {
     if (!slugEdited) setSlug(slugify(name))
@@ -544,9 +549,22 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
               blockedKeys={clientKeys}
               blockedHint="Already in Client Access"
             />
-            <p className="font-poppins text-[11px] text-[#AAAAAA]">
-              {teamEmails.length} member{teamEmails.length === 1 ? '' : 's'} · fileOrganizer · no email sent
-            </p>
+            <div className="flex items-baseline justify-between gap-3">
+              <p className="font-poppins text-[11px] text-[#AAAAAA]">
+                {teamEmails.length} member{teamEmails.length === 1 ? '' : 's'} · fileOrganizer · no email sent
+              </p>
+              {/* Removing a teammate is a click; putting them back was a page
+                  reload. Only offered once the list actually differs. */}
+              {!teamMatchesDefaults && (
+                <button
+                  type="button"
+                  onClick={() => setTeamEmails(defaultTeamEmails)}
+                  className="shrink-0 font-poppins text-[11px] font-medium text-[#3DBE5A] hover:underline"
+                >
+                  Reset to defaults
+                </button>
+              )}
+            </div>
           </Field>
 
           <Field label="Client Access">
