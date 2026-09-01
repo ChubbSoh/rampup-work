@@ -833,6 +833,23 @@
       "drive_folder_id": "0ALmbMpIM7RBZUk9PVA",
       "website_folder_id": "18uiyamBzRaPk3-lqZRAn0nytg8OdkAh0",
       "brand_assets_folder_id": "1SfccaQVgyCC6LAdvQmitgfQe8wKNxR9y"
+    },
+    {
+      "name": "ZZ Test Sept",
+      "slug": "zz-test-sept",
+      "cuisine": "japanese",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-09-01",
+      "cover": "",
+      "page": "zz-test-sept.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AE89B9DoNCa_Uk9PVA",
+      "website_folder_id": "127oVzL6pzpCpPyiibLdQhm8xulvHWmw-",
+      "brand_assets_folder_id": "1Vo6LYoChzmiuSGrN2hSrdgIv4eq7vuaV"
     }
   ]
 }
