@@ -63,7 +63,12 @@ Conversion tracking uses a shared `event_id` generated client-side and pushed to
 
 The panel triggers two pipelines, both of which just relay to n8n — **this app owns no persistence**:
 
-- **Onboard** → `POST /api/onboard` → n8n. n8n owns all writes (Drive folders, Sheets, and the GitHub commit to `clients.json`).
+- **Onboard** → `POST /api/onboard` → n8n. n8n owns all writes (Drive folders, Drive sharing, the
+  Google Docs contract, the FlowAccount contact, Sheets, and the GitHub commit to `clients.json`).
+  **A full onboard takes ~25-35 seconds, and Netlify kills a function at 10.** The panel therefore
+  reports failure — "Failed to reach onboarding pipeline", or a JSON parse error when Netlify
+  returns an HTML error page — even when the run completely succeeds. **That message is not a
+  verdict.** Check the n8n execution log before concluding anything failed.
 - **Publish** → `POST /.netlify/functions/publish` → n8n. Note this one is a **Netlify function, not a Next route**, so it does not pass through `middleware.ts` and must authenticate itself. It does: `netlify/functions/_control-session.js` re-implements the same signed-token format as `lib/control-session.ts` with `node:crypto`, and `authenticate()` accepts either a valid `control_auth` cookie or an `X-Internal-Token` matching `N8N_INTERNAL_WEBHOOK_TOKEN`, failing closed otherwise. **Keep the two session modules in sync** — same version tag, message format and hash. It then validates that the slug exists and has a `website_folder_id`.
 
 #### Onboarding is one form with three steps
@@ -90,9 +95,16 @@ secrets and server-only imports. It owns:
   ignoring the value the browser sent. `social_media_marketing` is hardcoded `true` and never
   read from the request body; it is typed as the literal `true` so a contract without it will
   not compile.
-- `contractPlaceholders()` — maps the record onto the Google Docs `{{TOKENS}}`.
+- `contractPlaceholders()` — maps the record onto the Google Docs `{{TOKENS}}`. **Simple values
+  only.** Optional service sections are not placeholders; see the block markers below.
+- `monthlyPrice()` — derives the sheet's PRICE column from the service selection.
+  **Grab is deliberately excluded**: the contract states no Grab fee is charged until the client
+  passes a performance threshold, so billing it from month one would contradict what they sign.
+  Add `addOns.grab.price` by hand when a client crosses it.
 
 Tax ID and branch are **strings throughout**. Never `Number()` them — leading zeros are real.
+`accountant_email` is optional but validated when present — it becomes `contactEmail` on the
+client's FlowAccount record, and a typo there fails silently at invoicing time.
 
 **No contract wording lives in this repo.** The site submits structured service selections;
 the legal text lives in the Google Docs template n8n copies. Do not move clause text into React.
@@ -102,6 +114,62 @@ The onboard payload to n8n therefore carries, on top of the client record fields
 `contract_placeholders` (the same data pre-mapped to `{{TOKENS}}` so n8n's `replaceAllText`
 needs no expression logic). n8n's "Merge and Encode" builds the `clients.json` record
 field-by-field and ignores unknown keys, so none of these reach public client data.
+
+### What the n8n onboarding workflow does with that payload
+
+`RampUp Client Onboard` (`8FzY05RJnU8UPpet`) runs 38 nodes in one linear chain. The order is
+deliberate — this is the sequence, and the reasons it is this sequence:
+
+```
+Receive Onboard → Prepare Variables → Check Slug        ← fails here if duplicate
+  → Create Shared Drive (named from drive_folder)       ← + Year/WEBSITE/feed-design/
+  → Build Response Data                                    monthly-plan/Brand Assets
+  → Build Access Items → … → Share Drive Permission     ← team + client emails
+  → Copy Contract Template → … → Contract Result        ← Google Docs
+  → Get FlowAccount Token → Create FlowAccount Contact
+  → Fetch clients.json → Merge and Encode → Commit to GitHub
+  → Shape Clients Row → Append to Clients → … → Append to SHOOT Tab
+  → Return Folder IDs
+```
+
+- **The slug check runs first, before anything is created.** It used to live inside
+  `Merge and Encode`, late in the chain, where a duplicate slug aborted *after* a Shared Drive
+  had been created, shared with the whole team, and a contract generated.
+- **Sheets run last.** They are bookkeeping; a Google Sheets 429 must not be able to truncate an
+  onboard that has already made a Drive. All four Sheets nodes carry `retryOnFail` (3×3s),
+  `onError: continueRegularOutput` **and `alwaysOutputData`** — the last one matters, because a
+  node emitting zero items silently ends the branch and n8n still reports the run as *success*.
+- **Every step after the Drive is non-fatal** and reports into one `warnings[]` array, which the
+  control panel renders as an amber partial success.
+
+**The optional service sections are handled by block markers, not text replacement.** The master
+template contains each service's clause fully formatted between `{{GRAB_BLOCK_START}}` /
+`{{GRAB_BLOCK_END}}` (likewise `LINE_OA`, `LINEMAN`, `GRAB_CONFIDENTIALITY`). `Compute Contract
+Edits` keeps or deletes each block **by index range**, which is what preserves headings, bold and
+bullets — `replaceAllText` cannot insert formatted multi-paragraph content. Two rules that code
+depends on: deletions are ordered **descending by `startIndex`** (deleting low indexes shifts
+everything below), and **all deletions precede any `replaceAllText`** (replacement changes
+document length and invalidates ranges computed from the snapshot). Markers are found by
+flattening the document into one string with an index map, because Docs routinely splits a
+marker across several `textRun`s.
+
+**FlowAccount** (`POST /v1/contacts`) files the client for invoicing. `contactType` and
+`contactGroup` are the **string** `"3"`, copied off an existing correct record — the SDK docs
+describe them as ints, which is wrong. `contactCode` is the client name and becomes the sheet's
+CONTACT ID; the returned `id` becomes FLOWACCOUNT_CONTACT_ID. FlowAccount answers **HTTP 200 with
+`status: false`** on a rejected write, so success is checked on `status === true` plus an `id`,
+never on the status code.
+
+The client id/secret sit in the token node's body parameters rather than a credential. This is
+not laziness: n8n corrupts a form-urlencoded body when merging a Custom Auth credential,
+FlowAccount ignores query-string credentials and rejects HTTP Basic, n8n's generic OAuth2
+credential never performs the client-credentials exchange, and n8n Variables are unlicensed on
+this plan. The token node also needs `specifyBody: "keypair"` — without it n8n ignores
+`bodyParameters` entirely and posts an empty body, which FlowAccount reports as `invalid_client`.
+
+**The webhook node must keep its `Internal Webhook Token` header-auth credential.** Editing this
+workflow through the API has silently dropped it before, leaving `/webhook/onboard` open to
+anyone who knew the URL. After any workflow edit, confirm an unauthenticated POST returns 403.
 
 ### Bilingual routing
 
