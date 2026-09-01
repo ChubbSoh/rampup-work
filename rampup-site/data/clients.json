@@ -901,6 +901,23 @@
       "drive_folder_id": "0AMnitv8AdB3zUk9PVA",
       "website_folder_id": "1xf9ructytkYOqWU4wN-l8eLgA2arNFQ-",
       "brand_assets_folder_id": "1843QmJLqaiQbXGJ4ECtnmUcf1yvBUI0i"
+    },
+    {
+      "name": "ZZ Auto Test 2",
+      "slug": "zz-auto-test-2",
+      "cuisine": "japanese",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-09-01",
+      "cover": "",
+      "page": "zz-auto-test-2.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AFH55tSzdEjSUk9PVA",
+      "website_folder_id": "1_RNpFgXo4BjlZ8Avki54B6ZzVUK-SwBG",
+      "brand_assets_folder_id": "1XOSCxQ6k20putZPkG_oMMqR7Nzlv0tYG"
     }
   ]
 }
