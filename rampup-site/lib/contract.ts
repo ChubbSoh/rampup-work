@@ -8,6 +8,7 @@
 // structured selections; the legal text lives in the Google Docs template that
 // n8n copies and fills.
 
+import { isValidEmail, normalizeEmail } from './emails'
 import { restaurantRampUp, addOns } from './pricing'
 
 export const CONTRACT_DURATIONS = [3, 6, 12] as const
@@ -33,6 +34,11 @@ export interface ContractDetails {
   company_name: string
   company_address: string
   tax_id: string
+  /**
+   * Optional. Becomes `contactEmail` on the client's FlowAccount record, so
+   * invoices reach the accountant rather than the restaurant's front desk.
+   */
+  accountant_email: string | null
   /** Optional; null when not supplied. Kept a string — leading zeros matter. */
   branch: string | null
   /** YYYY-MM-DD */
@@ -170,6 +176,7 @@ export function parseContractDetails(
   const companyName    = str('company_name')
   const companyAddress = str('company_address')
   const taxId          = str('tax_id')
+  const accountantEmail = str('accountant_email')
   const branch         = str('branch')
   const startDate      = str('start_date')
 
@@ -189,6 +196,11 @@ export function parseContractDetails(
   }
   if (!isIsoDate(startDate)) {
     return { ok: false, error: 'contract.start_date must be a valid YYYY-MM-DD date' }
+  }
+  // Optional, but a typo here means invoices go nowhere — reject rather than
+  // silently file a broken address on the FlowAccount record.
+  if (accountantEmail && !isValidEmail(accountantEmail)) {
+    return { ok: false, error: `contract.accountant_email is not a valid email: ${accountantEmail}` }
   }
 
   const duration = raw.duration_months
@@ -217,6 +229,7 @@ export function parseContractDetails(
     company_name:     companyName,
     company_address:  companyAddress,
     tax_id:           taxId,
+    accountant_email: accountantEmail ? normalizeEmail(accountantEmail) : null,
     branch:           branch || null,
     start_date:       startDate,
     duration_months:  duration,

@@ -352,6 +352,7 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
   const [companyName, setCompanyName]       = useState('')
   const [companyAddress, setCompanyAddress] = useState('')
   const [taxId, setTaxId]                   = useState('')
+  const [accountantEmail, setAccountantEmail] = useState('')
   const [branch, setBranch]                 = useState('')
   const [startDate, setStartDate]           = useState('')
   const [durationMonths, setDurationMonths] =
@@ -364,12 +365,16 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
   // The server recalculates it too and ignores whatever the browser sends.
   const endDate = calculateContractEnd(startDate, durationMonths)
 
+  // Optional, but if filled it must be usable — the server rejects a bad one.
+  const accountantEmailInvalid = accountantEmail.trim() !== '' && !isValidEmail(accountantEmail)
+
   const contractIncomplete =
     !name.trim() ||
     !companyName.trim() ||
     !companyAddress.trim() ||
     !taxId.trim() ||
-    !endDate
+    !endDate ||
+    accountantEmailInvalid
 
   const invalidEmails = [...teamEmails, ...clientEmails].filter((e) => !isValidEmail(e))
   const teamKeys   = teamEmails.map(dedupeKey)
@@ -402,6 +407,7 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
     setCompanyName('')
     setCompanyAddress('')
     setTaxId('')
+    setAccountantEmail('')
     setBranch('')
     setStartDate('')
     setDurationMonths(DEFAULT_DURATION_MONTHS)
@@ -438,6 +444,7 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
             company_name:    companyName,
             company_address: companyAddress,
             tax_id:          taxId,
+            accountant_email: accountantEmail.trim() || null,
             branch:          branch.trim() || null,
             start_date:      startDate,
             duration_months: durationMonths,
@@ -648,6 +655,21 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
               <Hint>Optional</Hint>
             </Field>
           </div>
+
+          <Field label="Accountant Email">
+            <input
+              type="email"
+              className={inputCls}
+              placeholder="accounts@company.com"
+              value={accountantEmail}
+              onChange={e => setAccountantEmail(e.target.value)}
+            />
+            <Hint>
+              {accountantEmailInvalid
+                ? 'Not a valid email address'
+                : 'Optional · becomes the billing contact on the FlowAccount record'}
+            </Hint>
+          </Field>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Contract Start">
