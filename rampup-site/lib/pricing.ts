@@ -20,6 +20,21 @@ export const websiteBuild = {
 }
 
 /**
+ * Monthly add-on prices in THB.
+ *
+ * These same figures are still hardcoded as display strings in
+ * components/PricingCard.tsx and (in Thai) lib/translations.ts — see
+ * docs/PRICING.md. Changing a number here does NOT update those; they remain a
+ * manual edit. This block exists so the onboarding price calculation has one
+ * authoritative source rather than a fourth copy.
+ */
+export const addOns = {
+  grab:    { price: 9990 },
+  lineman: { price: 4990 },
+  lineOa:  { price: 3990 },
+}
+
+/**
  * Formats a THB amount with thousands separators, e.g. 59990 -> "59,990".
  * Does not include the ฿ symbol so callers can control placement/spacing.
  */

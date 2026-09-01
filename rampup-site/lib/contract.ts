@@ -8,6 +8,8 @@
 // structured selections; the legal text lives in the Google Docs template that
 // n8n copies and fills.
 
+import { restaurantRampUp, addOns } from './pricing'
+
 export const CONTRACT_DURATIONS = [3, 6, 12] as const
 export type ContractDuration = (typeof CONTRACT_DURATIONS)[number]
 
@@ -39,6 +41,25 @@ export interface ContractDetails {
   /** YYYY-MM-DD, always derived from start_date + duration_months. */
   end_date: string
   services: ContractServices
+  /** THB per month, derived from `services`. See monthlyPrice(). */
+  monthly_price: number
+}
+
+/**
+ * Monthly billing amount for the selected services, in THB.
+ *
+ * Grab is deliberately EXCLUDED. The contract states that no Grab management
+ * fee is charged until the client passes the agreed performance threshold, so
+ * billing it from month one would contradict the agreement the client signs.
+ * When a client crosses that threshold, add ฿9,990 (`addOns.grab.price`) to
+ * their sheet row by hand.
+ */
+export function monthlyPrice(services: ContractServices): number {
+  return (
+    restaurantRampUp.price +
+    (services.line_oa ? addOns.lineOa.price : 0) +
+    (services.lineman ? addOns.lineman.price : 0)
+  )
 }
 
 
@@ -183,6 +204,14 @@ export function parseContractDetails(
       ? (raw.services as Record<string, unknown>)
       : {}
 
+  const services: ContractServices = {
+    // Base package — never optional, never taken from the request body.
+    social_media_marketing: true,
+    grab:    rawServices.grab === true,
+    line_oa: rawServices.line_oa === true,
+    lineman: rawServices.lineman === true,
+  }
+
   const contract: ContractDetails = {
     client_name:      clientName,
     company_name:     companyName,
@@ -192,13 +221,9 @@ export function parseContractDetails(
     start_date:       startDate,
     duration_months:  duration,
     end_date:         calculateContractEnd(startDate, duration),
-    services: {
-      // Base package — never optional, never taken from the request body.
-      social_media_marketing: true,
-      grab:    rawServices.grab === true,
-      line_oa: rawServices.line_oa === true,
-      lineman: rawServices.lineman === true,
-    },
+    services,
+    // Derived server-side; a client-sent value is ignored.
+    monthly_price:    monthlyPrice(services),
   }
 
   return { ok: true, contract }
