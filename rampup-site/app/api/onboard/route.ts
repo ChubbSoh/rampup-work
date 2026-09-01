@@ -126,6 +126,18 @@ export async function POST(req: NextRequest) {
     contract_placeholders: contractPlaceholders(contractDetails, agreementDate),
   }
 
+  // A full onboard takes ~30s (Drive, sharing, Google Docs, FlowAccount, Sheets,
+  // GitHub) but Netlify kills a function at 10, so waiting for the whole run
+  // guarantees a failure response for a run that actually succeeded. Give up
+  // waiting first and report that it is still going.
+  //
+  // Aborting only drops OUR side of the connection. n8n has already accepted the
+  // request and keeps executing to completion — it is not cancelled. Anything
+  // that goes wrong after this point is reported by n8n over Telegram, which is
+  // why the panel can honestly stop watching.
+  const controller = new AbortController()
+  const giveUpWaiting = setTimeout(() => controller.abort(), 8000)
+
   try {
     const upstream = await fetch(webhookUrl, {
       method: 'POST',
@@ -134,7 +146,9 @@ export async function POST(req: NextRequest) {
         'X-Internal-Token': token,
       },
       body: JSON.stringify(payload),
+      signal: controller.signal,
     })
+    clearTimeout(giveUpWaiting)
 
     if (!upstream.ok) {
       const detail = await upstream.text().catch(() => '')
@@ -147,6 +161,14 @@ export async function POST(req: NextRequest) {
     const result = await upstream.json() as Record<string, unknown>
     return NextResponse.json({ ok: true, ...result })
   } catch (err) {
+    clearTimeout(giveUpWaiting)
+
+    // Our deadline, not a failure: the run is in flight and will finish on its
+    // own. Anything else genuinely failed to reach n8n.
+    if (err instanceof Error && err.name === 'AbortError') {
+      return NextResponse.json({ ok: true, pending: true, slug }, { status: 202 })
+    }
+
     return NextResponse.json(
       { error: 'Failed to reach onboarding pipeline', detail: String(err) },
       { status: 502 }

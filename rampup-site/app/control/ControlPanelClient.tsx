@@ -461,13 +461,28 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Request failed')
-      // Onboarding can succeed while individual Drive shares fail. Surface those
-      // instead of reporting a clean success.
+
+      // An onboard takes ~30s but the serverless function gives up at 8, so the
+      // usual outcome is "accepted, still running" rather than a final result.
+      // That is a success from here: n8n has the job and reports any failure
+      // over Telegram. Treating it as an error made every successful onboard
+      // look broken.
+      if (data.pending) {
+        setStatus({
+          type: 'success',
+          msg: 'Client submitted — onboarding is running (~30s). You will be alerted on Telegram if anything fails.',
+        })
+        reset()
+        return
+      }
+
+      // Fast enough to have finished. Onboarding can succeed while individual
+      // Drive shares fail, so surface those instead of a clean success.
       const warnings: string[] = Array.isArray(data.warnings) ? data.warnings : []
       if (warnings.length) {
         setStatus({
           type: 'warning',
-          msg: 'Client created, but some Drive invitations failed',
+          msg: 'Client created, but some steps reported problems',
           details: warnings,
         })
       } else {
