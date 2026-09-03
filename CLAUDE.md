@@ -91,19 +91,19 @@ mode (1) for as long as it lasted.
 event deduplicates against the pixel event. Changing `event_id` generation breaks
 dedup.
 
-`lib/tracking.ts` captures `fbclid`, `gclid` and UTM params on mount and persists
+`lib/tracking.ts` (**not built yet — Phase 1**) captures `fbclid`, `gclid` and UTM params on mount and persists
 them to `sessionStorage`, so they survive navigation between funnel pages before
 submit. `gclid` is the only route to Google Ads offline conversion import — if it
 stops being captured, Google-side attribution dies with it.
 
-Hashing rules for CAPI live in `docs/TRACKING.md`. Summary: `em`/`ph`/`fn` are
+Hashing rules for CAPI will live in `docs/TRACKING.md` (**not written yet — Phase 4; there is no CAPI node today**). Summary: `em`/`ph`/`fn` are
 SHA256 of normalized values (lowercase, trimmed, punctuation stripped; Thai
 phones as `66XXXXXXXXX`); `fbp`, `fbc`, `client_ip_address` and
 `client_user_agent` are sent raw. `event_time` is in **seconds**.
 
 ### Lead data model
 
-Google Sheets, three tabs — consistent with the Collections tooling.
+Target model (**not built yet — Phases 0–3**). Google Sheets, three tabs — consistent with the Collections tooling.
 
 - `Leads` — one row per lead, mutable `current_stage`. Keyed by `lead_id`
   (`L-{YYYYMMDD}-{6 chars}`, generated in n8n).
