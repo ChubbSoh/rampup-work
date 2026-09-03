@@ -47,15 +47,78 @@ The record type is split deliberately across two files:
 
 ### Lead capture flow
 
-`components/LeadForm.tsx` is the shared form; several pages have their own local `LeadForm.tsx` variant (`app/grab-offer/`, `app/funnel/restaurant-marketing/`, `app/lp/*/`) with different fields for different campaigns.
+`components/LeadForm.tsx` is the shared form. The path is:
+form → `POST /api/lead-relay` → n8n webhook `rampup-lead`. The browser never sees
+the webhook URL.
 
-The path is: form → `POST /api/lead-relay` → n8n webhook. The browser never sees the webhook URL.
+Note the ordering inside every form: the submit handler posts to **Netlify Forms
+first** and only calls `/api/lead-relay` if Netlify returned OK. Netlify is the
+source of truth for contact details; n8n is the enrichment and notification
+pipeline. A lead that 422s at n8n is still captured — what is lost is the Sheets
+row, the confirmation email and the internal alert.
 
-`app/api/lead-relay/route.ts` handles, in order: in-memory per-IP rate limit (5/min, resets on cold start — deliberate), Cloudflare Turnstile verification (**skipped entirely when `TURNSTILE_SECRET_KEY` is unset**, so local dev works), then forwards to n8n with `X-Internal-Token`, adding `client_ip_address` and `client_user_agent` for Meta CAPI match quality.
+`app/api/lead-relay/route.ts` handles, in order: in-memory per-IP rate limit
+(5/min, resets on cold start — deliberate), Cloudflare Turnstile verification
+(**skipped entirely when `TURNSTILE_SECRET_KEY` is unset**, so local dev works),
+then forwards to n8n with `X-Internal-Token`, adding `client_ip_address` and
+`client_user_agent` for Meta CAPI match quality.
 
-Validation requires a name plus *either* email or phone — some funnels collect phone/LINE only. Don't tighten this to require email.
+Validation requires a name plus *either* email or phone — some funnels collect
+phone/LINE only. Don't tighten this to require email.
 
-Conversion tracking uses a shared `event_id` generated client-side and pushed to **both** `dataLayer` and `fbq('track','Lead', {}, {eventID})`, then sent to n8n so the server-side CAPI event deduplicates against the pixel event. Changing `event_id` generation breaks that dedup.
+**The n8n side must stay in sync with this route.** Two failure modes have
+already happened here:
+
+1. The **Validate Required Fields** node required name AND email AND phone, so
+   every phone-only funnel lead (`app/grab-offer`) returned 422 and never
+   reached the Sheet or the notification emails.
+2. The **Normalize Fields** node rebuilt the payload from a fixed field
+   whitelist, silently dropping `event_id`, `fbp`, `fbc`, `client_ip_address`
+   and `client_user_agent`.
+
+If you add a field to the lead payload, it must also survive Normalize Fields
+and be mapped in the Sheets node. A field added only on the client is a field
+that reaches nothing.
+
+Submit handlers must surface non-2xx responses. A `.catch(() => {})` around the
+relay fetch combined with an unconditional success screen is what hid failure
+mode (1) for as long as it lasted.
+
+### Tracking fields
+
+`event_id` is generated client-side and pushed to **both** `dataLayer` and
+`fbq('track','Lead',{},{eventID})`, then sent to n8n so the server-side CAPI
+event deduplicates against the pixel event. Changing `event_id` generation breaks
+dedup.
+
+`lib/tracking.ts` captures `fbclid`, `gclid` and UTM params on mount and persists
+them to `sessionStorage`, so they survive navigation between funnel pages before
+submit. `gclid` is the only route to Google Ads offline conversion import — if it
+stops being captured, Google-side attribution dies with it.
+
+Hashing rules for CAPI live in `docs/TRACKING.md`. Summary: `em`/`ph`/`fn` are
+SHA256 of normalized values (lowercase, trimmed, punctuation stripped; Thai
+phones as `66XXXXXXXXX`); `fbp`, `fbc`, `client_ip_address` and
+`client_user_agent` are sent raw. `event_time` is in **seconds**.
+
+### Lead data model
+
+Google Sheets, three tabs — consistent with the Collections tooling.
+
+- `Leads` — one row per lead, mutable `current_stage`. Keyed by `lead_id`
+  (`L-{YYYYMMDD}-{6 chars}`, generated in n8n).
+- `LeadEvents` — append-only, one row per stage change
+  (`new → contacted → quoted → accepted | rejected`).
+- `AdSpend` — daily API pull, joined to leads on `ad_id`.
+
+**Every time-based and touch-point metric derives from `LeadEvents`, never from
+columns on `Leads`.** Don't add duration or count columns to `Leads` — they will
+drift.
+
+Stage changes are written by LINE postback handlers. Handlers must be idempotent
+on `lead_id` + `stage`; a double tap must not write two events.
+
+The full build plan for this system is `docs/MARKETING-SYSTEM-PLAN.md`.
 
 ### Control panel
 
@@ -186,6 +249,14 @@ Read `docs/PRICING.md` before touching any price — it is the maintained checkl
 `lib/pricing.ts` holds the package price and website build price; `components/PricingCard.tsx` is the only component that renders them. Add-on prices (Grab ฿9,990, Lineman ฿4,990, LINE ฿3,990) are still hardcoded strings in `PricingCard.tsx` **and** duplicated in Thai in `lib/translations.ts` — those two must be updated together by hand.
 
 Google Map Ads is bundled into the base package and must not be presented as a paid add-on. It may still appear as a service we manage.
+
+Pricing stays in TypeScript. It is typed, version-controlled and PR-reviewed —
+do not propose moving it to a Google Sheet or CMS. Sheets are the right surface
+for lead data, not for code constants.
+
+Never change a price on a page that has live ad campaigns pointing at it without
+updating the ad copy in the same session. A mismatch between ad and landing page
+gets flagged by Meta.
 
 ## Environment
 
