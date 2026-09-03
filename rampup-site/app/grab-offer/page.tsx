@@ -1,6 +1,7 @@
 import Footer from '@/components/Footer'
 import GrabResultsSection from '@/components/GrabResultsSection'
-import LeadForm from './LeadForm'
+import LeadForm from '@/components/LeadForm'
+import { grabOfferForm } from '@/lib/lead-forms'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -225,7 +226,7 @@ export default function GrabOfferPage() {
           We&apos;ll review your store within 24 hours and let you know if we can help.
         </p>
         <div className="max-w-xl mx-auto bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-7 md:p-10">
-          <LeadForm />
+          <LeadForm config={grabOfferForm} />
         </div>
       </section>
 

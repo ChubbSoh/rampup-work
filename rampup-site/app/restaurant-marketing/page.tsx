@@ -11,7 +11,8 @@
 // without them, and to accept real figures later without a redesign.
 
 import LazyVideoCard from '@/components/LazyVideoCard'
-import LeadForm from './LeadForm'
+import LeadForm from '@/components/LeadForm'
+import { restaurantMarketingLpForm } from '@/lib/lead-forms'
 import { CtaLink, StickyCta } from './Cta'
 import { getClientBySlug } from '@/lib/clients'
 import { restaurantRampUp, formatTHB } from '@/lib/pricing'
@@ -349,7 +350,7 @@ export default function RestaurantMarketingPage() {
               </h2>
             </div>
             <div className="bg-bg rounded-card p-6 md:p-8 border border-black/[0.06]">
-              <LeadForm />
+              <LeadForm config={restaurantMarketingLpForm} />
             </div>
           </div>
         </Section>

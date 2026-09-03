@@ -1,6 +1,7 @@
 import { getClientBySlug } from '@/lib/clients'
 import { notFound } from 'next/navigation'
-import LeadForm from './LeadForm'
+import LeadForm from '@/components/LeadForm'
+import { lpLeadForm } from '@/lib/lead-forms'
 import MonthlyPlanCarousel from '@/components/MonthlyPlanCarousel'
 import FunnelVideoSection from '@/components/FunnelVideoSection'
 import { restaurantRampUp, formatTHB } from '@/lib/pricing'
@@ -298,7 +299,7 @@ export default function OkasanFunnelPage() {
           Enter Your Info Below To Apply
         </h2>
         <div className="max-w-lg mx-auto bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-7 md:p-10">
-          <LeadForm />
+          <LeadForm config={lpLeadForm('okasan', 'e.g. Okasan Izakaya')} />
         </div>
       </section>
 

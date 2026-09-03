@@ -47,20 +47,26 @@ The record type is split deliberately across two files:
 
 ### Lead capture flow
 
-`components/LeadForm.tsx` is the shared form. The path is:
+`components/LeadForm.tsx` is the **only** lead form. The path is:
 form → `POST /api/lead-relay` → n8n webhook `rampup-lead`. The browser never sees
 the webhook URL.
 
-**Two forms orderings exist, and the error handling differs because of it:**
+Seven near-duplicate copies used to live under `app/` and had already drifted.
+Everything that differs between placements now lives in `lib/lead-forms.ts` as a
+`LeadFormConfig` — fields, labels, placeholders, copy, source, page_type, visual
+variant, gating. **Add a placement by exporting a config there, not by copying
+the component.**
 
-- **Netlify-gated** (six of the seven forms) — posts to Netlify Forms first and
-  only calls `/api/lead-relay` if Netlify returned OK. Netlify is the source of
-  truth. A relay failure costs the Sheets row, the confirmation email and the
-  internal alert, *not* the lead, so the visitor still sees the success screen.
-  A **Netlify** failure does show an error, because there the lead is gone.
-- **Relay-gated** (`app/restaurant-marketing/LeadForm.tsx` only) — the Netlify
-  post is fire-and-forget and the relay is the source of truth, so a relay
-  failure shows the visitor an error and re-opens the form.
+**Two submit orderings exist, and the error handling differs because of it:**
+
+- **Netlify-gated** (`gate` unset — every config but one) — posts to Netlify
+  Forms first and only calls `/api/lead-relay` if Netlify returned OK. Netlify
+  is the source of truth. A relay failure costs the Sheets row, the confirmation
+  email and the internal alert, *not* the lead, so the visitor still sees the
+  success screen. A **Netlify** failure does show an error: there the lead is gone.
+- **Relay-gated** (`gate: 'relay'` — `restaurantMarketingLpForm` only) — the
+  Netlify post is fire-and-forget and goes to `/`, and the relay is the source of
+  truth, so a relay failure shows an error and re-opens the form.
 
 `lib/lead-relay-client.ts` (`postLead()`) is the only thing that should call
 `/api/lead-relay`. It logs every failure unconditionally — not gated on
@@ -70,6 +76,16 @@ outcome so the caller picks the UI. Don't call the endpoint with a bare `fetch`.
 On a relay-gated retry, conversion events must fire **only after** a confirmed
 success: a retry mints a fresh `event_id`, so firing on the failed attempt too
 double-counts the Lead in Meta and GA4.
+
+`netlifyFormName` defaults to `formName` but is kept separate: the `/lp/*` pages
+post into the shared `lead` Netlify bucket while sending their own `page_type`.
+Changing either detaches historical submissions from their Netlify form.
+
+`GRAB_REVENUE_OPTIONS` in `lib/lead-forms.ts` is the single set of revenue bands.
+The website form once used 30k/100k/300k bands while every funnel used
+100k/300k/600k, so the Sheet column mixed two scales and could not be grouped.
+The Thai labels in `lib/translations.ts` carry the same `value`s — change them
+together or the two languages write different values to one column.
 
 `app/api/lead-relay/route.ts` handles, in order: in-memory per-IP rate limit
 (5/min, resets on cold start — deliberate), Cloudflare Turnstile verification
@@ -115,9 +131,11 @@ pattern is gone; don't reintroduce it.
 event deduplicates against the pixel event. Changing `event_id` generation breaks
 dedup.
 
-`lib/tracking.ts` (**not built yet — Phase 1**) captures `fbclid`, `gclid` and UTM params on mount and persists
-them to `sessionStorage`, so they survive navigation between funnel pages before
-submit. `gclid` is the only route to Google Ads offline conversion import — if it
+`lib/tracking.ts` captures `fbclid`, `gclid` and UTM params on mount and persists
+them to `sessionStorage` under one key, so they survive navigation between funnel
+pages before submit — they only ever appear in the URL of the *landing* page.
+`useTrackingParams()` captures on mount; `readTrackingParams()` is the
+synchronous read the submit handler uses. `gclid` is the only route to Google Ads offline conversion import — if it
 stops being captured, Google-side attribution dies with it.
 
 Hashing rules for CAPI will live in `docs/TRACKING.md` (**not written yet — Phase 4; there is no CAPI node today**). Summary: `em`/`ph`/`fn` are
@@ -127,8 +145,9 @@ phones as `66XXXXXXXXX`); `fbp`, `fbc`, `client_ip_address` and
 
 ### Lead data model
 
-Target model (**`lead_id` exists as of Phase 0; the LeadEvents and AdSpend
-tabs are not built yet — Phases 3 and 6**). Google Sheets, three tabs — consistent with the Collections tooling.
+Target model (**`lead_id`, `lead_type` and the tracking params exist as of
+Phases 0–1; the LeadEvents and AdSpend tabs are not built yet — Phases 3 and
+6**). Google Sheets, three tabs — consistent with the Collections tooling.
 
 - `Leads` — one row per lead, mutable `current_stage`. Keyed by `lead_id`
   (`L-{YYYYMMDD}-{6 chars}`, generated in n8n).

@@ -33,14 +33,16 @@ export const th = {
     restaurantLabel:    'ชื่อร้านอาหาร',
     restaurantPlaceholder: 'เช่น ร้านโอคาซัน อิซากายะ',
     grabRevenueLabel:   'รายได้ Grab ต่อเดือนปัจจุบัน (฿)',
-    grabOptions: {
-      default:    'เลือกช่วงรายได้...',
-      under30k:   'ต่ำกว่า ฿30,000',
-      r30to100:   '฿30,000 – ฿100,000',
-      r100to300:  '฿100,000 – ฿300,000',
-      above300k:  '฿300,000+',
-      noGrab:     'ยังไม่มีบน Grab',
-    },
+    grabRevenueDefault: 'เลือกช่วงรายได้...',
+    // Values must stay in sync with GRAB_REVENUE_OPTIONS in lib/lead-forms.ts —
+    // the English and Thai forms write to the same Sheet column.
+    grabRevenueOptions: [
+      { value: 'under_100k', label: 'น้อยกว่า ฿100,000' },
+      { value: '100k_300k',  label: '฿100,000 – ฿300,000' },
+      { value: '300k_600k',  label: '฿300,000 – ฿600,000' },
+      { value: '600k_plus',  label: '฿600,000+' },
+      { value: 'no_grab',    label: 'ยังไม่มีบน Grab' },
+    ],
     grabAdsLabel:   'คุณกำลังใช้ Grab Ads อยู่ไหม?',
     grabAdsYes:     'ใช่',
     grabAdsNo:      'ไม่',
