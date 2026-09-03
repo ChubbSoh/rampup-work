@@ -19,18 +19,34 @@
           "value": {
             "lead_id": "={{ $json.lead_id }}",
             "submitted_at": "={{ $json.submitted_at }}",
+            "lead_type": "={{ $json.lead_type }}",
+            "source": "={{ $json.source }}",
+            "site": "={{ $json.site }}",
+            "form_name": "={{ $json.form_name }}",
+            "page_type": "={{ $json.page_type }}",
+            "page_path": "={{ $json.page_path }}",
+            "page_url": "={{ $json.page_url }}",
             "name": "={{ $json.name }}",
             "restaurant": "={{ $json.restaurant }}",
             "email": "={{ $json.email }}",
             "phone": "={{ $json.phone }}",
             "service": "={{ $json.service }}",
             "message": "={{ $json.message }}",
-            "page_type": "={{ $json.page_type }}",
-            "page_path": "={{ $json.page_path }}",
-            "page_url": "={{ $json.page_url }}",
-            "form_name": "={{ $json.form_name }}",
-            "source": "={{ $json.source }}",
-            "site": "={{ $json.site }}"
+            "grab_revenue": "={{ $json.grab_revenue }}",
+            "grab_ads": "={{ $json.grab_ads }}",
+            "timeline": "={{ $json.timeline }}",
+            "language": "={{ $json.language }}",
+            "fbclid": "={{ $json.fbclid }}",
+            "gclid": "={{ $json.gclid }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "event_id": "={{ $json.event_id }}",
+            "fbp": "={{ $json.fbp }}",
+            "fbc": "={{ $json.fbc }}",
+            "client_ip_address": "={{ $json.client_ip_address }}",
+            "client_user_agent": "={{ $json.client_user_agent }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -39,98 +55,270 @@
               "displayName": "lead_id",
               "required": false,
               "defaultMatch": false,
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "display": true
             },
             {
               "id": "submitted_at",
               "displayName": "submitted_at",
               "required": false,
               "defaultMatch": false,
-              "canBeUsedToMatch": false
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
             },
             {
-              "id": "name",
-              "displayName": "name",
+              "id": "lead_type",
+              "displayName": "lead_type",
               "required": false,
               "defaultMatch": false,
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "restaurant",
-              "displayName": "restaurant",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "email",
-              "displayName": "email",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "phone",
-              "displayName": "phone",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "service",
-              "displayName": "service",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "message",
-              "displayName": "message",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "page_type",
-              "displayName": "page_type",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "page_path",
-              "displayName": "page_path",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "page_url",
-              "displayName": "page_url",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "form_name",
-              "displayName": "form_name",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": false
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
             },
             {
               "id": "source",
               "displayName": "source",
               "required": false,
               "defaultMatch": false,
-              "canBeUsedToMatch": false
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
             },
             {
               "id": "site",
               "displayName": "site",
               "required": false,
               "defaultMatch": false,
-              "canBeUsedToMatch": false
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "form_name",
+              "displayName": "form_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "page_type",
+              "displayName": "page_type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "page_path",
+              "displayName": "page_path",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "page_url",
+              "displayName": "page_url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "restaurant",
+              "displayName": "restaurant",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "service",
+              "displayName": "service",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "grab_revenue",
+              "displayName": "grab_revenue",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "grab_ads",
+              "displayName": "grab_ads",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "timeline",
+              "displayName": "timeline",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "fbclid",
+              "displayName": "fbclid",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "gclid",
+              "displayName": "gclid",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "event_id",
+              "displayName": "event_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "fbp",
+              "displayName": "fbp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "fbc",
+              "displayName": "fbc",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "client_ip_address",
+              "displayName": "client_ip_address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "client_user_agent",
+              "displayName": "client_user_agent",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
             }
           ]
         },
@@ -151,7 +339,7 @@
         }
       },
       "onError": "continueRegularOutput",
-      "notes": "onError: continueRegularOutput — Sheets failure is silent. Lead already captured in Netlify Forms + confirmation email already sent. lead_id is the join key for the LeadEvents tab — keep it column A."
+      "notes": "Maps every field the site sends. lead_id is the join key for the LeadEvents tab — keep it column A. event_id, fbp, fbc, client_ip_address and client_user_agent are the Meta CAPI match signals; they are useless unless Normalize Fields passes them through. onError: continueRegularOutput — a Sheets failure is silent because the lead is already in Netlify Forms and the confirmation email has already been sent. Campaign/adset/ad columns and current_stage arrive in Phases 2 and 3."
     }
   ],
   "connections": {
