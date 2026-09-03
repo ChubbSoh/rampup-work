@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer'
-import LeadForm from './LeadForm'
+import LeadForm from '@/components/LeadForm'
+import { restaurantMarketingFunnelForm } from '@/lib/lead-forms'
 import LazyVideoCard from '@/components/LazyVideoCard'
 import type { Metadata } from 'next'
 import { restaurantRampUp, formatTHB } from '@/lib/pricing'
@@ -531,7 +532,7 @@ export default function RestaurantMarketingFunnel() {
             </p>
           </div>
           <div className="p-7 md:p-10">
-            <LeadForm />
+            <LeadForm config={restaurantMarketingFunnelForm} />
           </div>
         </div>
       </section>
