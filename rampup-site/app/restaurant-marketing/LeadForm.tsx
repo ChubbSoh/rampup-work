@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import Script from 'next/script'
+import { postLead } from '@/lib/lead-relay-client'
 
 /**
  * Four-field lead form for cold Google Ads traffic.
@@ -30,6 +31,7 @@ const FORM_NAME = 'restaurant_marketing_lp'
 export default function LeadForm() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const sent = useRef(false)
   const started = useRef(false)
 
@@ -48,6 +50,7 @@ export default function LeadForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (sent.current) return
+    setError(null)
     setLoading(true)
     const data = new FormData(e.currentTarget)
     const g = (k: string) => String(data.get(k) ?? '').trim()
@@ -71,35 +74,38 @@ export default function LeadForm() {
     const fbp = getCookie('_fbp')
     const fbc = getCookie('_fbc')
 
-    try {
-      const res = await fetch('/api/lead-relay', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: g('name'),
-          phone: g('phone'),
-          restaurant: g('restaurant'),
-          message,
-          service: 'Full-service restaurant marketing',
-          page_path: window.location.pathname,
-          page_url: window.location.href,
-          page_type: 'lp-restaurant-marketing',
-          form_name: FORM_NAME,
-          submitted_at: new Date().toISOString(),
-          source: 'google_ads',
-          site: 'rampupth',
-          event_id,
-          ...(fbp ? { fbp } : {}),
-          ...(fbc ? { fbc } : {}),
-          turnstile_token: data.get('cf-turnstile-response') ?? '',
-        }),
-      })
-      if (!res.ok) sent.current = false
-    } catch {
+    // This form is relay-gated: the Netlify post above is fire-and-forget, so
+    // a relay failure here may mean the lead is lost. Surface it to the visitor.
+    const relay = await postLead({
+      name: g('name'),
+      phone: g('phone'),
+      restaurant: g('restaurant'),
+      message,
+      service: 'Full-service restaurant marketing',
+      page_path: window.location.pathname,
+      page_url: window.location.href,
+      page_type: 'lp-restaurant-marketing',
+      form_name: FORM_NAME,
+      submitted_at: new Date().toISOString(),
+      source: 'google_ads',
+      site: 'rampupth',
+      event_id,
+      ...(fbp ? { fbp } : {}),
+      ...(fbc ? { fbc } : {}),
+      turnstile_token: data.get('cf-turnstile-response') ?? '',
+    })
+
+    if (!relay.ok) {
+      // Re-open the form for a retry. Conversion events are deliberately NOT
+      // fired here — a retry mints a fresh event_id, so firing on the failed
+      // attempt too would double-count the Lead in Meta and GA4.
       sent.current = false
+      setLoading(false)
+      setError('Something went wrong sending your details. Please try again, or message us on LINE.')
+      return
     }
 
-    // Conversion events fire only after the submission attempt completes.
+    // Conversion events fire only after a confirmed successful submission.
     // Shared event_id keeps the pixel and the server-side CAPI event deduplicated.
     const dl = (window as any).dataLayer
     dl?.push({ event: 'lead_form_submit', event_id })
@@ -193,6 +199,12 @@ export default function LeadForm() {
           <div className="cf-turnstile" data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY} data-theme="light" />
           <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="lazyOnload" />
         </>
+      )}
+
+      {error && (
+        <p role="alert" className="font-poppins text-sm text-red-600 text-center">
+          {error}
+        </p>
       )}
 
       <button

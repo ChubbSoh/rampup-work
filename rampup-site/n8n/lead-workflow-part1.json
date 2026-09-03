@@ -12,93 +12,159 @@
       "name": "Receive Lead",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [240, 300]
+      "position": [
+        240,
+        300
+      ]
     },
     {
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "const raw = $input.first().json;\n\n// Normalize: trim strings, fallback to empty string\nfunction clean(val) {\n  return (val ?? '').toString().trim();\n}\n\n// submitted_at: use provided value or generate now\nconst submittedAt = clean(raw.submitted_at) || new Date().toISOString();\n\nconst normalized = {\n  name:         clean(raw.name),\n  email:        clean(raw.email).toLowerCase(),\n  phone:        clean(raw.phone),\n  restaurant:   clean(raw.restaurant),\n  service:      clean(raw.service),\n  message:      clean(raw.message),\n  page_path:    clean(raw.page_path),\n  page_url:     clean(raw.page_url),\n  page_type:    clean(raw.page_type) || 'other',\n  form_name:    clean(raw.form_name) || 'lead',\n  submitted_at: submittedAt,\n  source:       clean(raw.source) || 'website',\n  site:         clean(raw.site) || 'rampupth',\n};\n\nreturn [{ json: normalized }];"
+        "jsCode": "// Normalize incoming lead payload.\n// RULE: pass every incoming field through. Fields added on the client (event_id,\n// fbp, fbc, client_ip_address, client_user_agent, and anything added later)\n// must survive this node or they reach nothing downstream.\n// Do NOT reintroduce a field whitelist here.\n\nconst raw = $input.first().json;\n\nfunction clean(val) {\n  return (val ?? '').toString().trim();\n}\n\n// lead_id: L-{YYYYMMDD}-{6 lowercase alphanumeric}, Asia/Bangkok date.\n// Reuse an incoming lead_id if one is present so retries don't mint a new key.\nfunction makeLeadId() {\n  const bkk = new Date(Date.now() + 7 * 60 * 60 * 1000);\n  const ymd = bkk.toISOString().slice(0, 10).replace(/-/g, '');\n  const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';\n  let suffix = '';\n  for (let i = 0; i < 6; i++) {\n    suffix += alphabet[Math.floor(Math.random() * alphabet.length)];\n  }\n  return `L-${ymd}-${suffix}`;\n}\n\n// Spread first, then overwrite with cleaned/defaulted values.\nconst normalized = {\n  ...raw,\n  lead_id:      clean(raw.lead_id) || makeLeadId(),\n  name:         clean(raw.name),\n  email:        clean(raw.email).toLowerCase(),\n  phone:        clean(raw.phone),\n  restaurant:   clean(raw.restaurant),\n  service:      clean(raw.service),\n  message:      clean(raw.message),\n  page_path:    clean(raw.page_path),\n  page_url:     clean(raw.page_url),\n  page_type:    clean(raw.page_type) || 'other',\n  form_name:    clean(raw.form_name) || 'lead',\n  submitted_at: clean(raw.submitted_at) || new Date().toISOString(),\n  source:       clean(raw.source) || 'website',\n  site:         clean(raw.site) || 'rampupth',\n};\n\n// Never forward the captcha token; it is already verified by /api/lead-relay.\ndelete normalized.turnstile_token;\n\nreturn [{ json: normalized }];"
       },
       "id": "node-normalize",
       "name": "Normalize Fields",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [460, 300]
+      "position": [
+        460,
+        300
+      ],
+      "notes": "Passes ALL incoming fields through. Adding a whitelist here is what dropped event_id/fbp/fbc/client_ip_address/client_user_agent."
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Validate: name is required, plus AT LEAST ONE contact channel.\n// Some funnels (app/grab-offer) are phone/LINE only and send email: ''.\n// Requiring name AND email AND phone silently 422'd every one of those leads.\n// This mirrors the rule already enforced in app/api/lead-relay/route.ts.\n\nconst item = $input.first().json;\n\nconst hasName  = (item.name  ?? '').toString().trim() !== '';\nconst hasEmail = (item.email ?? '').toString().trim() !== '';\nconst hasPhone = (item.phone ?? '').toString().trim() !== '';\n\nconst valid = hasName && (hasEmail || hasPhone);\n\nconst missing = [];\nif (!hasName) missing.push('name');\nif (!hasEmail && !hasPhone) missing.push('email or phone');\n\nreturn [{\n  json: {\n    ...item,\n    _valid: valid,\n    _missing: missing.join(', '),\n  },\n}];"
+      },
+      "id": "node-validate",
+      "name": "Validate Required Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ],
+      "notes": "name AND (email OR phone). Must stay in sync with app/api/lead-relay/route.ts."
     },
     {
       "parameters": {
         "conditions": {
           "options": {
-            "caseSensitive": false,
+            "caseSensitive": true,
             "leftValue": "",
             "typeValidation": "strict"
           },
           "conditions": [
             {
-              "id": "check-name",
-              "leftValue": "={{ $json.name }}",
+              "id": "check-valid",
+              "leftValue": "={{ $json._valid }}",
               "rightValue": "",
-              "operator": { "type": "string", "operation": "notEmpty" }
-            },
-            {
-              "id": "check-email",
-              "leftValue": "={{ $json.email }}",
-              "rightValue": "",
-              "operator": { "type": "string", "operation": "notEmpty" }
-            },
-            {
-              "id": "check-phone",
-              "leftValue": "={{ $json.phone }}",
-              "rightValue": "",
-              "operator": { "type": "string", "operation": "notEmpty" }
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
             }
           ],
           "combinator": "and"
         },
         "options": {}
       },
-      "id": "node-validate",
-      "name": "Validate Required Fields",
+      "id": "node-route-valid",
+      "name": "Route Valid / Invalid",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
-      "position": [680, 300]
+      "position": [
+        900,
+        300
+      ]
     },
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{ JSON.stringify({ ok: true, message: 'Lead received', name: $json.name, submitted_at: $json.submitted_at }) }}",
-        "options": { "responseCode": 200 }
+        "responseBody": "={{ JSON.stringify({ ok: true, message: 'Lead received', lead_id: $json.lead_id, name: $json.name, submitted_at: $json.submitted_at }) }}",
+        "options": {
+          "responseCode": 200
+        }
       },
       "id": "node-respond-ok",
       "name": "Respond 200 OK",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [900, 200]
+      "position": [
+        1140,
+        200
+      ]
     },
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{ JSON.stringify({ ok: false, error: 'Missing required fields', required: ['name', 'email', 'phone'], received: { name: $json.name, email: $json.email, phone: $json.phone } }) }}",
-        "options": { "responseCode": 422 }
+        "responseBody": "={{ JSON.stringify({ ok: false, error: 'Missing required fields', required: 'name, plus email or phone', missing: $json._missing, received: { name: $json.name, email: $json.email, phone: $json.phone } }) }}",
+        "options": {
+          "responseCode": 422
+        }
       },
       "id": "node-respond-fail",
       "name": "Respond 422 Invalid",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [900, 420]
+      "position": [
+        1140,
+        420
+      ]
     }
   ],
   "connections": {
     "Receive Lead": {
-      "main": [[{ "node": "Normalize Fields", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Normalize Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Normalize Fields": {
-      "main": [[{ "node": "Validate Required Fields", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Validate Required Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Validate Required Fields": {
       "main": [
-        [{ "node": "Respond 200 OK",      "type": "main", "index": 0 }],
-        [{ "node": "Respond 422 Invalid", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "Route Valid / Invalid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Valid / Invalid": {
+      "main": [
+        [
+          {
+            "node": "Respond 200 OK",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond 422 Invalid",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },

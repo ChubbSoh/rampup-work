@@ -51,17 +51,34 @@ The record type is split deliberately across two files:
 form → `POST /api/lead-relay` → n8n webhook `rampup-lead`. The browser never sees
 the webhook URL.
 
-Note the ordering inside every form: the submit handler posts to **Netlify Forms
-first** and only calls `/api/lead-relay` if Netlify returned OK. Netlify is the
-source of truth for contact details; n8n is the enrichment and notification
-pipeline. A lead that 422s at n8n is still captured — what is lost is the Sheets
-row, the confirmation email and the internal alert.
+**Two forms orderings exist, and the error handling differs because of it:**
+
+- **Netlify-gated** (six of the seven forms) — posts to Netlify Forms first and
+  only calls `/api/lead-relay` if Netlify returned OK. Netlify is the source of
+  truth. A relay failure costs the Sheets row, the confirmation email and the
+  internal alert, *not* the lead, so the visitor still sees the success screen.
+  A **Netlify** failure does show an error, because there the lead is gone.
+- **Relay-gated** (`app/restaurant-marketing/LeadForm.tsx` only) — the Netlify
+  post is fire-and-forget and the relay is the source of truth, so a relay
+  failure shows the visitor an error and re-opens the form.
+
+`lib/lead-relay-client.ts` (`postLead()`) is the only thing that should call
+`/api/lead-relay`. It logs every failure unconditionally — not gated on
+`NODE_ENV` — and pushes a `lead_relay_failed` dataLayer event, then returns the
+outcome so the caller picks the UI. Don't call the endpoint with a bare `fetch`.
+
+On a relay-gated retry, conversion events must fire **only after** a confirmed
+success: a retry mints a fresh `event_id`, so firing on the failed attempt too
+double-counts the Lead in Meta and GA4.
 
 `app/api/lead-relay/route.ts` handles, in order: in-memory per-IP rate limit
 (5/min, resets on cold start — deliberate), Cloudflare Turnstile verification
 (**skipped entirely when `TURNSTILE_SECRET_KEY` is unset**, so local dev works),
 then forwards to n8n with `X-Internal-Token`, adding `client_ip_address` and
-`client_user_agent` for Meta CAPI match quality.
+`client_user_agent` for Meta CAPI match quality. It **propagates n8n's outcome**
+— a non-2xx from the webhook returns 502 `{ ok:false, stage:'n8n', status }`,
+and a success passes `lead_id` back through. It used to return `{ ok: true }`
+unconditionally, which made an n8n 422 indistinguishable from success.
 
 Validation requires a name plus *either* email or phone — some funnels collect
 phone/LINE only. Don't tighten this to require email.
@@ -71,18 +88,25 @@ already happened here:
 
 1. The **Validate Required Fields** node required name AND email AND phone, so
    every phone-only funnel lead (`app/grab-offer`) returned 422 and never
-   reached the Sheet or the notification emails.
+   reached the Sheet or the notification emails. It is now a Code node
+   implementing name AND (email OR phone), with an IF node routing on its
+   `_valid` flag.
 2. The **Normalize Fields** node rebuilt the payload from a fixed field
    whitelist, silently dropping `event_id`, `fbp`, `fbc`, `client_ip_address`
-   and `client_user_agent`.
+   and `client_user_agent`. It now spreads all incoming fields through.
+
+**Normalize Fields also mints `lead_id`** (`L-{YYYYMMDD}-{6 lowercase
+alphanumeric}`, Asia/Bangkok date), reusing an incoming one if present so
+retries don't mint a second key. It comes back in the 200 body and is column A
+of the Sheet.
 
 If you add a field to the lead payload, it must also survive Normalize Fields
 and be mapped in the Sheets node. A field added only on the client is a field
 that reaches nothing.
 
-Submit handlers must surface non-2xx responses. A `.catch(() => {})` around the
-relay fetch combined with an unconditional success screen is what hid failure
-mode (1) for as long as it lasted.
+A `.catch(() => {})` around the relay fetch combined with an unconditional
+success screen is what hid failure mode (1) for as long as it lasted. That
+pattern is gone; don't reintroduce it.
 
 ### Tracking fields
 
@@ -103,7 +127,8 @@ phones as `66XXXXXXXXX`); `fbp`, `fbc`, `client_ip_address` and
 
 ### Lead data model
 
-Target model (**not built yet — Phases 0–3**). Google Sheets, three tabs — consistent with the Collections tooling.
+Target model (**`lead_id` exists as of Phase 0; the LeadEvents and AdSpend
+tabs are not built yet — Phases 3 and 6**). Google Sheets, three tabs — consistent with the Collections tooling.
 
 - `Leads` — one row per lead, mutable `current_stage`. Keyed by `lead_id`
   (`L-{YYYYMMDD}-{6 chars}`, generated in n8n).
