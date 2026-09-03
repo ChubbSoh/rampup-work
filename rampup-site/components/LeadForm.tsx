@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import Script from 'next/script'
 import { th, type Lang } from '@/lib/translations'
+import { postLead } from '@/lib/lead-relay-client'
 
 const enServices = [
   { value: 'social', label: 'Social Media Management' },
@@ -12,6 +13,7 @@ const enServices = [
 export default function LeadForm({ compact = false, lang = 'en' }: { compact?: boolean; lang?: Lang }) {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const webhookSent = useRef(false)
   const isTh = lang === 'th'
   const t = th.leadForm
@@ -23,6 +25,7 @@ export default function LeadForm({ compact = false, lang = 'en' }: { compact?: b
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setError(null)
     setLoading(true)
     const form = e.currentTarget
     const data = new FormData(form)
@@ -34,10 +37,10 @@ export default function LeadForm({ compact = false, lang = 'en' }: { compact?: b
       })
 
       if (!netlifyRes.ok) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.warn('[Lead] Netlify form submit failed — skipping Lead event', netlifyRes.status)
-        }
-        setSubmitted(true)
+        // Netlify is the source of truth for this form. If it rejected the
+        // post the lead is genuinely gone, so never show a success screen.
+        console.error('[Lead] Netlify form submit failed', netlifyRes.status)
+        setError('Something went wrong sending your details. Please try again, or message us on LINE.')
         return
       }
 
@@ -96,19 +99,19 @@ export default function LeadForm({ compact = false, lang = 'en' }: { compact?: b
           console.info('[Lead] fired', { event_id, page_type, fbq: typeof (window as any).fbq === 'function' })
         }
 
-        fetch('/api/lead-relay', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+        // Lead is already captured by Netlify at this point, so a relay
+        // failure costs the Sheet row and the notification emails, not the
+        // lead. postLead() logs it and pushes lead_relay_failed to dataLayer.
+        void postLead({
             ...payload,
             turnstile_token: data.get('cf-turnstile-response') ?? '',
-          }),
-        }).catch(() => {/* relay failure — silent, Netlify is source of truth */})
+          })
       }
 
       setSubmitted(true)
-    } catch {
-      setSubmitted(true)
+    } catch (err) {
+      console.error('[Lead] submit failed', err)
+      setError('Something went wrong sending your details. Please try again, or message us on LINE.')
     } finally {
       setLoading(false)
     }
@@ -296,6 +299,12 @@ export default function LeadForm({ compact = false, lang = 'en' }: { compact?: b
           data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
           data-theme="light"
         />
+      )}
+
+      {error && (
+        <p role="alert" className="font-poppins text-sm text-red-600 text-center">
+          {error}
+        </p>
       )}
 
       <button

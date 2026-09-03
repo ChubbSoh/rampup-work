@@ -3,10 +3,12 @@
 import { useState, useRef } from 'react'
 import Script from 'next/script'
 import { restaurantRampUp, formatTHB } from '@/lib/pricing'
+import { postLead } from '@/lib/lead-relay-client'
 
 export default function LeadForm() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const webhookSent = useRef(false)
 
   function getCookie(name: string): string | undefined {
@@ -16,6 +18,7 @@ export default function LeadForm() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setError(null)
     setLoading(true)
     const form = e.currentTarget
     const data = new FormData(form)
@@ -26,10 +29,10 @@ export default function LeadForm() {
         body: new URLSearchParams(data as unknown as Record<string, string>).toString(),
       })
       if (!netlifyRes.ok) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.warn('[Lead] Netlify form submit failed — skipping Lead event', netlifyRes.status)
-        }
-        setSubmitted(true)
+        // Netlify is the source of truth for this form. If it rejected the
+        // post the lead is genuinely gone, so never show a success screen.
+        console.error('[Lead] Netlify form submit failed', netlifyRes.status)
+        setError('Something went wrong sending your details. Please try again, or message us on LINE.')
         return
       }
       if (!webhookSent.current) {
@@ -46,10 +49,10 @@ export default function LeadForm() {
         if (process.env.NODE_ENV !== 'production') {
           console.info('[Lead] fired', { event_id, page_type: 'funnel-lamaya-bkk', fbq: typeof (window as any).fbq === 'function' })
         }
-        fetch('/api/lead-relay', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+        // Lead is already captured by Netlify at this point, so a relay
+        // failure costs the Sheet row and the notification emails, not the
+        // lead. postLead() logs it and pushes lead_relay_failed to dataLayer.
+        void postLead({
             name: data.get('name') ?? '', restaurant: data.get('restaurant') ?? '',
             email: data.get('email') ?? '', phone: data.get('phone') ?? '',
             grab_revenue: data.get('grab_revenue') ?? '', grab_ads: data.get('grab_ads') ?? '',
@@ -60,11 +63,13 @@ export default function LeadForm() {
             event_id,
             ...(fbp ? { fbp } : {}), ...(fbc ? { fbc } : {}),
             turnstile_token: data.get('cf-turnstile-response') ?? '',
-          }),
-        }).catch(() => {})
+          })
       }
       setSubmitted(true)
-    } catch { setSubmitted(true) }
+    } catch (err) {
+      console.error('[Lead] submit failed', err)
+      setError('Something went wrong sending your details. Please try again, or message us on LINE.')
+    }
     finally { setLoading(false) }
   }
 
@@ -177,6 +182,12 @@ export default function LeadForm() {
       />
       {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
         <div className="cf-turnstile" data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY} data-theme="light" />
+      )}
+
+      {error && (
+        <p role="alert" className="font-poppins text-sm text-red-600 text-center">
+          {error}
+        </p>
       )}
 
       <button type="submit" disabled={loading}

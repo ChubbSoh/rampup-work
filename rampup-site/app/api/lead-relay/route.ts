@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
     const userAgent = req.headers.get('user-agent') ?? undefined
 
     // Forward to n8n — strip turnstile_token, add server-side signals
-    await fetch(webhookUrl, {
+    const relayRes = await fetch(webhookUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -94,8 +94,25 @@ export async function POST(req: NextRequest) {
       }),
     })
 
-    return NextResponse.json({ ok: true })
-  } catch {
-    return NextResponse.json({ error: 'Internal error' }, { status: 500 })
+    // Report n8n's actual outcome. This used to return `{ ok: true }`
+    // unconditionally, so an n8n 422 was indistinguishable from success and
+    // no client could ever have surfaced it.
+    if (!relayRes.ok) {
+      const detail = await relayRes.text().catch(() => '')
+      console.error('[lead-relay] n8n rejected lead', {
+        status: relayRes.status,
+        detail: detail.slice(0, 500),
+      })
+      return NextResponse.json(
+        { ok: false, stage: 'n8n', status: relayRes.status, error: 'Lead pipeline rejected the submission' },
+        { status: 502 },
+      )
+    }
+
+    const relayBody = await relayRes.json().catch(() => null) as { lead_id?: string } | null
+    return NextResponse.json({ ok: true, ...(relayBody?.lead_id ? { lead_id: relayBody.lead_id } : {}) })
+  } catch (err) {
+    console.error('[lead-relay] unhandled error', err)
+    return NextResponse.json({ ok: false, error: 'Internal error' }, { status: 500 })
   }
 }
