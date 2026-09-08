@@ -2,6 +2,52 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Sending a LINE message — read this before writing any LINE code
+
+RampUp has **one LINE Official Account** shared by every project. It is a shared
+resource: a mistake in one project is visible to all staff immediately.
+
+**To send a message, that is one HTTP call and nothing else:**
+
+```
+POST https://rampup-line-bot-gyv7tl6rxq-as.a.run.app/external/send-push
+X-Push-Secret: <LINE_PUSH_SECRET>      # trimmed, no trailing newline
+Content-Type: application/json
+
+{ "lineUserId": "U...", "messages": [ { "type": "text", "text": "Hello" } ] }
+```
+
+No service account, no OIDC token, no key, no SDK. In n8n it is a single HTTP
+Request node.
+
+**Never do any of these:**
+
+| Never | Why |
+|---|---|
+| Mount `LINE_CHANNEL_ACCESS_TOKEN` or `LINE_CHANNEL_SECRET` | Two services holding the token is the defect this platform exists to remove |
+| `npm i @line/bot-sdk` to send a message | Reaching for the SDK is what leads to holding the token |
+| Create or link a rich menu | `rampup-leave` owns menus. `setDefaultRichMenu` changes what **every** staff member sees |
+| Add a `/webhook` route | The channel has one webhook URL and it points at `rampup-line-bot`. Any other is dead code |
+| Call `rampup-line-worker` directly | It is IAM-gated; you will get a 403 with an HTML body |
+
+**Three things that will bite you:**
+
+1. **At most 5 messages per call.** More are silently dropped and you still get
+   `{"ok":true}`.
+2. **No retry is built in.** A LINE 429 comes back as HTTP 500; back off
+   exponentially from 2s. Unthrottled retries caused an outage on 2026-09-02.
+3. **An HTML error body means infrastructure; a JSON body means the app.** That
+   one distinction identifies which layer rejected you.
+
+**Full contract, failure modes and reasoning:**
+[`LINE-INTEGRATION.md`](https://github.com/ChubbSoh/rampup-line-gateway/blob/main/LINE-INTEGRATION.md)
+
+Read it rather than copying what another service does — every rule in it was
+written after something went wrong, usually because a project solved "I need to
+send a LINE message" on its own.
+
+---
+
 ## Commands
 
 All app commands run from `rampup-site/`, not the repo root.
