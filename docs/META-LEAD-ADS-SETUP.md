@@ -85,9 +85,35 @@ Permissions, all five:
 Token: a **Page access token**, obtained by a person who can advertise on both
 the Page and the ad account. Not a system user token.
 
-**`leads_retrieval` does not appear in any use-case permission screen until it is
-requested under App Review → Permissions and Features.** That is why it looks
-missing. It is gated, not absent.
+### Why `leads_retrieval` appears to be missing
+
+It has **dependencies, and Meta hides a permission whose dependencies are not
+met.** Per the [permission reference](https://developers.facebook.com/docs/permissions/reference/leads_retrieval)
+it requires:
+
+- **Ads Management Standard Access** — a feature, not a permission
+- `ads_management`, `ads_read`, `business_management`
+- `pages_manage_ads`, `pages_read_engagement`, `pages_show_list`
+
+Adding only the *Manage everything on your Page* use case gives the Page
+permissions but no ads permissions and no Ads Management Standard Access, so
+`leads_retrieval` has nothing to attach to and never renders — in the use-case
+screens or under App Review.
+
+**Add the *Create & manage ads with Marketing API* use case and it appears.**
+That tick is load-bearing for lead retrieval, not just for Phase 6 spend
+reporting.
+
+If it is still hidden afterwards, the next gate is **business verification**;
+Meta withholds advanced-access permissions until that completes.
+
+### Leads Access — a separate gate, unverified
+
+Business Settings also has a **Leads Access** section controlling which apps,
+partners and people may read a Page's leads, independent of app permissions.
+The Meta help page would not render when this was written, so the exact steps
+are unconfirmed — check Business Settings → Integrations → Leads Access once the
+permission appears. It is a known trap even after app approval.
 
 ### Order of work
 
