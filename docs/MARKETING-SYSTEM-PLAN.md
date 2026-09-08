@@ -328,3 +328,43 @@ anywhere in the repo), #4 (zero matches for `fbclid`, `gclid`, or any `utm_*`),
 `app/api/lead-relay/route.ts` is correct and needs no change — it already
 enforces name + (email OR phone) and adds the two server-side signals. The bug
 is entirely on the n8n side.
+
+
+---
+
+## Correction — 2026-09-08
+
+The live workflow was pulled from the n8n API for the first time on this date.
+**It had drifted far from the exports this plan was written against**, and three
+of the six findings in "What's broken today" were wrong about production:
+
+- **#2 "There is no CAPI node"** — wrong. `Hash PII for CAPI` → `Send to Meta
+  CAPI` have been live for months, posting to the pixel with the browser's
+  `event_id`. Phase 4 was largely already done.
+- **#3 "Grab-offer leads are rejected and lost"** — wrong. The live validation
+  has always been `name AND (email || phone)`. No leads were being dropped, and
+  the reconciliation exercise this plan called for was unnecessary.
+- **#1 "Normalize destroys every tracking field"** — half wrong. It was a
+  whitelist, but `event_id`, `fbp`, `fbc`, `client_ip_address` and
+  `client_user_agent` were all on it and survived. What it dropped was the
+  fields Phase 1 later added: `lead_type`, `fbclid`, `gclid`, the UTMs.
+
+Confirmed as written: #5 (seven LeadForm files) and #4 (no fbclid/gclid/UTM
+capture on the site). #6 was moot — the live Sheets node has a real document id.
+
+**What was actually fixed on 2026-09-08**, patched directly into the live
+workflow rather than imported:
+
+1. Normalize Fields spreads instead of whitelisting, and mints `lead_id`.
+2. Sheets mapping went from 13 columns to 32.
+3. CAPI phone hashing normalized to `66XXXXXXXXX` — it had been hashing
+   `081-234-5678` as typed, so **phone matched nothing in Meta**. Empty `em`/`ln`
+   are now omitted rather than hashed to `sha256('')`.
+4. CAPI bumped from Graph API v19.0 to v21.0.
+
+**Outstanding and not fixed:** the CAPI access token is a plaintext query
+parameter on the HTTP node. Rotate it and move it to a credential.
+
+The lesson is the caveat at the top of this document, which turned out to matter
+much more than it looked: **verify against the live workflow before planning
+against an export.**

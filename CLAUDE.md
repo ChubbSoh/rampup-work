@@ -99,30 +99,32 @@ unconditionally, which made an n8n 422 indistinguishable from success.
 Validation requires a name plus *either* email or phone — some funnels collect
 phone/LINE only. Don't tighten this to require email.
 
-**The n8n side must stay in sync with this route.** Two failure modes have
-already happened here:
+**The n8n side must stay in sync with this route.** The live workflow is
+`Website Lead Flow — RampUp` (`atfktDPwj5ks5nIR`), 12 nodes, exported to
+`rampup-site/n8n/website-lead-flow.json`.
 
-1. The **Validate Required Fields** node required name AND email AND phone, so
-   every phone-only funnel lead (`app/grab-offer`) returned 422 and never
-   reached the Sheet or the notification emails. It is now a Code node
-   implementing name AND (email OR phone), with an IF node routing on its
-   `_valid` flag.
-2. The **Normalize Fields** node rebuilt the payload from a fixed field
-   whitelist, silently dropping `event_id`, `fbp`, `fbc`, `client_ip_address`
-   and `client_user_agent`. It now spreads all incoming fields through.
+The **Normalize Fields** node rebuilt the payload from a fixed field whitelist,
+so anything the site added that the whitelist didn't know about reached nothing.
+It now spreads all incoming fields through. Don't reintroduce a whitelist.
 
 **Normalize Fields also mints `lead_id`** (`L-{YYYYMMDD}-{6 lowercase
 alphanumeric}`, Asia/Bangkok date), reusing an incoming one if present so
-retries don't mint a second key. It comes back in the 200 body and is column A
-of the Sheet.
+retries don't mint a second key.
+
+Validation on the n8n side is `name notEmpty AND (email || phone) notEmpty`,
+matching this route. **It has always been that; do not "fix" it to match an old
+export.** Four files in `rampup-site/n8n/` used to describe a 4-node workflow
+with `and` across name/email/phone and no CAPI node. Production never looked
+like that, and a plan was written on top of those files before anyone checked.
+They are deleted.
 
 If you add a field to the lead payload, it must also survive Normalize Fields
 and be mapped in the Sheets node. A field added only on the client is a field
 that reaches nothing.
 
 A `.catch(() => {})` around the relay fetch combined with an unconditional
-success screen is what hid failure mode (1) for as long as it lasted. That
-pattern is gone; don't reintroduce it.
+success screen would hide any of this from both ends. That pattern is gone;
+don't reintroduce it.
 
 ### Tracking fields
 
@@ -138,10 +140,20 @@ pages before submit — they only ever appear in the URL of the *landing* page.
 synchronous read the submit handler uses. `gclid` is the only route to Google Ads offline conversion import — if it
 stops being captured, Google-side attribution dies with it.
 
-Hashing rules for CAPI will live in `docs/TRACKING.md` (**not written yet — Phase 4; there is no CAPI node today**). Summary: `em`/`ph`/`fn` are
-SHA256 of normalized values (lowercase, trimmed, punctuation stripped; Thai
-phones as `66XXXXXXXXX`); `fbp`, `fbc`, `client_ip_address` and
-`client_user_agent` are sent raw. `event_time` is in **seconds**.
+**Meta CAPI is live**, in the same workflow: `Hash PII for CAPI` → `Send to
+Meta CAPI` (`graph.facebook.com/v21.0/915942711203430/events`).
+
+`em`/`ph`/`fn`/`ln` are SHA256 of normalized values — lowercased and trimmed,
+Thai phones reduced to digits and rendered `66XXXXXXXXX`. A signal that is empty
+is **omitted rather than hashed**: `sha256('')` is a valid-looking digest that
+matches nobody and drags Event Match Quality down. `fbp`, `fbc`,
+`client_ip_address` and `client_user_agent` are sent **raw** — hashing them
+breaks the match. `event_time` is in **seconds**, and `event_id` is passed
+through from the browser untouched, which is the whole basis of pixel dedup.
+
+The access token is currently a plaintext query parameter on the HTTP node.
+That is wrong — query strings land in logs. Move it to a credential or a
+header, and rotate it.
 
 ### Lead data model
 

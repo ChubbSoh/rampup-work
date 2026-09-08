@@ -1,37 +1,84 @@
 # n8n workflows
 
-These JSON files are **exports, not live configuration.** The running workflows
-are on `rampupth.app.n8n.cloud` and are updated by hand. Editing a file here
-changes nothing until it is imported.
+`website-lead-flow.json` is a **real export of the running workflow**, pulled
+from the n8n public API on 2026-09-08. Live id `atfktDPwj5ks5nIR`, name
+`Website Lead Flow — RampUp`, 12 nodes, active.
 
-Two consequences:
+## Read this before diagnosing anything from this directory
 
-- These files may have drifted from what's live. Before diagnosing a lead-flow
-  problem from this directory, say so and ask for a fresh export.
-- When asked to fix a workflow, produce importable JSON, not prose instructions.
-  Keep node IDs and connection structure intact so the import doesn't orphan
-  credentials.
+Until 2026-09-08 this directory held four files describing a 4-node workflow:
+webhook → normalize → validate → respond, plus separate email and Sheets files.
+**Production never looked like that.** A whole build plan was written on top of
+them, and three of its six findings were wrong:
 
-`documentId` values may be placeholders (`YOUR_GOOGLE_SHEET_ID_HERE`) rather
-than real sheet IDs. Never assume the export tells you which sheet is live.
+| Claimed from the old exports | Actually running |
+|---|---|
+| No Meta CAPI node exists | CAPI has been live for months |
+| Validate required name AND email AND phone, so phone-only leads 422'd | Validate has always been `name AND (email \|\| phone)` |
+| Normalize dropped every tracking field | `event_id`, `fbp`, `fbc`, IP and UA all survived |
 
-Credentials are never in these exports. Don't add them.
+The whitelist in Normalize Fields was real, and it did drop fields the site
+added later. That was the one true finding of the three.
 
-## The Leads sheet header row
+**So: never diagnose a lead-flow problem from a file in this directory. Pull the
+live workflow first.** An export is a photograph, and this one will start
+drifting the moment somebody edits in the n8n UI.
 
-The Sheets node maps with `defineBelow`, so **every mapped column must already
-exist as a header in the sheet** or the value is dropped without an error. Paste
-this as row 1, in this order:
+## Pulling and patching the live workflow
+
+The n8n MCP server's write tools validate and then fail. Use the public API
+directly. The key is in `~/.claude.json` under `mcpServers.n8n-mcp.env`.
+
+```bash
+curl -s -H "X-N8N-API-KEY: $N8N_KEY" \
+  https://rampupth.app.n8n.cloud/api/v1/workflows/atfktDPwj5ks5nIR -o live.json
+```
+
+To patch, edit the node you want and `PUT` back `{name, nodes, connections,
+settings}` only — the API rejects read-only fields like `id` and `createdAt`.
+Diff every node against the pull afterwards and confirm only the ones you meant
+to touch changed; a full-object PUT will happily overwrite the other eleven.
+
+The workflow stays active across a PUT, but check `active` in the response.
+
+## Secrets
+
+**The export is redacted.** `Send to Meta CAPI` carries its access token as a
+plaintext `access_token` **query parameter**, which is both a leak into every
+log that records URLs and the reason this file cannot be committed verbatim. The
+value here is `REDACTED_SEE_N8N_CREDENTIALS`; re-importing this file will
+produce a workflow that cannot authenticate to Meta until the token is put back.
+
+Fix properly: move it to an n8n credential or a header, and rotate the exposed
+one.
+
+## The Leads sheet
+
+Document `1X1HvEwae4v-TubdZ0pR2fwcFtWYYdGOF8bwl5nTkxwg`, tab `Sheet1`.
+
+The Sheets node maps with `defineBelow`, so **a mapped column missing from row 1
+is dropped silently** — no error, no failed execution. Same shape of failure as
+the Normalize whitelist.
+
+The original 13 headers keep their positions so existing rows still line up.
+These 19 were appended to the right on 2026-09-08:
 
 ```
-lead_id	submitted_at	lead_type	source	site	form_name	page_type	page_path	page_url	name	restaurant	email	phone	service	message	grab_revenue	grab_ads	timeline	language	fbclid	gclid	utm_source	utm_medium	utm_campaign	utm_content	event_id	fbp	fbc	client_ip_address	client_user_agent
+lead_id	lead_type	grab_revenue	grab_ads	timeline	restaurant_type	main_goal	language	fbclid	gclid	utm_source	utm_medium	utm_campaign	utm_content	event_id	fbp	fbc	client_ip_address	client_user_agent
 ```
 
-`lead_id` stays in column A — it is the join key for the `LeadEvents` tab.
+`lead_id` is therefore column N, not column A. Appending was chosen over
+inserting so live data was never shifted.
 
-`event_id`, `fbp`, `fbc`, `client_ip_address` and `client_user_agent` are the
-Meta CAPI match signals. They only arrive if Normalize Fields passes them
-through; a whitelist there empties all five at once.
+`restaurant_type` and `main_goal` exist in the live workflow but nothing in
+`rampup-site` sends them — they predate the current forms.
 
 Campaign / adset / ad columns arrive with Meta lead ads (Phase 2), and
 `current_stage` / `owner` / `reject_reason` with LINE routing (Phase 3).
+
+## LINE
+
+Anything that sends a LINE message goes through the gateway relay. See
+`LINE-INTEGRATION.md` in `ChubbSoh/rampup-line-gateway` — one `POST` to
+`/external/send-push` with an `X-Push-Secret` header. Never post at
+`rampup-line-worker` directly, and never put a LINE token in a workflow.
