@@ -117,17 +117,23 @@ permission appears. It is a known trap even after app approval.
 
 ### Order of work
 
-1. App → **App Review → Permissions and Features** → request Advanced Access for
-   `leads_retrieval` and `pages_manage_ads`. They appear in the use-case screens
-   only after this.
-2. Add a **privacy policy URL** in App Settings → Basic. Required before Live.
-3. Complete **Meta business verification** (Business Settings → Security Centre).
-   This is the slow one — allow days, not hours.
-4. Switch the app from **Development to Live**.
-5. Request Advanced Access for `public_profile` — n8n's trigger needs it.
-6. In n8n, create a **Facebook Lead Ads** credential with the app's client ID and
+1. Add the **Create & manage ads with Marketing API** use case, alongside
+   *Manage everything on your Page*. Without it `leads_retrieval` does not
+   render anywhere — see above. Do this before anything else.
+2. App → **App Review → Permissions and Features** → request Advanced Access for
+   `leads_retrieval` and `pages_manage_ads`.
+3. Add a **privacy policy URL** in App Settings → Basic. Required before Live.
+4. Complete **Meta business verification** (Business Settings → Security Centre).
+   This is the slow one — allow days, not hours. Start it early; it also gates
+   advanced access, so a permission still hidden after step 1 is usually waiting
+   on this.
+5. Switch the app from **Development to Live**.
+6. Request Advanced Access for `public_profile` — n8n's trigger needs it.
+7. Check **Business Settings → Integrations → Leads Access** grants the app
+   access to the Page's leads.
+8. In n8n, create a **Facebook Lead Ads** credential with the app's client ID and
    secret, and authorise as a user who can advertise on the Page.
-7. Test with Meta's **Lead Ads Testing Tool** before pointing a live ad at it.
+9. Test with Meta's **Lead Ads Testing Tool** before pointing a live ad at it.
 
 ### Then the workflow
 
