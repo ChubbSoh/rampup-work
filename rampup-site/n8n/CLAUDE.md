@@ -52,6 +52,26 @@ produce a workflow that cannot authenticate to Meta until the token is put back.
 Fix properly: move it to an n8n credential or a header, and rotate the exposed
 one.
 
+## Meta instant-form leads
+
+These never touch the website, so they never reach this workflow on their own.
+`leads_retrieval` is gated behind Meta App Review and is **not requestable** —
+verified 2026-09-08 in the Graph API Explorer permission list, where it is absent
+from its alphabetical position even with all six of its dependency permissions
+attached. n8n ships no OAuth app of its own, so its Facebook Lead Ads node
+inherits that wall.
+
+The bridge is a connector that already holds the approval (Make, Zapier,
+LeadsBridge), POSTing into the same `rampup-lead` webhook the website uses. The
+workflow then treats an instant-form lead like any other: set `source` to
+something matching `/lead_ad|meta_lead|instant_form/i` and `Hash PII for CAPI`
+switches `action_source` to `system_generated`, because those leads never touched
+a browser and claiming `website` is a lie Meta scores against us.
+
+Set `lead_type` per form. There is no `form_id → lead_type` map yet; when one is
+added, an unknown form id should default to `sales` and raise an alert rather
+than guess.
+
 ## The Leads sheet
 
 Document `1X1HvEwae4v-TubdZ0pR2fwcFtWYYdGOF8bwl5nTkxwg`, tab `Sheet1`.
@@ -82,9 +102,14 @@ Campaign / adset / ad columns arrive with Meta lead ads (Phase 2), and
 valid lead. They hang off `Respond 200 OK` as a **parallel branch**, so a LINE
 outage cannot stop the Sheets row or the CAPI event, and vice versa.
 
-The card's headline and its `altText` are both the **restaurant name** —
-`altText` is the only thing the LINE push notification shows, so anything not in
-it is invisible until the card is opened.
+**Routing is by `lead_type`:** `sales` → Chubb, `hiring` → Grace. An unset or
+unrecognised value falls through to `sales` — a misrouted lead is recoverable,
+a silent one is not.
+
+The headline and the `altText` carry whatever identifies the person at a glance:
+the **restaurant** for a sales lead, the **applicant's name** for a hiring one,
+since applicants have no restaurant. `altText` is the only thing the LINE push
+notification shows, so anything not in it is invisible until the card is opened.
 
 Everything that sends a LINE message goes through the gateway relay. See
 `LINE-INTEGRATION.md` in `ChubbSoh/rampup-line-gateway` — one `POST` to
