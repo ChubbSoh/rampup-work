@@ -618,6 +618,62 @@
         },
         "options": {}
       }
+    },
+    {
+      "id": "node-line-card",
+      "name": "Build LINE lead card",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        520
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const lead = $('Normalize Fields').first().json;\n\nconst CHUBB = 'REDACTED_CHUBB_LINE_USER_ID';\n\nconst val = (v) => (v ?? '').toString().trim();\n\n// The restaurant is the thing worth recognising at a glance, so it is the\n// headline AND the altText - altText is all the LINE push notification shows.\nconst restaurant = val(lead.restaurant) || 'Unknown restaurant';\nconst name = val(lead.name) || '—';\nconst phone = val(lead.phone);\nconst email = val(lead.email);\n\nfunction row(label, value) {\n  return {\n    type: 'box', layout: 'baseline', spacing: 'sm',\n    contents: [\n      { type: 'text', text: label, size: 'sm', color: '#8C8C8C', flex: 3, wrap: true },\n      { type: 'text', text: value, size: 'sm', flex: 7, wrap: true },\n    ],\n  };\n}\n\nconst rows = [row('Name', name)];\nif (phone) rows.push(row('Phone', phone));\nif (email) rows.push(row('Email', email));\nif (val(lead.service))      rows.push(row('Service', val(lead.service)));\nif (val(lead.grab_revenue)) rows.push(row('Grab/mo', val(lead.grab_revenue)));\nif (val(lead.timeline))     rows.push(row('Timeline', val(lead.timeline)));\n\n// Where it came from. utm_campaign is the ad; source/page_type is the funnel.\nconst attribution = [val(lead.source), val(lead.page_type)].filter(Boolean).join(' · ');\nif (attribution) rows.push(row('From', attribution));\nif (val(lead.utm_campaign)) rows.push(row('Campaign', val(lead.utm_campaign)));\nif (val(lead.gclid))  rows.push(row('Google click', 'yes'));\nif (val(lead.fbclid)) rows.push(row('Meta click', 'yes'));\n\nconst footer = [];\nif (phone) {\n  // tel: needs digits only, and Thai mobiles dial fine as 0XXXXXXXXX.\n  const dial = phone.replace(/[^\\d+]/g, '');\n  footer.push({\n    type: 'button', style: 'primary', height: 'sm',\n    action: { type: 'uri', label: 'Call', uri: 'tel:' + dial },\n  });\n}\n\nconst bubble = {\n  type: 'bubble',\n  body: {\n    type: 'box', layout: 'vertical',\n    contents: [\n      { type: 'text', text: 'New lead', size: 'sm', color: '#8C8C8C' },\n      { type: 'text', text: restaurant, weight: 'bold', size: 'xl', margin: 'sm', wrap: true },\n      { type: 'box', layout: 'vertical', margin: 'lg', spacing: 'sm', contents: rows },\n      { type: 'text', text: val(lead.lead_id), size: 'xxs', color: '#AAAAAA', margin: 'lg' },\n    ],\n  },\n};\nif (footer.length) {\n  bubble.footer = { type: 'box', layout: 'horizontal', spacing: 'sm', contents: footer };\n}\n\nreturn [{\n  json: {\n    lineUserId: CHUBB,\n    messages: [{\n      type: 'flex',\n      altText: `New lead: ${restaurant}${phone ? ' - ' + phone : ''}`,\n      contents: bubble,\n    }],\n  },\n}];"
+      },
+      "notes": "Restaurant name is the headline and the altText - altText is all the push notification shows."
+    },
+    {
+      "id": "node-line-send",
+      "name": "Notify Chubb via LINE",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1340,
+        520
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://rampup-line-bot-gyv7tl6rxq-as.a.run.app/external/send-push",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ lineUserId: $json.lineUserId, messages: $json.messages }) }}",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "tUWwvWVHcfLDeN5r",
+          "name": "rampup-line-worker Push Secret"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "notes": "Gateway relay per LINE-INTEGRATION.md in ChubbSoh/rampup-line-gateway. Never post at rampup-line-worker directly and never hold a LINE token here. The relay does not retry, so the backoff above is ours: a LINE 429 comes back as HTTP 500."
     }
   ],
   "connections": {
@@ -666,6 +722,11 @@
         [
           {
             "node": "Notify Owner",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build LINE lead card",
             "type": "main",
             "index": 0
           }
@@ -739,6 +800,17 @@
         [
           {
             "node": "Send to Meta CAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build LINE lead card": {
+      "main": [
+        [
+          {
+            "node": "Notify Chubb via LINE",
             "type": "main",
             "index": 0
           }

@@ -2,7 +2,7 @@
 
 `website-lead-flow.json` is a **real export of the running workflow**, pulled
 from the n8n public API on 2026-09-08. Live id `atfktDPwj5ks5nIR`, name
-`Website Lead Flow — RampUp`, 12 nodes, active.
+`Website Lead Flow — RampUp`, 14 nodes, active.
 
 ## Read this before diagnosing anything from this directory
 
@@ -78,7 +78,25 @@ Campaign / adset / ad columns arrive with Meta lead ads (Phase 2), and
 
 ## LINE
 
-Anything that sends a LINE message goes through the gateway relay. See
+`Build LINE lead card` → `Notify Chubb via LINE` push a Flex card for every
+valid lead. They hang off `Respond 200 OK` as a **parallel branch**, so a LINE
+outage cannot stop the Sheets row or the CAPI event, and vice versa.
+
+The card's headline and its `altText` are both the **restaurant name** —
+`altText` is the only thing the LINE push notification shows, so anything not in
+it is invisible until the card is opened.
+
+Everything that sends a LINE message goes through the gateway relay. See
 `LINE-INTEGRATION.md` in `ChubbSoh/rampup-line-gateway` — one `POST` to
-`/external/send-push` with an `X-Push-Secret` header. Never post at
-`rampup-line-worker` directly, and never put a LINE token in a workflow.
+`/external/send-push` with an `X-Push-Secret` header, supplied here by the
+n8n credential `rampup-line-worker Push Secret` (`tUWwvWVHcfLDeN5r`). Never post
+at `rampup-line-worker` directly, and never put a LINE token in a workflow.
+
+**The relay does not retry.** A LINE 429 comes back as HTTP 500, so the node
+carries `retryOnFail` with a 5s wait, matching the P&L workflow. It also caps at
+5 messages per call and silently truncates beyond that; this sends one.
+
+The recipient id is redacted in the export. Live it is Chubb's LINE user id,
+taken from the roster in `RampUp P&L — month on month to LINE`. Grace's id sits
+commented out in that same workflow, which is where hiring routing will get it
+when Phase 3 lands.
