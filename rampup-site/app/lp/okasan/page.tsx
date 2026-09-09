@@ -16,6 +16,12 @@ const inclusions = [
   '10–15 Menu photos',
 ]
 
+const caseStudyNumbers = [
+  { value: '1.2M+', label: 'Views' },
+  { value: '40%',   label: 'Increase in Grab sales' },
+  { value: '30',    label: 'Private room bookings per month' },
+]
+
 const resultCards = [
   { before: '฿665K', after: '฿1.25M', timeframe: '2 months', growth: '1.9x growth', monthly: '+฿295K / month', beforeImg: '/results/proof-1-after.jpg',  afterImg: '/results/proof-1-before.jpg' },
   { before: '฿300K', after: '฿628K',  timeframe: '2 months', growth: '2.1x growth', monthly: '+฿328K / month', beforeImg: '/results/proof-2-before.jpg', afterImg: '/results/proof-2-after.jpg' },
@@ -101,15 +107,38 @@ export default function OkasanFunnelPage() {
         </div>
       </section>
 
-      {/* ── 1b. PROOF ── placeholder art until the real screenshots land */}
+      {/* ── 1b. PROOF ── the client's own photos, padded if they have under four */}
       <section className="max-w-site mx-auto px-5 md:px-12 pb-10 pt-2">
         <div className="grid grid-cols-2 gap-4 md:gap-5 max-w-2xl mx-auto">
-          {[0, 1, 2, 3].map(i => (
-            <div key={i} className="aspect-[4/3] w-full rounded-img bg-black/[0.08]" />
-          ))}
+          {Array.from({ length: 4 }).map((_, i) => {
+            const photo = normalPhotos[i]
+            return photo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={photo}
+                src={photo}
+                alt={`${client.name} ${i + 1}`}
+                loading="lazy"
+                className="aspect-[4/3] w-full rounded-img object-cover"
+              />
+            ) : (
+              <div key={`ph-${i}`} className="aspect-[4/3] w-full rounded-img bg-black/[0.08]" />
+            )
+          })}
         </div>
         <p className="font-poppins text-sm text-muted text-center mt-4 max-w-xl mx-auto">
           Real results from {cuisinePluralPhrase(client.cuisine)} we work with.
+        </p>
+      </section>
+
+      {/* ── 2. CASE STUDY ── intro to the client's own work */}
+      <section className="max-w-site mx-auto px-5 md:px-12 pt-2 pb-8 text-center">
+        <h2 className="font-sora font-extrabold text-[clamp(1.5rem,6vw,2.6rem)] leading-[1.15] tracking-tight text-dark">
+          {/* Title case here, unlike the sentence-case plural used in body copy. */}
+          See How We Market {cuisinePhrase(client.cuisine)}s
+        </h2>
+        <p className="font-poppins text-base md:text-lg text-muted mt-3">
+          Inside our work with {client.name}
         </p>
       </section>
 
@@ -131,6 +160,42 @@ export default function OkasanFunnelPage() {
           </div>
         </section>
       )}
+
+      {/* ── 3b. SOCIAL POSTS ── awaiting the real FB and IG screenshots */}
+      <section className="max-w-site mx-auto px-5 md:px-12 py-10">
+        <div className="grid grid-cols-2 gap-4 md:gap-5 max-w-2xl mx-auto">
+          {['Facebook post', 'Instagram post'].map(label => (
+            <div key={label} className="flex flex-col gap-2">
+              <div className="aspect-[4/5] w-full rounded-img bg-black/[0.08]" />
+              <p className="font-poppins text-xs text-faint text-center">{label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── 3c. THE NUMBERS ── */}
+      <section className="bg-black py-12">
+        <div className="max-w-site mx-auto px-5 md:px-12 text-center">
+          <p className="font-poppins text-xs font-semibold tracking-[0.2em] text-white/40 uppercase mb-2">
+            Results
+          </p>
+          <h2 className="font-sora font-extrabold text-2xl md:text-4xl text-white tracking-tight mb-8">
+            The Numbers
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 max-w-3xl mx-auto">
+            {caseStudyNumbers.map(({ value, label }) => (
+              <div key={label}>
+                <p className="font-sora font-extrabold text-[clamp(2.2rem,9vw,3.2rem)] leading-none text-white">
+                  {value}
+                </p>
+                <p className="font-poppins text-sm text-white/60 mt-2 leading-snug">
+                  {label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ── 4. FEED DESIGN ── mobile only */}
       {hasFeedDesign && (
