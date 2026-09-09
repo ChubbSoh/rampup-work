@@ -1,0 +1,826 @@
+{
+  "name": "Website Lead Flow � RampUp",
+  "nodes": [
+    {
+      "id": "node-webhook",
+      "name": "Receive Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "rampup-lead",
+        "responseMode": "responseNode",
+        "options": {},
+        "authentication": "headerAuth"
+      },
+      "webhookId": "edc669ca-2ec9-4627-b4ba-02a9bff19510",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "VyeAB8DxwwGqdJsb",
+          "name": "Internal Webhook Token"
+        }
+      }
+    },
+    {
+      "id": "node-normalize",
+      "name": "Normalize Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b = $json.body || $json;\n\nconst clean = (v) => (v ?? '').toString().trim();\n\n// lead_id: L-{YYYYMMDD}-{6 lowercase alphanumeric}, Asia/Bangkok date.\n// Reuse an incoming lead_id so a retry does not mint a second key.\nfunction makeLeadId() {\n  const bkk = new Date(Date.now() + 7 * 60 * 60 * 1000);\n  const ymd = bkk.toISOString().slice(0, 10).replace(/-/g, '');\n  const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';\n  let s = '';\n  for (let i = 0; i < 6; i++) s += alphabet[Math.floor(Math.random() * alphabet.length)];\n  return `L-${ymd}-${s}`;\n}\n\n// Spread FIRST so anything the site adds later survives — lead_type, fbclid,\n// gclid, the utm_* params, language. Rebuilding from a fixed whitelist here is\n// what silently dropped those; do not reintroduce one.\nconst out = {\n  ...b,\n  lead_id:           clean(b.lead_id) || makeLeadId(),\n  lead_type:         clean(b.lead_type) || 'sales',\n  name:              clean(b.name),\n  restaurant:        clean(b.restaurant),\n  email:             clean(b.email).toLowerCase(),\n  phone:             clean(b.phone),\n  service:           clean(b.service),\n  message:           clean(b.message),\n  grab_revenue:      clean(b.grab_revenue),\n  grab_ads:          clean(b.grab_ads),\n  timeline:          clean(b.timeline),\n  restaurant_type:   clean(b.restaurant_type),\n  main_goal:         clean(b.main_goal),\n  page_path:         clean(b.page_path),\n  page_url:          clean(b.page_url),\n  page_type:         b.page_type    || 'other',\n  form_name:         b.form_name    || 'lead',\n  submitted_at:      b.submitted_at || new Date().toISOString(),\n  source:            b.source       || 'website',\n  site:              b.site         || 'rampupth',\n  event_id:          b.event_id           || '',\n  client_ip_address: b.client_ip_address  || '',\n  client_user_agent: b.client_user_agent  || '',\n  fbp:               b.fbp || '',\n  fbc:               b.fbc || '',\n};\n\n// Already verified by /api/lead-relay. Never forward it.\ndelete out.turnstile_token;\n\nreturn [{ json: out }];"
+      }
+    },
+    {
+      "id": "node-validate",
+      "name": "Validate Required Fields",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-name",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            },
+            {
+              "id": "check-contact",
+              "leftValue": "={{ $json.email || $json.phone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-respond-ok",
+      "name": "Respond 200 OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        900,
+        180
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: true, message: \"Lead received\", name: $json.name, submitted_at: $json.submitted_at }) }}",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    },
+    {
+      "id": "node-respond-fail",
+      "name": "Respond 422 Invalid",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        900,
+        420
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false, error: \"Missing required fields\", required: [\"name\",\"email\",\"phone\"] }) }}",
+        "options": {
+          "responseCode": 422
+        }
+      }
+    },
+    {
+      "id": "node-notify-owner",
+      "name": "Notify Owner",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        180
+      ],
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "smtp": {
+          "id": "NoTuLvu23JZZAX1S",
+          "name": "Gmail SMTP � RampUp"
+        }
+      },
+      "parameters": {
+        "fromEmail": "chubb.soh@gmail.com",
+        "toEmail": "chubb.soh@gmail.com",
+        "subject": "=🔥 New Lead — {{ $json.service }} — {{ $json.page_type }}",
+        "emailFormat": "text",
+        "text": "=New lead received via RampUp website.\n\n---\n\nName:        {{ $json.name }}\nRestaurant:  {{ $json.restaurant }}\nPhone/LINE:  {{ $json.phone || \"(none)\" }}\nEmail:       {{ $json.email || \"(none)\" }}\n\nService:         {{ $json.service || \"(none)\" }}\nGrab revenue:    {{ $json.grab_revenue || \"(none)\" }}\nGrab ads:        {{ $json.grab_ads || \"(none)\" }}\nTimeline:        {{ $json.timeline || \"(none)\" }}\nRestaurant type: {{ $json.restaurant_type || \"(none)\" }}\nMain goal:       {{ $json.main_goal || \"(none)\" }}\n\nMessage:    {{ $json.message || \"(none)\" }}\n\n---\n\nPage:       {{ $json.page_type }}\nURL:        {{ $json.page_url }}\nSubmitted:  {{ $json.submitted_at }}\n\n---\n\nReply directly to this email to contact the lead.",
+        "options": {
+          "replyTo": "={{ $json.email || \"hello@rampupth.com\" }}"
+        }
+      },
+      "webhookId": "9e2810f1-7598-4ab5-b222-33bbbe0a6540"
+    },
+    {
+      "id": "node-has-email",
+      "name": "Has Email?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        180
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false
+          },
+          "conditions": [
+            {
+              "id": "check-email-present",
+              "leftValue": "={{ $('Normalize Fields').first().json.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-send-confirmation",
+      "name": "Send Confirmation Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        100
+      ],
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "smtp": {
+          "id": "NoTuLvu23JZZAX1S",
+          "name": "Gmail SMTP � RampUp"
+        }
+      },
+      "parameters": {
+        "fromEmail": "chubb.soh@gmail.com",
+        "toEmail": "={{ $('Normalize Fields').first().json.email }}",
+        "subject": "Your request has been received — RampUp",
+        "emailFormat": "text",
+        "text": "=Hi {{ $('Normalize Fields').first().json.name }},\n\nWe've received your request and will review your restaurant.\n\nOur team will get back to you within 24 hours.\n\nIf you have any questions in the meantime, feel free to reply to this email.\n\n– RampUp Team\nhello@rampupth.com",
+        "options": {}
+      },
+      "webhookId": "d7895e66-5a42-44a9-bebf-b1b94850add7"
+    },
+    {
+      "id": "node-continue-sheets",
+      "name": "Continue to Sheets",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        200
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const lead = $('Normalize Fields').first().json;\nreturn [{ json: lead }];"
+      }
+    },
+    {
+      "id": "node-append-sheets",
+      "name": "Append Lead to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        2000,
+        200
+      ],
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lSj3ZZ1Eb7xgxFXD",
+          "name": "Google Sheets OAuth2 API"
+        }
+      },
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "mode": "id",
+          "__rl": true,
+          "value": "1X1HvEwae4v-TubdZ0pR2fwcFtWYYdGOF8bwl5nTkxwg"
+        },
+        "sheetName": {
+          "mode": "name",
+          "__rl": true,
+          "value": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "submitted_at": "={{ $json.submitted_at }}",
+            "name": "={{ $json.name }}",
+            "restaurant": "={{ $json.restaurant }}",
+            "email": "={{ $json.email }}",
+            "phone": "={{ $json.phone }}",
+            "service": "={{ $json.service }}",
+            "message": "={{ $json.message }}",
+            "page_type": "={{ $json.page_type }}",
+            "page_path": "={{ $json.page_path }}",
+            "page_url": "={{ $json.page_url }}",
+            "form_name": "={{ $json.form_name }}",
+            "source": "={{ $json.source }}",
+            "site": "={{ $json.site }}",
+            "lead_id": "={{ $json.lead_id }}",
+            "lead_type": "={{ $json.lead_type }}",
+            "grab_revenue": "={{ $json.grab_revenue }}",
+            "grab_ads": "={{ $json.grab_ads }}",
+            "timeline": "={{ $json.timeline }}",
+            "restaurant_type": "={{ $json.restaurant_type }}",
+            "main_goal": "={{ $json.main_goal }}",
+            "language": "={{ $json.language }}",
+            "fbclid": "={{ $json.fbclid }}",
+            "gclid": "={{ $json.gclid }}",
+            "utm_source": "={{ $json.utm_source }}",
+            "utm_medium": "={{ $json.utm_medium }}",
+            "utm_campaign": "={{ $json.utm_campaign }}",
+            "utm_content": "={{ $json.utm_content }}",
+            "event_id": "={{ $json.event_id }}",
+            "fbp": "={{ $json.fbp }}",
+            "fbc": "={{ $json.fbc }}",
+            "client_ip_address": "={{ $json.client_ip_address }}",
+            "client_user_agent": "={{ $json.client_user_agent }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "submitted_at",
+              "displayName": "submitted_at",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "restaurant",
+              "displayName": "restaurant",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "service",
+              "displayName": "service",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "page_type",
+              "displayName": "page_type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "page_path",
+              "displayName": "page_path",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "page_url",
+              "displayName": "page_url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "form_name",
+              "displayName": "form_name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "site",
+              "displayName": "site",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "lead_type",
+              "displayName": "lead_type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "grab_revenue",
+              "displayName": "grab_revenue",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "grab_ads",
+              "displayName": "grab_ads",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "timeline",
+              "displayName": "timeline",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "restaurant_type",
+              "displayName": "restaurant_type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "main_goal",
+              "displayName": "main_goal",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "fbclid",
+              "displayName": "fbclid",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "gclid",
+              "displayName": "gclid",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "utm_content",
+              "displayName": "utm_content",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "event_id",
+              "displayName": "event_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "fbp",
+              "displayName": "fbp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "fbc",
+              "displayName": "fbc",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "client_ip_address",
+              "displayName": "client_ip_address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "client_user_agent",
+              "displayName": "client_user_agent",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": false,
+              "type": "string",
+              "display": true
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-hash-pii",
+      "name": "Hash PII for CAPI",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2220,
+        200
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const crypto = require('crypto');\n\nfunction sha256(val) {\n  return crypto.createHash('sha256').update((val || '').trim().toLowerCase()).digest('hex');\n}\n\n/**\n * Meta matches phones in E.164 digits with no punctuation or plus.\n * A Thai mobile must be 66812345678 — hashing \"081-234-5678\" as typed produces\n * a digest that can never match anything, which is what this used to do.\n */\nfunction normalizePhone(raw) {\n  let d = (raw || '').replace(/\\D/g, '');\n  if (!d) return '';\n  if (d.startsWith('0066')) d = d.slice(2);         // 0066... dial-out prefix\n  if (d.startsWith('66')) return d;                 // already country-coded\n  if (d.startsWith('0')) return '66' + d.slice(1);  // 08X... -> 668X...\n  if (d.length === 9) return '66' + d;              // bare 8XXXXXXXX\n  return d;                                          // foreign number, leave it\n}\n\nconst lead = $('Normalize Fields').first().json;\nconst eventId = lead.event_id || ('lead_' + Date.now());\nconst submittedMs = new Date(lead.submitted_at || new Date()).getTime();\nconst eventTime = Math.floor(Math.min(submittedMs, Date.now()) / 1000);\n\n// Only send signals we actually have. Hashing '' yields a valid-looking digest\n// that matches nobody and drags Event Match Quality down.\nconst userData = {};\nconst parts = (lead.name || '').trim().split(/\\s+/).filter(Boolean);\nconst firstName = parts[0] || '';\nconst lastName = parts.slice(1).join(' ');\nconst phone = normalizePhone(lead.phone);\n\nif (lead.email) userData.em = [sha256(lead.email)];\nif (phone)      userData.ph = [sha256(phone)];\nif (firstName)  userData.fn = [sha256(firstName)];\nif (lastName)   userData.ln = [sha256(lastName)];\n\n// These four are sent RAW — hashing them breaks the match.\nif (lead.client_ip_address) userData.client_ip_address = lead.client_ip_address;\nif (lead.client_user_agent) userData.client_user_agent = lead.client_user_agent;\nif (lead.fbp) userData.fbp = lead.fbp;\nif (lead.fbc) userData.fbc = lead.fbc;\n\nreturn [{\n  json: {\n    data: JSON.stringify([{\n      event_name: 'Lead',\n      event_time: eventTime,\n      event_id: eventId,\n      event_source_url: lead.page_url || '',\n      // A Meta instant form never touched a browser, so 'website' would be a\n      // lie Meta scores against us. No fbp/fbc/event_id exists for these either.\n      action_source: /lead_ad|meta_lead|instant_form/i.test(lead.source || '')\n        ? 'system_generated' : 'website',\n      user_data: userData\n    }])\n  }\n}];"
+      }
+    },
+    {
+      "id": "node-meta-capi",
+      "name": "Send to Meta CAPI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        2440,
+        200
+      ],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v21.0/915942711203430/events",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "REDACTED_SEE_N8N_CREDENTIALS"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "keypair",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "data",
+              "value": "={{ $json.data }}"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-line-card",
+      "name": "Build LINE lead card",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        520
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const lead = $('Normalize Fields').first().json;\n\n// Sales goes to Chubb, hiring goes to Grace. lead_type is set by the website\n// form config, or by the form_id map for Meta instant forms. Anything\n// unrecognised falls to sales rather than being dropped - a misrouted lead is\n// recoverable, a silent one is not.\nconst RECIPIENTS = {\n  sales:  'REDACTED_CHUBB_LINE_USER_ID',\n  hiring: 'REDACTED_GRACE_LINE_USER_ID',\n};\n\nconst val = (v) => (v ?? '').toString().trim();\n\nconst leadType = (val(lead.lead_type) || 'sales').toLowerCase();\nconst to = RECIPIENTS[leadType] || RECIPIENTS.sales;\n\nconst name = val(lead.name) || '-';\nconst restaurant = val(lead.restaurant) || val(lead.company);\n\n// Whatever identifies this person at a glance goes in the headline AND the\n// altText, because altText is all the LINE push notification shows. For a sales\n// lead that is the restaurant; for an applicant there is no restaurant, so it\n// is their name.\nconst headline = (leadType === 'hiring' ? name : restaurant) || name || 'Unknown';\nconst phone = val(lead.phone);\nconst email = val(lead.email);\nconst isHiring = leadType === 'hiring';\n\nfunction row(label, value) {\n  return {\n    type: 'box', layout: 'baseline', spacing: 'sm',\n    contents: [\n      { type: 'text', text: label, size: 'sm', color: '#8C8C8C', flex: 3, wrap: true },\n      { type: 'text', text: value, size: 'sm', flex: 7, wrap: true },\n    ],\n  };\n}\n\nconst rows = isHiring ? [] : [row('Name', name)];\nif (phone) rows.push(row('Phone', phone));\nif (email) rows.push(row('Email', email));\nif (val(lead.position))     rows.push(row('Role', val(lead.position)));\nif (isHiring && restaurant) rows.push(row('Company', restaurant));\nif (val(lead.service))      rows.push(row('Service', val(lead.service)));\nif (val(lead.grab_revenue)) rows.push(row('Grab/mo', val(lead.grab_revenue)));\nif (val(lead.timeline))     rows.push(row('Timeline', val(lead.timeline)));\nif (val(lead.message))      rows.push(row('Note', val(lead.message)));\n\n// Where it came from. Meta instant forms carry ad_name/campaign_name natively;\n// website leads carry utm_campaign instead.\nconst attribution = [val(lead.source), val(lead.page_type) || val(lead.form_name)]\n  .filter(Boolean).join(' - ');\nif (attribution) rows.push(row('From', attribution));\nconst campaign = val(lead.campaign_name) || val(lead.utm_campaign);\nif (campaign) rows.push(row('Campaign', campaign));\nif (val(lead.ad_name)) rows.push(row('Ad', val(lead.ad_name)));\nif (val(lead.gclid))  rows.push(row('Google click', 'yes'));\nif (val(lead.fbclid)) rows.push(row('Meta click', 'yes'));\n\nconst footer = [];\nif (phone) {\n  const dial = phone.replace(/[^\\d+]/g, '');\n  footer.push({\n    type: 'button', style: 'primary', height: 'sm',\n    action: { type: 'uri', label: 'Call', uri: 'tel:' + dial },\n  });\n}\n\nconst bubble = {\n  type: 'bubble',\n  body: {\n    type: 'box', layout: 'vertical',\n    contents: [\n      { type: 'text', text: isHiring ? 'New applicant' : 'New lead',\n        size: 'sm', color: isHiring ? '#3DBE5A' : '#8C8C8C', weight: 'bold' },\n      { type: 'text', text: headline, weight: 'bold', size: 'xl', margin: 'sm', wrap: true },\n      { type: 'box', layout: 'vertical', margin: 'lg', spacing: 'sm', contents: rows },\n      { type: 'text', text: val(lead.lead_id), size: 'xxs', color: '#AAAAAA', margin: 'lg' },\n    ],\n  },\n};\nif (footer.length) {\n  bubble.footer = { type: 'box', layout: 'horizontal', spacing: 'sm', contents: footer };\n}\n\nreturn [{\n  json: {\n    lineUserId: to,\n    messages: [{\n      type: 'flex',\n      altText: `${isHiring ? 'New applicant' : 'New lead'}: ${headline}${phone ? ' - ' + phone : ''}`,\n      contents: bubble,\n    }],\n  },\n}];"
+      },
+      "notes": "Routes on lead_type: sales -> Chubb, hiring -> Grace, unknown -> sales. Restaurant name is the headline and the altText - altText is all the push shows."
+    },
+    {
+      "id": "node-line-send",
+      "name": "Notify Chubb via LINE",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1340,
+        520
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://rampup-line-bot-gyv7tl6rxq-as.a.run.app/external/send-push",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ lineUserId: $json.lineUserId, messages: $json.messages }) }}",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "tUWwvWVHcfLDeN5r",
+          "name": "rampup-line-worker Push Secret"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "notes": "Gateway relay per LINE-INTEGRATION.md in ChubbSoh/rampup-line-gateway. Never post at rampup-line-worker directly and never hold a LINE token here. The relay does not retry, so the backoff above is ours: a LINE 429 comes back as HTTP 500."
+    }
+  ],
+  "connections": {
+    "Receive Lead": {
+      "main": [
+        [
+          {
+            "node": "Normalize Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Fields": {
+      "main": [
+        [
+          {
+            "node": "Validate Required Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Required Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond 200 OK",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond 422 Invalid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond 200 OK": {
+      "main": [
+        [
+          {
+            "node": "Notify Owner",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build LINE lead card",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Owner": {
+      "main": [
+        [
+          {
+            "node": "Has Email?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Email?": {
+      "main": [
+        [
+          {
+            "node": "Send Confirmation Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Continue to Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Confirmation Email": {
+      "main": [
+        [
+          {
+            "node": "Continue to Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Continue to Sheets": {
+      "main": [
+        [
+          {
+            "node": "Append Lead to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Lead to Sheet": {
+      "main": [
+        [
+          {
+            "node": "Hash PII for CAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hash PII for CAPI": {
+      "main": [
+        [
+          {
+            "node": "Send to Meta CAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build LINE lead card": {
+      "main": [
+        [
+          {
+            "node": "Notify Chubb via LINE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  }
+}
