@@ -155,12 +155,25 @@ export default function OkasanFunnelPage() {
           </div>
         )}
 
-        {/* Awaiting the real Facebook and Instagram screenshots. */}
+        {/* Square screenshots, matching the proof tiles above. Served from
+            /public rather than Cloudflare Images because they are page
+            furniture, not client gallery assets. */}
         <div className="grid grid-cols-2 gap-4 md:gap-5 max-w-2xl mx-auto">
-          {['Facebook post', 'Instagram post'].map(label => (
-            <div key={label} className="flex flex-col gap-2">
-              <div className="aspect-[4/5] w-full rounded-img bg-black/[0.08]" />
-              <p className="font-poppins text-xs text-faint text-center">{label}</p>
+          {[
+            { src: '/funnel/okasan-fb-vibe.png', caption: 'Carousel post to showcase vibe' },
+            { src: '/funnel/okasan-fb-food.png', caption: 'Carousel post to showcase food' },
+          ].map(({ src, caption }) => (
+            <div key={src} className="flex flex-col gap-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={src}
+                alt={caption}
+                loading="lazy"
+                className="aspect-square w-full rounded-img object-cover"
+              />
+              <p className="font-poppins text-xs text-faint text-center leading-snug">
+                {caption}
+              </p>
             </div>
           ))}
         </div>
