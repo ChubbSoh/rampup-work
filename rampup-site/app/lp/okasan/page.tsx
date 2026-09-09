@@ -126,9 +126,6 @@ export default function OkasanFunnelPage() {
             )
           })}
         </div>
-        <p className="font-poppins text-sm text-muted text-center mt-4 max-w-xl mx-auto">
-          Real results from {cuisinePluralPhrase(client.cuisine)} we work with.
-        </p>
       </section>
 
       {/* ── 2. HOW WE MARKET ── heading, two reels and the social posts, one section */}
