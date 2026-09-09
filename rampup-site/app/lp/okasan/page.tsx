@@ -67,7 +67,7 @@ export default function OkasanFunnelPage() {
 
       {/* ── 1. HERO ── */}
       <section className="max-w-site mx-auto px-5 md:px-12 pt-7 pb-6 md:pt-16 md:pb-8">
-        <h1 className="font-sora font-extrabold text-[clamp(1.3rem,7.28vw,4.42rem)] leading-[1.15] tracking-[-0.02em] text-dark mb-4 text-center">
+        <h1 className="font-sora font-extrabold text-[clamp(1.3rem,7.28vw,3.4rem)] leading-[1.15] tracking-[-0.02em] text-dark mb-4 text-center">
           Get More Customers<br />For Your {cuisinePhrase(client.cuisine)}
         </h1>
         <p className="font-poppins text-base md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-7 text-center [text-wrap:balance]">
@@ -124,6 +124,7 @@ export default function OkasanFunnelPage() {
               And Run Effective Ads To Increase Dine-In Sales
             </p>
             <FunnelVideoSection
+              showViewMore={false}
               videoIds={client.videos!}
               customerCode={customerCode}
             />
@@ -321,7 +322,7 @@ export default function OkasanFunnelPage() {
           Enter Your Info Below To Apply
         </h2>
         <div className="max-w-lg mx-auto bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-7 md:p-10">
-          <LeadForm config={leadForm} />
+          <LeadForm config={heroForm} />
         </div>
       </section>
 
