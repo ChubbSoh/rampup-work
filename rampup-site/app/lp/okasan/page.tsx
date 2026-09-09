@@ -67,13 +67,37 @@ export default function OkasanFunnelPage() {
 
       {/* ── 1. HERO ── */}
       <section className="max-w-site mx-auto px-5 md:px-12 pt-7 pb-6 md:pt-16 md:pb-8">
-        <h1 className="font-sora font-extrabold text-[clamp(1.55rem,5.4vw,3.4rem)] leading-[1.12] tracking-tight text-dark mb-4 text-center [text-wrap:balance]">
-          Get More Customers for Your {cuisinePhrase(client.cuisine)}
+        <h1 className="font-sora font-extrabold text-[clamp(1rem,5.6vw,3.4rem)] leading-[1.15] tracking-[-0.02em] text-dark mb-4 text-center">
+          Get More Customers<br />For Your {cuisinePhrase(client.cuisine)}
         </h1>
         <p className="font-poppins text-base md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-7 text-center [text-wrap:balance]">
           We create content, run ads, and manage social media for{' '}
           {cuisinePluralPhrase(client.cuisine)} in Thailand.
         </p>
+        <div className="mb-8">
+          <p className="font-poppins text-sm italic text-muted text-center mb-4">
+            We manage these platforms
+          </p>
+          <div className="grid grid-cols-3 gap-x-8 gap-y-5 justify-items-center max-w-xs mx-auto">
+            {[
+              { label: 'Instagram', src: '/logo-ig.svg' },
+              { label: 'Facebook',  src: '/logo-fb.svg' },
+              { label: 'TikTok',    src: '/logo-tiktok.svg' },
+              { label: 'Grab',      src: '/logo-grab.svg' },
+              { label: 'Lineman',   src: '/logo-lineman.svg' },
+              { label: 'Google',    src: '/logo-google.svg' },
+            ].map(({ label, src }) => (
+              <div key={label} className="flex flex-col items-center gap-1">
+                <div className="w-9 h-9 md:w-[47px] md:h-[47px] flex items-center justify-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt={label} className="w-full h-full object-contain" />
+                </div>
+                <span className="font-poppins text-[10px] font-medium text-muted">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className="max-w-md mx-auto">
           <LeadForm config={heroForm} />
         </div>
@@ -89,31 +113,6 @@ export default function OkasanFunnelPage() {
         <p className="font-poppins text-sm text-muted text-center mt-4 max-w-xl mx-auto">
           Real results from {cuisinePluralPhrase(client.cuisine)} we work with.
         </p>
-      </section>
-
-      {/* ── 2. PLATFORMS ── */}
-      <section className="max-w-site mx-auto px-5 md:px-12 pt-4 pb-8">
-        <p className="font-poppins text-sm italic text-muted text-center mb-4">
-          We manage these platforms
-        </p>
-        <div className="grid grid-cols-3 gap-x-8 gap-y-5 justify-items-center max-w-xs mx-auto">
-          {[
-            { label: 'Instagram', src: '/logo-ig.svg' },
-            { label: 'Facebook',  src: '/logo-fb.svg' },
-            { label: 'TikTok',    src: '/logo-tiktok.svg' },
-            { label: 'Grab',      src: '/logo-grab.svg' },
-            { label: 'Lineman',   src: '/logo-lineman.svg' },
-            { label: 'Google',    src: '/logo-google.svg' },
-          ].map(({ label, src }) => (
-            <div key={label} className="flex flex-col items-center gap-1">
-              <div className="w-9 h-9 md:w-[47px] md:h-[47px] flex items-center justify-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt={label} className="w-full h-full object-contain" />
-              </div>
-              <span className="font-poppins text-[10px] font-medium text-muted">{label}</span>
-            </div>
-          ))}
-        </div>
       </section>
 
       {/* ── 3. VIDEOS ── */}
