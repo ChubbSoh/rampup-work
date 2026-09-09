@@ -20,19 +20,19 @@ import type { FunnelPageConfig } from '@/lib/funnel-pages'
 
 const inclusions = [
   '7 Reels / 11 Photos',
-  '4â5 posts per week',
+  '4–5 posts per week',
   '2 Dine-in Ad Campaigns',
   'Content Management for Instagram, Facebook, TikTok',
   'Ad Management',
   'Google Map Ads',
-  '10â15 Menu photos',
+  '10–15 Menu photos',
 ]
 
 const resultCards = [
-  { before: 'à¸¿665K', after: 'à¸¿1.25M', timeframe: '2 months', growth: '1.9x growth', monthly: '+à¸¿295K / month', beforeImg: '/results/proof-1-after.jpg',  afterImg: '/results/proof-1-before.jpg' },
-  { before: 'à¸¿300K', after: 'à¸¿628K',  timeframe: '2 months', growth: '2.1x growth', monthly: '+à¸¿328K / month', beforeImg: '/results/proof-2-before.jpg', afterImg: '/results/proof-2-after.jpg' },
-  { before: 'à¸¿127K', after: 'à¸¿249K',  timeframe: '4 months', growth: '2x growth',   monthly: '+à¸¿122K / month', beforeImg: '/results/proof-3-before.jpg', afterImg: '/results/proof-3-after.jpg' },
-  { before: 'à¸¿431K', after: 'à¸¿814K',  timeframe: '5 months', growth: '1.9x growth', monthly: '+à¸¿383K / month', beforeImg: '/results/proof-4-before.jpg', afterImg: '/results/proof-4-after.jpg' },
+  { before: '฿665K', after: '฿1.25M', timeframe: '2 months', growth: '1.9x growth', monthly: '+฿295K / month', beforeImg: '/results/proof-1-after.jpg',  afterImg: '/results/proof-1-before.jpg' },
+  { before: '฿300K', after: '฿628K',  timeframe: '2 months', growth: '2.1x growth', monthly: '+฿328K / month', beforeImg: '/results/proof-2-before.jpg', afterImg: '/results/proof-2-after.jpg' },
+  { before: '฿127K', after: '฿249K',  timeframe: '4 months', growth: '2x growth',   monthly: '+฿122K / month', beforeImg: '/results/proof-3-before.jpg', afterImg: '/results/proof-3-after.jpg' },
+  { before: '฿431K', after: '฿814K',  timeframe: '5 months', growth: '1.9x growth', monthly: '+฿383K / month', beforeImg: '/results/proof-4-before.jpg', afterImg: '/results/proof-4-after.jpg' },
 ]
 
 export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
@@ -54,8 +54,10 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
   const normalPhotos = (client.photos ?? []).filter(p => !specialUrls.has(p))
   const hasPhotos = normalPhotos.length > 0
 
-  // Black for the high-end concepts, where the green reads too loud.
-  const accentBg = config.accent === 'black' ? 'bg-[#1A1A1A]' : 'bg-green'
+  // Every CTA is black. The exception is the one sitting inside the black
+  // Grab-sales section, which inverts to white so it stays visible.
+  const ctaOnLight = 'bg-[#1A1A1A] text-white'
+  const ctaOnDark  = 'bg-white text-[#1A1A1A]'
 
   const leadForm = lpLeadForm(config.clientSlug, config.restaurantPlaceholder)
   // Shorter than a full enquiry form on purpose: this sits above the fold on
@@ -65,7 +67,8 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
     ...leadForm,
     fields: ['name', 'email', 'phone', 'restaurant', 'timeline'] as typeof leadForm.fields,
     required: ['name', 'email', 'phone', 'restaurant'] as typeof leadForm.required,
-    variant: (config.accent === 'black' ? 'dark' : 'stacked') as typeof leadForm.variant,
+    // 'dark' renders a black submit button, matching the CTAs.
+    variant: 'dark' as typeof leadForm.variant,
     copy: { ...leadForm.copy, submit: 'Apply Now' },
   }
 
@@ -204,7 +207,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
         <div className="text-center mt-9">
           <a
             href="#apply"
-            className={`inline-block ${accentBg} text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide`}
+            className={`inline-block ${ctaOnLight} font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide`}
           >
             Apply Now
           </a>
@@ -333,7 +336,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
           <div className="text-center mt-8">
             <a
               href="#apply"
-              className={`inline-block ${accentBg} text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide`}
+              className={`inline-block ${ctaOnLight} font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide`}
             >
               Apply Now
             </a>
@@ -390,11 +393,11 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
             ))}
           </div>
 
-          {/* On black, so the button carries the section rather than the page. */}
+          {/* Inverted: a black button on a black section would disappear. */}
           <div className="text-center mt-9">
             <a
               href="#apply"
-              className={`inline-block ${accentBg} text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide`}
+              className={`inline-block ${ctaOnDark} font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-95 transition-all active:scale-[0.98] uppercase tracking-wide`}
             >
               Apply Now
             </a>

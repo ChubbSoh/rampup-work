@@ -15,8 +15,6 @@
  * photos yet fall back to placeholders rather than breaking the layout.
  */
 
-export type FunnelAccent = 'green' | 'black'
-
 export type FunnelImage = { src: string; caption: string }
 
 export type FunnelPageConfig = {
@@ -38,9 +36,6 @@ export type FunnelPageConfig = {
 
   /** Form placeholder for the restaurant name field. */
   restaurantPlaceholder: string
-
-  /** 'black' for the high-end concepts, where green reads too loud. */
-  accent?: FunnelAccent
 
   /** Headline figures. The section is hidden when this is absent. */
   numbers?: { value: string; label: string }[]
@@ -87,13 +82,11 @@ export const funnelPages = {
     restaurantPlaceholder: 'e.g. Brewave Ari',
   },
 
-  // High end. Black rather than green: the accent is the whole point here.
   aela: {
     clientSlug: 'aela',
     concept: 'High-End Restaurant',
     conceptPlural: 'high-end restaurants',
     restaurantPlaceholder: 'e.g. Aela',
-    accent: 'black',
   },
 
   'mans-table': {
@@ -101,7 +94,6 @@ export const funnelPages = {
     concept: 'High-End Chinese Restaurant',
     conceptPlural: 'high-end Chinese restaurants',
     restaurantPlaceholder: "e.g. Man's Table",
-    accent: 'black',
   },
 
   napha: {
