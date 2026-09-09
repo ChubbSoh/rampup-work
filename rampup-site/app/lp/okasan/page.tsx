@@ -138,15 +138,18 @@ export default function OkasanFunnelPage() {
           Inside our work with {client.name}
         </p>
 
+        {/* One reel per row. These are 9:16, so the column is capped narrower
+            than the square post screenshots below - at full width a portrait
+            reel would run past 900px tall on desktop. */}
         {hasVideos && (
-          <div className="grid grid-cols-2 gap-4 md:gap-5 max-w-2xl mx-auto mb-5">
+          <div className="flex flex-col gap-6 max-w-sm mx-auto mb-6">
             {client.videos!.slice(0, 2).map((id, i) => (
               <LazyVideoCard
                 key={id}
                 videoId={id}
                 customerCode={customerCode}
                 label={`Reel ${i + 1}`}
-                sizes="(max-width: 768px) 50vw, 320px"
+                sizes="(max-width: 768px) 100vw, 384px"
               />
             ))}
           </div>
