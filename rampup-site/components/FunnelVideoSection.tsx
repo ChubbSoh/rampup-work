@@ -10,14 +10,9 @@ const INITIAL_DESKTOP = 3
 interface Props {
   videoIds: string[]
   customerCode: string
-  /**
-   * Defaults to true so the existing bacio and lamaya-bkk funnels keep the
-   * control they shipped with. The okasan funnel opts out.
-   */
-  showViewMore?: boolean
 }
 
-export default function FunnelVideoSection({ videoIds, customerCode, showViewMore = true }: Props) {
+export default function FunnelVideoSection({ videoIds, customerCode }: Props) {
   const [showAll, setShowAll] = useState(false)
 
   const total            = videoIds.length
@@ -26,7 +21,7 @@ export default function FunnelVideoSection({ videoIds, customerCode, showViewMor
   const remainingDesktop = total - INITIAL_DESKTOP
 
   // Show button when remaining videos exist on either breakpoint
-  const showButton = showViewMore && !showAll && total > INITIAL_DESKTOP
+  const showButton = !showAll && total > INITIAL_DESKTOP
 
   return (
     <>

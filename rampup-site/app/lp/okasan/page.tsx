@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import LeadForm from '@/components/LeadForm'
 import { lpLeadForm, cuisinePhrase, cuisinePluralPhrase } from '@/lib/lead-forms'
 import MonthlyPlanCarousel from '@/components/MonthlyPlanCarousel'
-import FunnelVideoSection from '@/components/FunnelVideoSection'
+import LazyVideoCard from '@/components/LazyVideoCard'
 import { restaurantRampUp, formatTHB } from '@/lib/pricing'
 
 const inclusions = [
@@ -119,10 +119,10 @@ export default function OkasanFunnelPage() {
                 src={photo}
                 alt={`${client.name} ${i + 1}`}
                 loading="lazy"
-                className="aspect-[4/3] w-full rounded-img object-cover"
+                className="aspect-square w-full rounded-img object-cover"
               />
             ) : (
-              <div key={`ph-${i}`} className="aspect-[4/3] w-full rounded-img bg-black/[0.08]" />
+              <div key={`ph-${i}`} className="aspect-square w-full rounded-img bg-black/[0.08]" />
             )
           })}
         </div>
@@ -131,38 +131,31 @@ export default function OkasanFunnelPage() {
         </p>
       </section>
 
-      {/* ── 2. CASE STUDY ── intro to the client's own work */}
-      <section className="max-w-site mx-auto px-5 md:px-12 pt-2 pb-8 text-center">
-        <h2 className="font-sora font-extrabold text-[clamp(1.5rem,6vw,2.6rem)] leading-[1.15] tracking-tight text-dark">
+      {/* ── 2. HOW WE MARKET ── heading, two reels and the social posts, one section */}
+      <section className="max-w-site mx-auto px-5 md:px-12 pt-2 pb-10">
+        <h2 className="font-sora font-extrabold text-[clamp(1.5rem,6vw,2.6rem)] leading-[1.15] tracking-tight text-dark text-center">
           {/* Title case here, unlike the sentence-case plural used in body copy. */}
           See How We Market {cuisinePhrase(client.cuisine)}s
         </h2>
-        <p className="font-poppins text-base md:text-lg text-muted mt-3">
+        <p className="font-poppins text-base md:text-lg text-muted mt-3 mb-8 text-center">
           Inside our work with {client.name}
         </p>
-      </section>
 
-      {/* ── 3. VIDEOS ── */}
-      {hasVideos && (
-        <section className="bg-black py-10">
-          <div className="max-w-site mx-auto px-5 md:px-12">
-            <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight mb-2 text-center">
-              We Film Videos That Elevate Your Brand
-            </h2>
-            <p className="font-poppins text-lg text-white/50 text-center mb-8">
-              And Run Effective Ads To Increase Dine-In Sales
-            </p>
-            <FunnelVideoSection
-              showViewMore={false}
-              videoIds={client.videos!}
-              customerCode={customerCode}
-            />
+        {hasVideos && (
+          <div className="grid grid-cols-2 gap-4 md:gap-5 max-w-2xl mx-auto mb-5">
+            {client.videos!.slice(0, 2).map((id, i) => (
+              <LazyVideoCard
+                key={id}
+                videoId={id}
+                customerCode={customerCode}
+                label={`Reel ${i + 1}`}
+                sizes="(max-width: 768px) 50vw, 320px"
+              />
+            ))}
           </div>
-        </section>
-      )}
+        )}
 
-      {/* ── 3b. SOCIAL POSTS ── awaiting the real FB and IG screenshots */}
-      <section className="max-w-site mx-auto px-5 md:px-12 py-10">
+        {/* Awaiting the real Facebook and Instagram screenshots. */}
         <div className="grid grid-cols-2 gap-4 md:gap-5 max-w-2xl mx-auto">
           {['Facebook post', 'Instagram post'].map(label => (
             <div key={label} className="flex flex-col gap-2">
