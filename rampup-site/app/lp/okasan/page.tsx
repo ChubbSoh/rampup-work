@@ -172,11 +172,26 @@ export default function OkasanFunnelPage() {
                 loading="lazy"
                 className="aspect-square w-full rounded-[8px] object-cover"
               />
-              <p className="font-poppins text-xs text-faint text-center leading-snug">
+              <p className="font-poppins text-[0.9rem] text-faint text-center leading-snug">
                 {caption}
               </p>
             </div>
           ))}
+        </div>
+
+        {/* Portrait screenshot at its natural 1080x1942, so no object-cover
+            crop. Capped like the reels rather than the square posts. */}
+        <div className="flex flex-col gap-2 max-w-sm mx-auto mt-6">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/funnel/okasan-googlemaps.webp"
+            alt="Get customers through Google Maps"
+            loading="lazy"
+            className="w-full h-auto rounded-[8px]"
+          />
+          <p className="font-poppins text-[0.9rem] text-faint text-center leading-snug">
+            Get customers through Google Maps
+          </p>
         </div>
 
         {/* Anchors to the footer form rather than repeating a third form. */}
