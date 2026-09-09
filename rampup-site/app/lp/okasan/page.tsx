@@ -119,10 +119,10 @@ export default function OkasanFunnelPage() {
                 src={photo}
                 alt={`${client.name} ${i + 1}`}
                 loading="lazy"
-                className="aspect-square w-full rounded-img object-cover"
+                className="aspect-square w-full rounded-[8px] object-cover"
               />
             ) : (
-              <div key={`ph-${i}`} className="aspect-square w-full rounded-img bg-black/[0.08]" />
+              <div key={`ph-${i}`} className="aspect-square w-full rounded-[8px] bg-black/[0.08]" />
             )
           })}
         </div>
@@ -155,13 +155,14 @@ export default function OkasanFunnelPage() {
           </div>
         )}
 
-        {/* Square screenshots, matching the proof tiles above. Served from
-            /public rather than Cloudflare Images because they are page
-            furniture, not client gallery assets. */}
-        <div className="grid grid-cols-2 gap-4 md:gap-5 max-w-2xl mx-auto">
+        {/* One per row and full width: at half-width the post chrome and food
+            were too small to read, which defeated the point of showing them.
+            Served from /public rather than Cloudflare Images because they are
+            page furniture, not client gallery assets. */}
+        <div className="flex flex-col gap-6 max-w-lg mx-auto">
           {[
-            { src: '/funnel/okasan-fb-vibe.png', caption: 'Carousel post to showcase vibe' },
-            { src: '/funnel/okasan-fb-food.png', caption: 'Carousel post to showcase food' },
+            { src: '/funnel/okasan-fb-vibe.webp', caption: 'Carousel post to showcase vibe' },
+            { src: '/funnel/okasan-fb-food.webp', caption: 'Carousel post to showcase food' },
           ].map(({ src, caption }) => (
             <div key={src} className="flex flex-col gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -169,7 +170,7 @@ export default function OkasanFunnelPage() {
                 src={src}
                 alt={caption}
                 loading="lazy"
-                className="aspect-square w-full rounded-img object-cover"
+                className="aspect-square w-full rounded-[8px] object-cover"
               />
               <p className="font-poppins text-xs text-faint text-center leading-snug">
                 {caption}
