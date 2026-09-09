@@ -178,6 +178,16 @@ export default function OkasanFunnelPage() {
             </div>
           ))}
         </div>
+
+        {/* Anchors to the footer form rather than repeating a third form. */}
+        <div className="text-center mt-9">
+          <a
+            href="#apply"
+            className="inline-block bg-green text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide"
+          >
+            Apply Now
+          </a>
+        </div>
       </section>
 
       {/* ── 3c. THE NUMBERS ── */}
