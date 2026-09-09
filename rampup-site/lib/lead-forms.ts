@@ -313,3 +313,38 @@ export const restaurantMarketingLpForm: LeadFormConfig = {
     footer: 'price-sentence',
   },
 }
+
+/**
+ * Display label for a client's `cuisine` value, for use in a sentence like
+ * "Get More Customers for Your ___".
+ *
+ * Two of the nine values in clients.json are not cuisines: `nightlife` and
+ * `cafe`. "Your Nightlife Restaurant" reads wrong, so those two carry the noun
+ * themselves and the caller omits the trailing word.
+ */
+export const CUISINE_LABELS: Record<string, { label: string; noun: string }> = {
+  japanese: { label: 'Japanese', noun: 'Restaurant' },
+  thai:     { label: 'Thai',     noun: 'Restaurant' },
+  western:  { label: 'Western',  noun: 'Restaurant' },
+  italian:  { label: 'Italian',  noun: 'Restaurant' },
+  chinese:  { label: 'Chinese',  noun: 'Restaurant' },
+  korean:   { label: 'Korean',   noun: 'Restaurant' },
+  mexican:  { label: 'Mexican',  noun: 'Restaurant' },
+  cafe:     { label: 'Café',     noun: '' },
+  nightlife:{ label: 'Bar & Nightlife', noun: 'Venue' },
+}
+
+/** "Japanese Restaurant", "Café", "Bar & Nightlife Venue". */
+export function cuisinePhrase(cuisine: string | undefined): string {
+  const entry = CUISINE_LABELS[(cuisine ?? '').toLowerCase()]
+  if (!entry) return 'Restaurant'
+  return [entry.label, entry.noun].filter(Boolean).join(' ')
+}
+
+/** Plural form for the subheading: "Japanese restaurants", "cafés". */
+export function cuisinePluralPhrase(cuisine: string | undefined): string {
+  const entry = CUISINE_LABELS[(cuisine ?? '').toLowerCase()]
+  if (!entry) return 'restaurants'
+  const noun = entry.noun ? entry.noun.toLowerCase() + 's' : entry.label.toLowerCase() + 's'
+  return entry.noun ? `${entry.label} ${noun}` : noun
+}

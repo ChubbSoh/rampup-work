@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import Script from 'next/script'
 import { th, type Lang } from '@/lib/translations'
 import { postLead } from '@/lib/lead-relay-client'
@@ -113,6 +113,10 @@ export default function LeadForm({
   const [error, setError] = useState<string | null>(null)
   const sent = useRef(false)
   const started = useRef(false)
+  // A page can render this form twice — hero and footer — with the same config.
+  // Field ids must still be unique or the second form's labels point at the
+  // first form's inputs, which breaks both a11y and click-to-focus.
+  const uid = useId()
 
   // Captures fbclid / gclid / UTMs on mount so they survive navigation between
   // funnel pages before submit. Read back synchronously at submit time.
@@ -333,7 +337,7 @@ export default function LeadForm({
 
   function renderField(f: LeadFormField) {
     const required = isRequired(f)
-    const id = `lf-${config.formName}-${f}`
+    const id = `lf${uid}-${f}`
     const mark =
       config.showRequiredMarks && required ? <span className="text-green"> *</span> : null
     const label = (

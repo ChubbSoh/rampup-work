@@ -1,7 +1,7 @@
 import { getClientBySlug } from '@/lib/clients'
 import { notFound } from 'next/navigation'
 import LeadForm from '@/components/LeadForm'
-import { lpLeadForm } from '@/lib/lead-forms'
+import { lpLeadForm, cuisinePhrase, cuisinePluralPhrase } from '@/lib/lead-forms'
 import MonthlyPlanCarousel from '@/components/MonthlyPlanCarousel'
 import FunnelVideoSection from '@/components/FunnelVideoSection'
 import { restaurantRampUp, formatTHB } from '@/lib/pricing'
@@ -38,6 +38,13 @@ export default function OkasanFunnelPage() {
     ...(client.monthly_plan ?? []),
   ])
   const normalPhotos = (client.photos ?? []).filter(p => !specialUrls.has(p))
+
+  // The funnel speaks to owners of restaurants LIKE this client's, so the
+  // headline is driven by cuisine rather than by the client's own name.
+  const leadForm = lpLeadForm('okasan', 'e.g. Okasan Izakaya')
+  // The hero CTA used to be an "Apply Now" button linking to #apply. It is now
+  // the hero form's own submit button, so the click submits instead of scrolling.
+  const heroForm = { ...leadForm, copy: { ...leadForm.copy, submit: 'Apply Now' } }
   const hasPhotos = normalPhotos.length > 0
 
   return (
@@ -50,20 +57,29 @@ export default function OkasanFunnelPage() {
       </div>
 
       {/* ── 1. HERO ── */}
-      <section className="max-w-site mx-auto px-5 md:px-12 pt-10 pb-6 md:pt-16 md:pb-8 text-center">
-        <h1 className="font-sora font-extrabold text-[clamp(2rem,5vw,3.4rem)] leading-[1.08] tracking-tight text-dark mb-5">
-          Increase Your<br />Dine-In and<br />Grab Sales
+      <section className="max-w-site mx-auto px-5 md:px-12 pt-10 pb-6 md:pt-16 md:pb-8">
+        <h1 className="font-sora font-extrabold text-[clamp(2rem,5vw,3.4rem)] leading-[1.08] tracking-tight text-dark mb-5 text-center">
+          Get More Customers for Your {cuisinePhrase(client.cuisine)}
         </h1>
-        <p className="font-poppins text-lg md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-8">
-          We create content inside your restaurant and use it to increase Grab orders and walk-ins.
+        <p className="font-poppins text-lg md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-8 text-center">
+          We create content, run ads, and manage social media for{' '}
+          {cuisinePluralPhrase(client.cuisine)} in Thailand.
         </p>
-        <a
-          href="#apply"
-          className="inline-block bg-[#3DBE5A] text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide"
-        >
-          Apply Now
-        </a>
-        <p className="font-poppins text-sm text-muted italic mt-3">฿{formatTHB(restaurantRampUp.price)} / month</p>
+        <div className="max-w-md mx-auto">
+          <LeadForm config={heroForm} />
+        </div>
+      </section>
+
+      {/* ── 1b. PROOF ── placeholder art until the real screenshots land */}
+      <section className="max-w-site mx-auto px-5 md:px-12 pb-10 pt-2">
+        <div className="grid grid-cols-2 gap-4 md:gap-5 max-w-2xl mx-auto">
+          {[0, 1, 2, 3].map(i => (
+            <div key={i} className="aspect-[4/3] w-full rounded-img bg-black/[0.08]" />
+          ))}
+        </div>
+        <p className="font-poppins text-sm text-muted text-center mt-4 max-w-xl mx-auto">
+          Real results from {cuisinePluralPhrase(client.cuisine)} we work with.
+        </p>
       </section>
 
       {/* ── 2. PLATFORMS ── */}
@@ -299,7 +315,7 @@ export default function OkasanFunnelPage() {
           Enter Your Info Below To Apply
         </h2>
         <div className="max-w-lg mx-auto bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-7 md:p-10">
-          <LeadForm config={lpLeadForm('okasan', 'e.g. Okasan Izakaya')} />
+          <LeadForm config={leadForm} />
         </div>
       </section>
 
