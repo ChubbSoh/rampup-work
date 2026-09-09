@@ -56,6 +56,11 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
 
   // Every CTA is black. The exception is the one sitting inside the black
   // Grab-sales section, which inverts to white so it stays visible.
+  // Grab is delivery. The dine-in-only concepts - high end, chef driven - do
+  // not sell on it, so the logo, the revenue-proof section and the heading
+  // that names it all come out rather than sitting there contradicting the page.
+  const showGrab = config.showGrab !== false
+
   const ctaOnLight = 'bg-[#1A1A1A] text-white'
   const ctaOnDark  = 'bg-white text-[#1A1A1A]'
 
@@ -96,7 +101,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
               { label: 'Instagram', src: '/logo-ig.svg' },
               { label: 'Facebook',  src: '/logo-fb.svg' },
               { label: 'TikTok',    src: '/logo-tiktok.svg' },
-              { label: 'Grab',      src: '/logo-grab.svg' },
+              ...(showGrab ? [{ label: 'Grab', src: '/logo-grab.svg' }] : []),
               { label: 'Google',    src: '/logo-google.svg' },
             ].map(({ label, src }) => (
               // alt carries the platform name now that the visible caption is
@@ -345,7 +350,8 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
         </section>
       )}
 
-      {/* ── 7. RESULTS ── */}
+      {/* ── 7. RESULTS ── Grab revenue proof, irrelevant to dine-in-only concepts */}
+      {showGrab && (
       <section className="bg-black py-10">
         <div className="max-w-site mx-auto px-5 md:px-12">
           <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight mb-2 text-center">
@@ -404,11 +410,12 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* ── 8. INCLUSIONS ── */}
       <section className="max-w-site mx-auto px-5 md:px-12 py-10">
         <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-dark tracking-tight mb-2 text-center">
-          Grab and Dine-in
+          {showGrab ? 'Grab and Dine-in' : 'Fill Your Dining Room'}
         </h2>
         <p className="font-poppins text-lg text-muted text-center mb-8">
           Get more dine-in customers from Facebook, Instagram, and TikTok

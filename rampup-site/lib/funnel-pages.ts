@@ -37,6 +37,13 @@ export type FunnelPageConfig = {
   /** Form placeholder for the restaurant name field. */
   restaurantPlaceholder: string
 
+  /**
+   * Set false for concepts that do not sell on delivery. Removes the Grab
+   * logo, the "Grow Your Grab Sales" revenue section and the Grab mention in
+   * the inclusions heading.
+   */
+  showGrab?: boolean
+
   /** Headline figures. The section is hidden when this is absent. */
   numbers?: { value: string; label: string }[]
 
@@ -83,6 +90,7 @@ export const funnelPages = {
   },
 
   aela: {
+    showGrab: false,
     clientSlug: 'aela',
     concept: 'High-End Restaurant',
     conceptPlural: 'high-end restaurants',
@@ -90,6 +98,7 @@ export const funnelPages = {
   },
 
   'mans-table': {
+    showGrab: false,
     clientSlug: 'mans-table',
     concept: 'High-End Chinese Restaurant',
     conceptPlural: 'high-end Chinese restaurants',
@@ -97,6 +106,7 @@ export const funnelPages = {
   },
 
   napha: {
+    showGrab: false,
     clientSlug: 'napha',
     concept: 'Chef-Driven Restaurant',
     conceptPlural: 'chef-driven restaurants',
