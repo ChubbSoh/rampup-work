@@ -1,9 +1,9 @@
 import { getClientBySlug } from '@/lib/clients'
 import { notFound } from 'next/navigation'
 import LeadForm from '@/components/LeadForm'
-import { lpLeadForm } from '@/lib/lead-forms'
+import { lpLeadForm, cuisinePhrase, cuisinePluralPhrase } from '@/lib/lead-forms'
 import MonthlyPlanCarousel from '@/components/MonthlyPlanCarousel'
-import FunnelVideoSection from '@/components/FunnelVideoSection'
+import LazyVideoCard from '@/components/LazyVideoCard'
 import { restaurantRampUp, formatTHB } from '@/lib/pricing'
 
 const inclusions = [
@@ -14,6 +14,12 @@ const inclusions = [
   'Ad Management',
   'Google Map Ads',
   '10–15 Menu photos',
+]
+
+const caseStudyNumbers = [
+  { value: '1.2M+', label: 'Views' },
+  { value: '40%',   label: 'Increase in Grab sales' },
+  { value: '30',    label: 'Private room bookings per month' },
 ]
 
 const resultCards = [
@@ -38,76 +44,190 @@ export default function OkasanFunnelPage() {
     ...(client.monthly_plan ?? []),
   ])
   const normalPhotos = (client.photos ?? []).filter(p => !specialUrls.has(p))
+
+  // The funnel speaks to owners of restaurants LIKE this client's, so the
+  // headline is driven by cuisine rather than by the client's own name.
+  const leadForm = lpLeadForm('okasan', 'e.g. Okasan Izakaya')
+  // The hero CTA used to be an "Apply Now" button linking to #apply. It is now
+  // the hero form's own submit button, so the click submits instead of scrolling.
+  // Deliberately shorter than the footer form. This one sits above the fold on
+  // paid traffic, where each extra field costs completions; Grab revenue, Grab
+  // ads and service selection are qualification questions that can wait for the
+  // call. The footer form keeps the full set for anyone who scrolls.
+  const heroForm = {
+    ...leadForm,
+    fields: ['name', 'email', 'phone', 'restaurant', 'timeline'] as typeof leadForm.fields,
+    required: ['name', 'email', 'phone', 'restaurant'] as typeof leadForm.required,
+    copy: { ...leadForm.copy, submit: 'Apply Now' },
+  }
   const hasPhotos = normalPhotos.length > 0
 
   return (
     <main className="min-h-[100dvh] bg-[#EDEDED]">
 
       {/* ── NAV ── */}
-      <div className="max-w-site mx-auto px-5 md:px-12 pt-4">
+      <div className="hidden md:block max-w-site mx-auto px-5 md:px-12 pt-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/logo-rampup-accent.svg" alt="RampUp" className="h-6 md:h-[31px] w-auto" />
       </div>
 
       {/* ── 1. HERO ── */}
-      <section className="max-w-site mx-auto px-5 md:px-12 pt-10 pb-6 md:pt-16 md:pb-8 text-center">
-        <h1 className="font-sora font-extrabold text-[clamp(2rem,5vw,3.4rem)] leading-[1.08] tracking-tight text-dark mb-5">
-          Increase Your<br />Dine-In and<br />Grab Sales
+      <section className="max-w-site mx-auto px-5 md:px-12 pt-7 pb-6 md:pt-16 md:pb-8">
+        <h1 className="font-sora font-extrabold text-[clamp(1.3rem,7.28vw,3.4rem)] leading-[1.15] tracking-[-0.02em] text-dark mb-4 text-center">
+          Get More Customers<br />For Your {cuisinePhrase(client.cuisine)}
         </h1>
-        <p className="font-poppins text-lg md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-8">
-          We create content inside your restaurant and use it to increase Grab orders and walk-ins.
+        <p className="font-poppins text-base md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-7 text-center [text-wrap:balance]">
+          We create content, run ads, and manage social media for{' '}
+          {cuisinePluralPhrase(client.cuisine)} in Thailand.
         </p>
-        <a
-          href="#apply"
-          className="inline-block bg-[#3DBE5A] text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide"
-        >
-          Apply Now
-        </a>
-        <p className="font-poppins text-sm text-muted italic mt-3">฿{formatTHB(restaurantRampUp.price)} / month</p>
-      </section>
+        <div className="mb-8">
+          <div className="flex items-center justify-center gap-5 sm:gap-7">
+            {[
+              { label: 'Instagram', src: '/logo-ig.svg' },
+              { label: 'Facebook',  src: '/logo-fb.svg' },
+              { label: 'TikTok',    src: '/logo-tiktok.svg' },
+              { label: 'Grab',      src: '/logo-grab.svg' },
+              { label: 'Google',    src: '/logo-google.svg' },
+            ].map(({ label, src }) => (
+              // alt carries the platform name now that the visible caption is
+              // gone, so the row still reads to a screen reader.
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                key={label}
+                src={src}
+                alt={label}
+                className="w-9 h-9 md:w-[47px] md:h-[47px] object-contain"
+              />
+            ))}
+          </div>
+        </div>
 
-      {/* ── 2. PLATFORMS ── */}
-      <section className="max-w-site mx-auto px-5 md:px-12 pt-4 pb-8">
-        <p className="font-poppins text-sm italic text-muted text-center mb-4">
-          We manage these platforms
-        </p>
-        <div className="grid grid-cols-3 gap-x-8 gap-y-5 justify-items-center max-w-xs mx-auto">
-          {[
-            { label: 'Instagram', src: '/logo-ig.svg' },
-            { label: 'Facebook',  src: '/logo-fb.svg' },
-            { label: 'TikTok',    src: '/logo-tiktok.svg' },
-            { label: 'Grab',      src: '/logo-grab.svg' },
-            { label: 'Lineman',   src: '/logo-lineman.svg' },
-            { label: 'Google',    src: '/logo-google.svg' },
-          ].map(({ label, src }) => (
-            <div key={label} className="flex flex-col items-center gap-1">
-              <div className="w-9 h-9 md:w-[47px] md:h-[47px] flex items-center justify-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt={label} className="w-full h-full object-contain" />
-              </div>
-              <span className="font-poppins text-[10px] font-medium text-muted">{label}</span>
-            </div>
-          ))}
+        <div className="max-w-md mx-auto">
+          <LeadForm config={heroForm} />
         </div>
       </section>
 
-      {/* ── 3. VIDEOS ── */}
-      {hasVideos && (
-        <section className="bg-black py-10">
-          <div className="max-w-site mx-auto px-5 md:px-12">
-            <h2 className="font-sora font-extrabold text-2xl md:text-3xl text-white tracking-tight mb-2 text-center">
-              We Film Videos That Elevate Your Brand
-            </h2>
-            <p className="font-poppins text-lg text-white/50 text-center mb-8">
-              And Run Effective Ads To Increase Dine-In Sales
-            </p>
-            <FunnelVideoSection
-              videoIds={client.videos!}
-              customerCode={customerCode}
-            />
+      {/* ── 1b. PROOF ── the client's own photos, padded if they have under four */}
+      <section className="max-w-site mx-auto px-5 md:px-12 pb-10 pt-2">
+        <div className="grid grid-cols-2 gap-4 md:gap-5 max-w-2xl mx-auto">
+          {Array.from({ length: 4 }).map((_, i) => {
+            const photo = normalPhotos[i]
+            return photo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={photo}
+                src={photo}
+                alt={`${client.name} ${i + 1}`}
+                loading="lazy"
+                className="aspect-square w-full rounded-[8px] object-cover"
+              />
+            ) : (
+              <div key={`ph-${i}`} className="aspect-square w-full rounded-[8px] bg-black/[0.08]" />
+            )
+          })}
+        </div>
+      </section>
+
+      {/* ── 2. HOW WE MARKET ── heading, two reels and the social posts, one section */}
+      <section className="max-w-site mx-auto px-5 md:px-12 pt-2 pb-10">
+        <h2 className="font-sora font-extrabold text-[clamp(1.5rem,6vw,2.6rem)] leading-[1.15] tracking-tight text-dark text-center">
+          {/* Title case here, unlike the sentence-case plural used in body copy. */}
+          See How We Market {cuisinePhrase(client.cuisine)}s
+        </h2>
+        <p className="font-poppins text-base md:text-lg text-muted mt-3 mb-8 text-center">
+          Inside our work with {client.name}
+        </p>
+
+        {/* One reel per row. These are 9:16, so the column is capped narrower
+            than the square post screenshots below - at full width a portrait
+            reel would run past 900px tall on desktop. */}
+        {hasVideos && (
+          <div className="flex flex-col gap-6 max-w-sm mx-auto mb-6">
+            {client.videos!.slice(0, 2).map((id, i) => (
+              <LazyVideoCard
+                key={id}
+                videoId={id}
+                customerCode={customerCode}
+                label={`Reel ${i + 1}`}
+                sizes="(max-width: 768px) 100vw, 384px"
+              />
+            ))}
           </div>
-        </section>
-      )}
+        )}
+
+        {/* One per row and full width: at half-width the post chrome and food
+            were too small to read, which defeated the point of showing them.
+            Served from /public rather than Cloudflare Images because they are
+            page furniture, not client gallery assets. */}
+        <div className="flex flex-col gap-6 max-w-lg mx-auto">
+          {[
+            { src: '/funnel/okasan-fb-vibe.webp', caption: 'Carousel post to showcase vibe' },
+            { src: '/funnel/okasan-fb-food.webp', caption: 'Carousel post to showcase food' },
+          ].map(({ src, caption }) => (
+            <div key={src} className="flex flex-col gap-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={src}
+                alt={caption}
+                loading="lazy"
+                className="aspect-square w-full rounded-[8px] object-cover"
+              />
+              <p className="font-poppins text-[0.9rem] text-faint text-center leading-snug">
+                {caption}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Portrait screenshot at its natural 1080x1942, so no object-cover
+            crop. Capped like the reels rather than the square posts. */}
+        <div className="flex flex-col gap-2 max-w-sm mx-auto mt-6">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/funnel/okasan-googlemaps.webp"
+            alt="Get customers through Google Maps"
+            loading="lazy"
+            className="w-full h-auto rounded-[8px]"
+          />
+          <p className="font-poppins text-[0.9rem] text-faint text-center leading-snug">
+            Get customers through Google Maps
+          </p>
+        </div>
+
+        {/* Anchors to the footer form rather than repeating a third form. */}
+        <div className="text-center mt-9">
+          <a
+            href="#apply"
+            className="inline-block bg-green text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide"
+          >
+            Apply Now
+          </a>
+        </div>
+      </section>
+
+      {/* ── 3c. THE NUMBERS ── */}
+      <section className="bg-black py-12">
+        <div className="max-w-site mx-auto px-5 md:px-12 text-center">
+          <p className="font-poppins text-xs font-semibold tracking-[0.2em] text-white/40 uppercase mb-2">
+            Results
+          </p>
+          <h2 className="font-sora font-extrabold text-2xl md:text-4xl text-white tracking-tight mb-8">
+            The Numbers
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 max-w-3xl mx-auto">
+            {caseStudyNumbers.map(({ value, label }) => (
+              <div key={label}>
+                <p className="font-sora font-extrabold text-[clamp(2.2rem,9vw,3.2rem)] leading-none text-white">
+                  {value}
+                </p>
+                <p className="font-poppins text-sm text-white/60 mt-2 leading-snug">
+                  {label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ── 4. FEED DESIGN ── mobile only */}
       {hasFeedDesign && (
@@ -261,6 +381,16 @@ export default function OkasanFunnelPage() {
               </div>
             ))}
           </div>
+
+          {/* On black, so the button carries the section rather than the page. */}
+          <div className="text-center mt-9">
+            <a
+              href="#apply"
+              className="inline-block bg-green text-white font-poppins font-bold text-base px-10 py-4 rounded-pill hover:brightness-105 transition-all active:scale-[0.98] uppercase tracking-wide"
+            >
+              Apply Now
+            </a>
+          </div>
         </div>
       </section>
 
@@ -299,7 +429,7 @@ export default function OkasanFunnelPage() {
           Enter Your Info Below To Apply
         </h2>
         <div className="max-w-lg mx-auto bg-white rounded-[24px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-7 md:p-10">
-          <LeadForm config={lpLeadForm('okasan', 'e.g. Okasan Izakaya')} />
+          <LeadForm config={heroForm} />
         </div>
       </section>
 
