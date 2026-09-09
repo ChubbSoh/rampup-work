@@ -44,24 +44,33 @@ export default function OkasanFunnelPage() {
   const leadForm = lpLeadForm('okasan', 'e.g. Okasan Izakaya')
   // The hero CTA used to be an "Apply Now" button linking to #apply. It is now
   // the hero form's own submit button, so the click submits instead of scrolling.
-  const heroForm = { ...leadForm, copy: { ...leadForm.copy, submit: 'Apply Now' } }
+  // Deliberately shorter than the footer form. This one sits above the fold on
+  // paid traffic, where each extra field costs completions; Grab revenue, Grab
+  // ads and service selection are qualification questions that can wait for the
+  // call. The footer form keeps the full set for anyone who scrolls.
+  const heroForm = {
+    ...leadForm,
+    fields: ['name', 'email', 'phone', 'restaurant', 'timeline'] as typeof leadForm.fields,
+    required: ['name', 'email', 'phone', 'restaurant'] as typeof leadForm.required,
+    copy: { ...leadForm.copy, submit: 'Apply Now' },
+  }
   const hasPhotos = normalPhotos.length > 0
 
   return (
     <main className="min-h-[100dvh] bg-[#EDEDED]">
 
       {/* ── NAV ── */}
-      <div className="max-w-site mx-auto px-5 md:px-12 pt-4">
+      <div className="hidden md:block max-w-site mx-auto px-5 md:px-12 pt-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/logo-rampup-accent.svg" alt="RampUp" className="h-6 md:h-[31px] w-auto" />
       </div>
 
       {/* ── 1. HERO ── */}
-      <section className="max-w-site mx-auto px-5 md:px-12 pt-10 pb-6 md:pt-16 md:pb-8">
-        <h1 className="font-sora font-extrabold text-[clamp(2rem,5vw,3.4rem)] leading-[1.08] tracking-tight text-dark mb-5 text-center">
+      <section className="max-w-site mx-auto px-5 md:px-12 pt-7 pb-6 md:pt-16 md:pb-8">
+        <h1 className="font-sora font-extrabold text-[clamp(1.55rem,5.4vw,3.4rem)] leading-[1.12] tracking-tight text-dark mb-4 text-center [text-wrap:balance]">
           Get More Customers for Your {cuisinePhrase(client.cuisine)}
         </h1>
-        <p className="font-poppins text-lg md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-8 text-center">
+        <p className="font-poppins text-base md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-7 text-center [text-wrap:balance]">
           We create content, run ads, and manage social media for{' '}
           {cuisinePluralPhrase(client.cuisine)} in Thailand.
         </p>
