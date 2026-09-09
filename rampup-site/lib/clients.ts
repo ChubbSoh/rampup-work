@@ -59,6 +59,23 @@ export function getClientBySlug(slug: string): Client | undefined {
   return getAllClients().find((c) => c.slug === slug)
 }
 
+/**
+ * Lookup that ignores the media filter.
+ *
+ * getClientBySlug hides clients with no photos or videos, which is right for
+ * the public portfolio: a client onboarded but not yet shot should not appear
+ * there. The /lp funnel pages are the exception — they are built ahead of the
+ * shoot and fall back to placeholders, so they must still resolve the client.
+ *
+ * Still goes through sanitize(), so internal Drive fields never reach the
+ * browser bundle.
+ */
+export function getClientBySlugUnfiltered(slug: string): Client | undefined {
+  const record = (clientsData.clients as Record<string, unknown>[])
+    .find((c) => c.slug === slug)
+  return record ? sanitize(record) : undefined
+}
+
 export function getAllSlugs(): string[] {
   return getAllClients().map((c) => c.slug)
 }
