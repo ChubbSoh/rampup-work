@@ -39,9 +39,12 @@ export type FunnelPageConfig = {
   concept: string
 
   /**
-   * Plural, sentence case, for mid-sentence use: "rooftop bars",
-   * "Thai restaurants". Kept separate because "See How We Market Rooftop Bars"
-   * needs title case while "…for rooftop bars in Thailand" does not.
+   * Plural, sentence case: "rooftop bars", "Thai restaurants".
+   *
+   * Currently unrendered. The hero sub-header used to read "…for rooftop bars
+   * in Thailand"; it now names the platforms instead and is the same on every
+   * page. Kept because it is the only plural form on record, and any copy that
+   * puts the concept back mid-sentence will want it.
    */
   conceptPlural: string
 
