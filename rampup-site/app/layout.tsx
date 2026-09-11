@@ -57,7 +57,14 @@ export default function RootLayout({
         <Script id="gtm-init" strategy="afterInteractive">{`
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NPZTB44L');
         `}</Script>
-        <Script id="clarity" strategy="afterInteractive">{`
+        {/*
+          The id must NOT be "clarity". An element's id is exposed as a global,
+          so <script id="clarity"> makes window.clarity the script tag itself.
+          The loader below guards with `c[a] = c[a] || ...`, sees that truthy
+          element and never creates the queueing stub, so clarity.ms/tag throws
+          "a[c] is not a function" and the recorder never loads.
+        */}
+        <Script id="ms-clarity" strategy="afterInteractive">{`
           (function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
             t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
