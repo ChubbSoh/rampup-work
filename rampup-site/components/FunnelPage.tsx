@@ -92,8 +92,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
           Get More Customers<br />For Your {config.concept}
         </h1>
         <p className="font-poppins text-base md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-7 text-center [text-wrap:balance]">
-          We create content, run ads, and manage social media for{' '}
-          {config.conceptPlural} in Thailand.
+          Get more dine-in customers from Facebook, Instagram, Google and TikTok
         </p>
         <div className="mb-8">
           <div className="flex items-center justify-center gap-5 sm:gap-7">
@@ -116,6 +115,12 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
             ))}
           </div>
         </div>
+
+        {/* Names the action before the fields, so the form does not read as a
+            newsletter signup. Mirrors the footer form's heading. */}
+        <p className="font-sora font-bold text-sm md:text-base text-dark text-center mb-3">
+          Enter your details to apply
+        </p>
 
         <div className="max-w-md mx-auto">
           <LeadForm config={heroForm} />
