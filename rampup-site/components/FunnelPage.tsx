@@ -83,7 +83,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
       {/* ── NAV ── */}
       <div className="hidden md:block max-w-site mx-auto px-5 md:px-12 pt-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo-rampup-accent.svg" alt="RampUp" className="h-6 md:h-[31px] w-auto" />
+        <img src="/logo-rampup-accent.svg" alt="RampUp" width={73} height={60} className="h-6 md:h-[31px] w-auto" />
       </div>
 
       {/* ── 1. HERO ── */}
@@ -199,6 +199,8 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
           <img
             src={config.mapsImage.src}
             alt={config.mapsImage.caption}
+            width={config.mapsImage.width}
+            height={config.mapsImage.height}
             loading="lazy"
             className="w-full h-auto rounded-[8px]"
           />
@@ -256,7 +258,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
           </p>
           <div className="rounded-2xl overflow-hidden bg-[#E0E0E0]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={client.feed_design} alt="Feed Design" className="w-full h-auto" loading="lazy" />
+            <img src={client.feed_design} alt="Feed Design" width={432} height={768} className="w-full h-auto" loading="lazy" />
           </div>
         </section>
       )}
@@ -305,7 +307,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
             <div className="flex justify-center mb-8">
               <div className="rounded-2xl overflow-hidden bg-[#E0E0E0] w-72">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={client.feed_design} alt="Feed Design" className="w-full h-auto" loading="lazy" />
+                <img src={client.feed_design} alt="Feed Design" width={432} height={768} className="w-full h-auto" loading="lazy" />
               </div>
             </div>
           )}

@@ -15,7 +15,18 @@
  * photos yet fall back to placeholders rather than breaking the layout.
  */
 
-export type FunnelImage = { src: string; caption: string }
+/**
+ * `width`/`height` are the file's real pixel dimensions. They are only needed
+ * for images rendered at `h-auto`, where the browser cannot otherwise know how
+ * tall the box will be and the page jumps when the image lands. Images inside
+ * a fixed-ratio container do not need them.
+ */
+export type FunnelImage = {
+  src: string
+  caption: string
+  width?: number
+  height?: number
+}
 
 export type FunnelPageConfig = {
   /** Client whose photos, reels, feed design and monthly plan fill the page. */
@@ -72,6 +83,8 @@ export const funnelPages = {
     mapsImage: {
       src: '/funnel/okasan-googlemaps.webp',
       caption: 'Get customers through Google Maps',
+      width: 1080,
+      height: 1942,
     },
   },
 
