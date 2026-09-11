@@ -118,7 +118,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
 
         {/* Names the action before the fields, so the form does not read as a
             newsletter signup. Mirrors the footer form's heading. */}
-        <p className="font-sora font-bold text-lg md:text-xl text-dark text-center mb-3">
+        <p className="font-sora font-bold text-sm md:text-base text-dark text-center mb-3">
           Enter your details to apply
         </p>
 
