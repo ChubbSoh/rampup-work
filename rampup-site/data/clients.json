@@ -808,14 +808,34 @@
       "description": "",
       "months": 0,
       "active": false,
-      "last_updated": "2026-07-23",
-      "cover": "",
+      "last_updated": "2026-09-11",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/1273d037-9aab-4165-48a3-fab20786a400/public",
       "page": "misono.html",
-      "photos": [],
-      "videos": [],
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/1273d037-9aab-4165-48a3-fab20786a400/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/f3a22230-4f0b-48c1-16a9-5c7c69ad9000/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/cf47ae20-faf5-4180-7a22-d6ea4cc66100/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/6977df21-5994-474d-5841-9379da825300/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/88ec917a-5940-4ba1-a3a2-0206e932ba00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/3418d5fb-f7cb-4d48-33b8-55f5885ecf00/public"
+      ],
+      "videos": [
+        "8d341a79b6567bdfac09eaf613a3a46d",
+        "7f809b589d5da9d4a133ad1b95ecc4c8",
+        "6cd56f8d5054817f72ebc5930d139fa2"
+      ],
       "drive_folder_id": "0AOC2HWf6ybYOUk9PVA",
       "website_folder_id": "1yac1ksJx7VPwVmUSVIoMi79Hv16ndeXX",
-      "brand_assets_folder_id": "15A9cc856u5PalW2DhlT_PYsDfgQsJRNV"
+      "brand_assets_folder_id": "15A9cc856u5PalW2DhlT_PYsDfgQsJRNV",
+      "feed_design": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d34c524b-2d2c-4001-f240-45725d462300/public",
+      "monthly_plan": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/2a776f74-3231-41f3-32f4-16594dbeba00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ca78b3f0-e0ad-44aa-3c66-755e3ac41700/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/69037edf-6eeb-4afb-802b-d9b1c39f2c00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/f1b63905-adbc-4152-4051-900d6a6d9d00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/4cc9f004-5426-492e-2e1c-09b10c2db100/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/fe8f84df-a609-47c3-7acf-99a9dc147500/public"
+      ]
     },
     {
       "name": "Beef Yum",
