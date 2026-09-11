@@ -118,6 +118,17 @@ export const funnelPages = {
     restaurantPlaceholder: "e.g. Man's Table",
   },
 
+  // Omakase, the tightest concept of the set: one chef, one counter, one
+  // sitting. Misono's media is still to come, so this renders on placeholders
+  // until it lands.
+  misono: {
+    showGrab: false,
+    clientSlug: 'misono',
+    concept: 'Omakase Restaurant',
+    conceptPlural: 'omakase restaurants',
+    restaurantPlaceholder: 'e.g. Misono',
+  },
+
   napha: {
     showGrab: false,
     clientSlug: 'napha',
