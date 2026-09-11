@@ -92,7 +92,8 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
           Get More Customers<br />For Your {config.concept}
         </h1>
         <p className="font-poppins text-base md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-7 text-center [text-wrap:balance]">
-          Get more dine-in customers from Facebook, Instagram, Google and TikTok
+          We create content, run ads, and manage social media for{' '}
+          {config.conceptPlural} in Thailand.
         </p>
         <div className="mb-8">
           <div className="flex items-center justify-center gap-5 sm:gap-7">
@@ -425,7 +426,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
           {showGrab ? 'Grab and Dine-in' : 'Fill Your Dining Room'}
         </h2>
         <p className="font-poppins text-lg text-muted text-center mb-8">
-          Get more dine-in customers from Facebook, Instagram, and TikTok
+          Get more dine-in customers from Facebook, Instagram, Google and TikTok
         </p>
         <div className="max-w-lg mx-auto bg-white rounded-[24px] shadow-[0_2px_16px_rgba(0,0,0,0.06)] p-8">
           <ul className="flex flex-col gap-4 mb-8">
