@@ -43,6 +43,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
 
   const customerCode = process.env.CLOUDFLARE_STREAM_CUSTOMER_CODE ?? ''
 
+  const heroPhotoRow   = config.heroPhotoRow === true
   const hasVideos      = client.videos      && client.videos.length > 0
   const hasFeedDesign  = !!client.feed_design
   const hasMonthlyPlan = client.monthly_plan && client.monthly_plan.length > 0
@@ -91,10 +92,31 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
         <h1 className="font-sora font-extrabold text-[clamp(1.3rem,7.28vw,3.4rem)] leading-[1.15] tracking-[-0.02em] text-dark mb-4 text-center">
           Get More Customers<br />For Your {config.concept}
         </h1>
-        <p className="font-poppins text-base md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-7 text-center [text-wrap:balance]">
-          We create content, run ads, and manage social media for{' '}
-          {config.conceptPlural} in Thailand.
-        </p>
+        {heroPhotoRow ? (
+          /* Proof straight under the headline, before anything is asked for.
+             Same four photos as the block below, moved rather than copied. */
+          <div className="grid grid-cols-4 gap-2 md:gap-3 max-w-2xl mx-auto mb-7">
+            {Array.from({ length: 4 }).map((_, i) => {
+              const photo = normalPhotos[i]
+              return photo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={photo}
+                  src={photo}
+                  alt={`${client.name} ${i + 1}`}
+                  className="aspect-square w-full rounded-[8px] object-cover"
+                />
+              ) : (
+                <div key={`hph-${i}`} className="aspect-square w-full rounded-[8px] bg-black/[0.08]" />
+              )
+            })}
+          </div>
+        ) : (
+          <p className="font-poppins text-base md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-7 text-center [text-wrap:balance]">
+            We create content, run ads, and manage social media for{' '}
+            {config.conceptPlural} in Thailand.
+          </p>
+        )}
         <div className="mb-8">
           <div className="flex items-center justify-center gap-5 sm:gap-7">
             {[
@@ -128,7 +150,9 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
         </div>
       </section>
 
-      {/* ── 1b. PROOF ── the client's own photos, padded if they have under four */}
+      {/* ── 1b. PROOF ── the client's own photos, padded if they have under four.
+          Skipped when heroPhotoRow has already lifted them into the hero. */}
+      {!heroPhotoRow && (
       <section className="max-w-site mx-auto px-5 md:px-12 pb-10 pt-2">
         <div className="grid grid-cols-2 gap-4 md:gap-5 max-w-2xl mx-auto">
           {Array.from({ length: 4 }).map((_, i) => {
@@ -148,6 +172,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
           })}
         </div>
       </section>
+      )}
 
       {/* ── 2. HOW WE MARKET ── heading, two reels and the social posts, one section */}
       <section className="max-w-site mx-auto px-5 md:px-12 pt-2 pb-10">
