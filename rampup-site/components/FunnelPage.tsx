@@ -43,7 +43,6 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
 
   const customerCode = process.env.CLOUDFLARE_STREAM_CUSTOMER_CODE ?? ''
 
-  const heroPhotoRow   = config.heroPhotoRow === true
   const hasVideos      = client.videos      && client.videos.length > 0
   const hasFeedDesign  = !!client.feed_design
   const hasMonthlyPlan = client.monthly_plan && client.monthly_plan.length > 0
@@ -53,6 +52,13 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
     ...(client.monthly_plan ?? []),
   ])
   const normalPhotos = (client.photos ?? []).filter(p => !specialUrls.has(p))
+
+  // Photos in the hero are the default: a Thai audience reads a picture of the
+  // room faster than a sentence about it. Four is the floor because the desktop
+  // hero is a four-up row, and padding it with grey boxes under the headline
+  // would look worse than the sentence it replaced. A client below that keeps
+  // the written sub-header until their shoot lands, then flips automatically.
+  const heroPhotoRow   = normalPhotos.length >= 4
 
   // The hero slider scrolls, so it is not limited to the four the desktop row
   // fits. Capped so a client with dozens does not make one lap take a minute.
