@@ -101,7 +101,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
              Same photos as the block below, moved rather than copied. */
           <>
             {/* Mobile: a slider. Four across left each photo about 78px, too
-                small to read. At 117px they no longer fit a static row, so the
+                small to read. At 176px barely two fit on screen at once, so the
                 row scrolls instead - the same treatment as the desktop gallery
                 further down the page. */}
             <div className="md:hidden relative overflow-hidden -mx-5 mb-7">
@@ -110,7 +110,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
                   0%   { transform: translateX(0); }
                   100% { transform: translateX(-50%); }
                 }
-                .rampup-hero-marquee { animation: rampup-hero-marquee 22s linear infinite; }
+                .rampup-hero-marquee { animation: rampup-hero-marquee 33s linear infinite; }
                 .rampup-hero-marquee:hover { animation-play-state: paused; }
                 @media (prefers-reduced-motion: reduce) {
                   .rampup-hero-marquee { animation: none; }
@@ -123,7 +123,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
                   ? [...heroMarqueePhotos, ...heroMarqueePhotos]
                   : Array.from({ length: 8 }).map(() => null)
                 ).map((photo, i) => (
-                  <div key={`hm-${i}`} className="shrink-0 w-[117px] h-[117px] rounded-[8px] overflow-hidden bg-black/[0.08]">
+                  <div key={`hm-${i}`} className="shrink-0 w-[176px] h-[176px] rounded-[10px] overflow-hidden bg-black/[0.08]">
                     {photo && (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
