@@ -55,13 +55,6 @@ export type FunnelPageConfig = {
    */
   showGrab?: boolean
 
-  /**
-   * Tightens the hero: drops the sub-header and lifts the client's photos up
-   * into its place as a single row, instead of the 2x2 block that otherwise
-   * sits below the form. The photos move rather than duplicate.
-   */
-  heroPhotoRow?: boolean
-
   /** Headline figures. The section is hidden when this is absent. */
   numbers?: { value: string; label: string }[]
 
@@ -147,7 +140,6 @@ export const funnelPages = {
   // until it lands.
   misono: {
     showGrab: false,
-    heroPhotoRow: true,
     clientSlug: 'misono',
     concept: 'Omakase Restaurant',
     conceptPlural: 'omakase restaurants',
