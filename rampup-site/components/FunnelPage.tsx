@@ -43,6 +43,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
 
   const customerCode = process.env.CLOUDFLARE_STREAM_CUSTOMER_CODE ?? ''
 
+  const heroPhotoRow   = config.heroPhotoRow === true
   const hasVideos      = client.videos      && client.videos.length > 0
   const hasFeedDesign  = !!client.feed_design
   const hasMonthlyPlan = client.monthly_plan && client.monthly_plan.length > 0
@@ -52,6 +53,10 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
     ...(client.monthly_plan ?? []),
   ])
   const normalPhotos = (client.photos ?? []).filter(p => !specialUrls.has(p))
+
+  // The hero slider scrolls, so it is not limited to the four the desktop row
+  // fits. Capped so a client with dozens does not make one lap take a minute.
+  const heroMarqueePhotos = normalPhotos.slice(0, 8)
   const hasPhotos = normalPhotos.length > 0
 
   // Every CTA is black. The exception is the one sitting inside the black
@@ -91,10 +96,71 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
         <h1 className="font-sora font-extrabold text-[clamp(1.3rem,7.28vw,3.4rem)] leading-[1.15] tracking-[-0.02em] text-dark mb-4 text-center">
           Get More Customers<br />For Your {config.concept}
         </h1>
-        <p className="font-poppins text-base md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-7 text-center [text-wrap:balance]">
-          We create content, run ads, and manage social media for{' '}
-          {config.conceptPlural} in Thailand.
-        </p>
+        {heroPhotoRow ? (
+          /* Proof straight under the headline, before anything is asked for.
+             Same photos as the block below, moved rather than copied. */
+          <>
+            {/* Mobile: a slider. Four across left each photo about 78px, too
+                small to read. At 176px barely two fit on screen at once, so the
+                row scrolls instead - the same treatment as the desktop gallery
+                further down the page. */}
+            <div className="md:hidden relative overflow-hidden -mx-5 mb-7">
+              <style>{`
+                @keyframes rampup-hero-marquee {
+                  0%   { transform: translateX(0); }
+                  100% { transform: translateX(-50%); }
+                }
+                .rampup-hero-marquee { animation: rampup-hero-marquee 33s linear infinite; }
+                .rampup-hero-marquee:hover { animation-play-state: paused; }
+                @media (prefers-reduced-motion: reduce) {
+                  .rampup-hero-marquee { animation: none; }
+                }
+              `}</style>
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-8 z-10" style={{ background: 'linear-gradient(to right, #EDEDED 0%, transparent 100%)' }} />
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-8 z-10" style={{ background: 'linear-gradient(to left, #EDEDED 0%, transparent 100%)' }} />
+              <div className="rampup-hero-marquee flex gap-2 px-5" style={{ width: 'max-content' }}>
+                {(heroMarqueePhotos.length
+                  ? [...heroMarqueePhotos, ...heroMarqueePhotos]
+                  : Array.from({ length: 8 }).map(() => null)
+                ).map((photo, i) => (
+                  <div key={`hm-${i}`} className="shrink-0 w-[176px] h-[176px] rounded-[10px] overflow-hidden bg-black/[0.08]">
+                    {photo && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={photo}
+                        alt={`${client.name} ${(i % heroMarqueePhotos.length) + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop: the static four-up row, which has the width for it. */}
+            <div className="hidden md:grid grid-cols-4 gap-3 max-w-2xl mx-auto mb-7">
+              {Array.from({ length: 4 }).map((_, i) => {
+                const photo = normalPhotos[i]
+                return photo ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={photo}
+                    src={photo}
+                    alt={`${client.name} ${i + 1}`}
+                    className="aspect-square w-full rounded-[8px] object-cover"
+                  />
+                ) : (
+                  <div key={`hph-${i}`} className="aspect-square w-full rounded-[8px] bg-black/[0.08]" />
+                )
+              })}
+            </div>
+          </>
+        ) : (
+          <p className="font-poppins text-base md:text-xl text-muted leading-relaxed max-w-xl mx-auto mb-7 text-center [text-wrap:balance]">
+            We create content, run ads, and manage social media for{' '}
+            {config.conceptPlural} in Thailand.
+          </p>
+        )}
         <div className="mb-8">
           <div className="flex items-center justify-center gap-5 sm:gap-7">
             {[
@@ -128,7 +194,9 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
         </div>
       </section>
 
-      {/* ── 1b. PROOF ── the client's own photos, padded if they have under four */}
+      {/* ── 1b. PROOF ── the client's own photos, padded if they have under four.
+          Skipped when heroPhotoRow has already lifted them into the hero. */}
+      {!heroPhotoRow && (
       <section className="max-w-site mx-auto px-5 md:px-12 pb-10 pt-2">
         <div className="grid grid-cols-2 gap-4 md:gap-5 max-w-2xl mx-auto">
           {Array.from({ length: 4 }).map((_, i) => {
@@ -148,6 +216,7 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
           })}
         </div>
       </section>
+      )}
 
       {/* ── 2. HOW WE MARKET ── heading, two reels and the social posts, one section */}
       <section className="max-w-site mx-auto px-5 md:px-12 pt-2 pb-10">
