@@ -245,6 +245,31 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
           </div>
         )}
 
+        {/* Campaign screenshots, in the order the config lists them. Rendered
+            at their own ratio rather than a shared square: this set runs from
+            a 1079x2098 Maps grab to a 1080x1080 promo tile, and forcing one
+            frame on both would crop the tall ones to nothing. */}
+        {(config.gallery ?? []).length > 0 && (
+          <div className="flex flex-col gap-6 max-w-sm mx-auto mb-6">
+            {config.gallery!.map(({ src, caption, width, height }) => (
+              <div key={src} className="flex flex-col gap-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={src}
+                  alt={caption}
+                  width={width}
+                  height={height}
+                  loading="lazy"
+                  className="w-full h-auto rounded-[8px]"
+                />
+                <p className="font-poppins text-[0.9rem] text-faint text-center leading-snug">
+                  {caption}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* One per row and full width: at half-width the post chrome and food
             were too small to read, which defeated the point of showing them.
             Served from /public rather than Cloudflare Images because they are

@@ -65,6 +65,15 @@ export type FunnelPageConfig = {
   /** Headline figures. The section is hidden when this is absent. */
   numbers?: { value: string; label: string }[]
 
+  /**
+   * Campaign screenshots shown straight after the reels, in exactly this
+   * order, each at its own aspect ratio. Use this rather than `socialPosts`
+   * when the set mixes shapes - a portrait Google Maps grab and a square
+   * promo tile cannot share one square frame without one of them being cropped
+   * to nonsense.
+   */
+  gallery?: FunnelImage[]
+
   /** Social post screenshots. Section hidden when empty. */
   socialPosts?: FunnelImage[]
 
@@ -107,6 +116,14 @@ export const funnelPages = {
     concept: 'Rooftop Bar',
     conceptPlural: 'rooftop bars',
     restaurantPlaceholder: 'e.g. Brewave Ari',
+    // Order asked for: maps first, then the Facebook promo, then the rest.
+    gallery: [
+      { src: '/funnel/brewave-googlemaps.webp',     caption: 'Get customers through Google Maps', width: 1079, height: 2098 },
+      { src: '/funnel/brewave-fb-promo.webp',       caption: 'Facebook promo ads',                width: 1080, height: 1887 },
+      { src: '/funnel/brewave-football-week4.webp', caption: 'Football night promo, week 4',      width: 1080, height: 1350 },
+      { src: '/funnel/brewave-football-week5.webp', caption: 'Football night promo, week 5',      width: 1080, height: 1350 },
+      { src: '/funnel/brewave-oktoberfest.webp',    caption: 'Oktoberfest promotion',             width: 1080, height: 1080 },
+    ],
   },
 
   aela: {
