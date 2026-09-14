@@ -757,14 +757,33 @@
       "description": "",
       "months": 0,
       "active": false,
-      "last_updated": "2026-07-17",
-      "cover": "",
+      "last_updated": "2026-09-14",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/614743f7-dddb-497e-935c-009667dac300/public",
       "page": "brewave-ari.html",
-      "photos": [],
-      "videos": [],
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/614743f7-dddb-497e-935c-009667dac300/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/449b30fd-ab62-4023-45d2-19bdf9591e00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/63b1c047-f88c-46b5-93e5-42bdc6643a00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/acb00431-8b89-43a1-2751-695cac23c200/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/2e2c1e94-76f5-4806-f5ab-acb95cf2d600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/44f10e9c-b44f-4d93-b891-f297247a3100/public"
+      ],
+      "videos": [
+        "2aaad02d6fda0760a7f7dce71a945c43",
+        "5a1687bd391d9d78e45b31a043b58c35",
+        "a31c2de535d78be43150e0aa5de8e00b"
+      ],
       "drive_folder_id": "0AKzEM19YIgqSUk9PVA",
       "website_folder_id": "1DLOqpcYmMrcuOU8yOg7Ni62WFepOVphg",
-      "brand_assets_folder_id": "1Iz0VKV-cztxI-9xRvAPHmqKlIj0_CbwU"
+      "brand_assets_folder_id": "1Iz0VKV-cztxI-9xRvAPHmqKlIj0_CbwU",
+      "feed_design": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/d18bf430-f317-4001-3889-3a7b89a58800/public",
+      "monthly_plan": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/08e49dea-75f4-49f5-b536-e7eb1f952100/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/6c323252-d3c5-44bf-5a2e-f4720fc75000/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a2069bb6-b2fa-44d6-2937-3a40e9bc9c00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/564e8353-00c5-43ed-fd0c-dd26ba5a1f00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/1829c260-8abb-46f5-44da-dc59a579f400/public"
+      ]
     },
     {
       "name": "Aela",
