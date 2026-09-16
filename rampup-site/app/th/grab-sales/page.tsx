@@ -9,8 +9,8 @@ export const metadata = {
   title: 'เพิ่มยอดขาย Grab — Restaurant RampUp',
   description: 'เราเพิ่มรายได้ Grab ผ่านการปรับปรุงร้าน โฆษณาตรงกลุ่ม และโปรโมชั่นที่ชาญฉลาด',
   alternates: {
-    canonical: 'https://rampupth.com/th/grab-sales',
-    languages: { 'en': 'https://rampupth.com/grab-sales', 'th': 'https://rampupth.com/th/grab-sales' },
+    canonical: '/th/grab-sales',
+    languages: { 'en': '/grab-sales', 'th': '/th/grab-sales' },
   },
 }
 

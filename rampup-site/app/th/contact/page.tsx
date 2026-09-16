@@ -7,8 +7,8 @@ export const metadata = {
   title: 'ติดต่อเรา — Restaurant RampUp',
   description: 'ติดต่อ Restaurant RampUp รับการตรวจสอบร้าน Grab และโซเชียลมีเดียฟรี',
   alternates: {
-    canonical: 'https://rampupth.com/th/contact',
-    languages: { 'en': 'https://rampupth.com/contact', 'th': 'https://rampupth.com/th/contact' },
+    canonical: '/th/contact',
+    languages: { 'en': '/contact', 'th': '/th/contact' },
   },
 }
 

@@ -9,8 +9,8 @@ export const metadata = {
   title: 'บริหารโซเชียลมีเดีย — Restaurant RampUp',
   description: 'ถ่ายรายเดือน สร้างคอนเทนต์คุณภาพสูง และบริหารครบบน Instagram, TikTok, Facebook และ LINE OA',
   alternates: {
-    canonical: 'https://rampupth.com/th/social-media',
-    languages: { 'en': 'https://rampupth.com/social-media', 'th': 'https://rampupth.com/th/social-media' },
+    canonical: '/th/social-media',
+    languages: { 'en': '/social-media', 'th': '/th/social-media' },
   },
 }
 

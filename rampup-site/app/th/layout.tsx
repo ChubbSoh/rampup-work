@@ -2,10 +2,12 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   alternates: {
-    canonical: 'https://rampupth.com/th',
+    // Fallback only; each Thai page sets its own. './' keeps a page that
+    // forgets from claiming to be a copy of /th.
+    canonical: './',
     languages: {
-      'en': 'https://rampupth.com',
-      'th': 'https://rampupth.com/th',
+      'en': '/',
+      'th': '/th',
     },
   },
 }

@@ -9,8 +9,8 @@ export const metadata = {
   title: 'ผลงานของเรา | คอนเทนต์ร้านอาหารกรุงเทพฯ | RampUp',
   description: 'ดูผลงานการถ่ายและสร้างคอนเทนต์ร้านอาหารในกรุงเทพฯ รูปภาพ วิดีโอ และโซเชียลมีเดีย',
   alternates: {
-    canonical: 'https://rampupth.com/th/work',
-    languages: { 'en': 'https://rampupth.com/work', 'th': 'https://rampupth.com/th/work' },
+    canonical: '/th/work',
+    languages: { 'en': '/work', 'th': '/th/work' },
   },
 }
 
