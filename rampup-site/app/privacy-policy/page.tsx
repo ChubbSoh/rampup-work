@@ -13,7 +13,7 @@ import Footer from '@/components/Footer'
  */
 
 // Where data-subject requests go. PDPA requires a working contact point.
-const CONTACT_EMAIL = '[contact email to be confirmed]'
+const CONTACT_EMAIL = 'hello@restaurantrampup.com'
 
 const UPDATED = '16 September 2026'
 
@@ -110,7 +110,9 @@ export default function PrivacyPolicyPage() {
                 Khwaeng Nawamin, Khet Bueng Kum, Krung Thep Maha Nakhon 10240, Thailand
               </p>
               <p><span className="text-muted">Tax ID:</span> 0105566134750</p>
-              <p><span className="text-muted">Email:</span> {CONTACT_EMAIL}</p>
+              <p><span className="text-muted">Email:</span>{' '}
+                <a href={`mailto:${CONTACT_EMAIL}`} className="underline underline-offset-2">{CONTACT_EMAIL}</a>
+              </p>
             </div>
           </Section>
 
