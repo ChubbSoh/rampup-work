@@ -28,6 +28,8 @@ export default function Footer({ lang = 'en' }: { lang?: Lang }) {
   const ctaHeading = isTh ? th.footer.ctaHeading : 'Ready to grow your\nrestaurant?'
   const ctaButton  = isTh ? th.footer.ctaButton  : 'Get Started Free'
   const location   = isTh ? th.footer.location   : 'Bangkok, Thailand'
+  // One English policy serves both languages for now.
+  const privacy    = isTh ? th.footer.privacy    : 'Privacy Policy'
 
   return (
     <footer className="bg-dark text-white mt-24">
@@ -77,9 +79,17 @@ export default function Footer({ lang = 'en' }: { lang?: Lang }) {
           <p className="font-poppins text-xs text-white/30">
             © {new Date().getFullYear()} Restaurant RampUp. All rights reserved.
           </p>
-          <p className="font-poppins text-xs text-white/30">
-            {location}
-          </p>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/privacy-policy"
+              className="font-poppins text-xs text-white/30 hover:text-white/60 transition-colors"
+            >
+              {privacy}
+            </Link>
+            <p className="font-poppins text-xs text-white/30">
+              {location}
+            </p>
+          </div>
         </div>
       </div>
     </footer>

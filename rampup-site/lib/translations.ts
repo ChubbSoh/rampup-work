@@ -23,6 +23,7 @@ export const th = {
     ctaHeading: 'พร้อมให้ร้านอาหารคุณโตแล้วหรือยัง?',
     ctaButton:  'เริ่มต้นฟรี',
     location:   'กรุงเทพฯ ประเทศไทย',
+    privacy:    'นโยบายความเป็นส่วนตัว',
   },
 
   leadForm: {

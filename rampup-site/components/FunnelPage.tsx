@@ -562,6 +562,9 @@ export default function FunnelPage({ config }: { config: FunnelPageConfig }) {
       {/* ── FOOTER ── */}
       <footer className="bg-white py-6 text-center border-t border-black/[0.06]">
         <p className="font-poppins text-sm text-muted">© 2025 Restaurant Ramp Up. All Rights Reserved.</p>
+        <a href="/privacy-policy/" className="font-poppins text-sm text-muted underline underline-offset-2 hover:text-dark mt-1 inline-block">
+          Privacy Policy
+        </a>
       </footer>
 
     </main>
