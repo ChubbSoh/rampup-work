@@ -18,6 +18,16 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
+  // The same site is served on rampupth.com and www.restaurantrampup.com.
+  // Without a canonical, Google treats them as duplicates and splits ranking
+  // between them. www.restaurantrampup.com is the primary: it carries most of
+  // the traffic and is where the Meta lead form and Analytics already point.
+  // (The bare restaurantrampup.com already 301s to www.)
+  metadataBase: new URL('https://www.restaurantrampup.com'),
+  // './' resolves against each page's own path, so every page names itself.
+  // A plain '/' here would name the homepage on every page, which tells
+  // Google to drop the rest of the site from its index.
+  alternates: { canonical: './' },
   title: 'Restaurant RampUp — Grow Your Restaurant Sales',
   description:
     'Thailand\'s leading restaurant social media & Grab marketing agency. We grow your Grab revenue and build your brand on Instagram, TikTok, and Facebook.',

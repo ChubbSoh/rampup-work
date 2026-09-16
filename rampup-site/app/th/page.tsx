@@ -9,8 +9,8 @@ export const metadata = {
   title: 'Restaurant RampUp — เอเจนซี่การตลาดร้านอาหารกรุงเทพฯ',
   description: 'เราช่วยร้านอาหารกรุงเทพฯ เติบโตบน Grab, Instagram, TikTok และ Facebook',
   alternates: {
-    canonical: 'https://rampupth.com/th',
-    languages: { 'en': 'https://rampupth.com', 'th': 'https://rampupth.com/th' },
+    canonical: '/th',
+    languages: { 'en': '/', 'th': '/th' },
   },
 }
 

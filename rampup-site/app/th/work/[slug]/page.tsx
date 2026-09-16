@@ -22,10 +22,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${client.name} — Restaurant RampUp`,
     description: `${client.description} | ${client.cuisine} restaurant in ${client.location}`,
     alternates: {
-      canonical: `https://rampupth.com/th/work/${params.slug}`,
+      canonical: `/th/work/${params.slug}`,
       languages: {
-        'en': `https://rampupth.com/work/${params.slug}`,
-        'th': `https://rampupth.com/th/work/${params.slug}`,
+        'en': `/work/${params.slug}`,
+        'th': `/th/work/${params.slug}`,
       },
     },
   }
