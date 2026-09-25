@@ -51,7 +51,7 @@ export interface ControlClient {
 
 const CUISINES = [
   'japanese', 'italian', 'korean', 'western',
-  'nightlife', 'cafe', 'thai', 'chinese',
+  'nightlife', 'cafe', 'thai', 'chinese', 'french',
 ]
 
 const CUISINE_COLORS: Record<string, string> = {
@@ -63,6 +63,7 @@ const CUISINE_COLORS: Record<string, string> = {
   cafe:      'bg-amber-50 text-amber-700',
   thai:      'bg-yellow-50 text-yellow-700',
   chinese:   'bg-rose-50 text-rose-600',
+  french:    'bg-teal-50 text-teal-600',
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
