@@ -889,6 +889,23 @@
       "drive_folder_id": "0AJuC3I0vC3L7Uk9PVA",
       "website_folder_id": "1gjykfMy7tqDQK_8FD-9KMD9WOMMjISwD",
       "brand_assets_folder_id": "1WvK-7wSvy08-bYup6k7ycXCCBz_p9e6_"
+    },
+    {
+      "name": "Man Hin",
+      "slug": "man-hin",
+      "cuisine": "chinese",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-09-25",
+      "cover": "",
+      "page": "man-hin.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0ADAWfCDQGE7WUk9PVA",
+      "website_folder_id": "1zVfua4XO4zdDRD-sW28H7XZ0W2CiBPX4",
+      "brand_assets_folder_id": "1PfvVvqYNzjMnhULxNh0i13ynSEITCLrH"
     }
   ]
 }
