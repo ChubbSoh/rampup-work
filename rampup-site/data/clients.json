@@ -906,6 +906,23 @@
       "drive_folder_id": "0ADAWfCDQGE7WUk9PVA",
       "website_folder_id": "1zVfua4XO4zdDRD-sW28H7XZ0W2CiBPX4",
       "brand_assets_folder_id": "1PfvVvqYNzjMnhULxNh0i13ynSEITCLrH"
+    },
+    {
+      "name": "Cici",
+      "slug": "cici",
+      "cuisine": "japanese",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-09-25",
+      "cover": "",
+      "page": "cici.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AFDAJ_TZwlf1Uk9PVA",
+      "website_folder_id": "1DeQTigKA1o-tpGR5BBo88sKXZhpnOyBy",
+      "brand_assets_folder_id": "13EAVzvYSLxUX7riT5trXLyXJS8ZWLlNO"
     }
   ]
 }
