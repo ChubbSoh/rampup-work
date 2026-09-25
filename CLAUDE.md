@@ -251,10 +251,21 @@ secrets and server-only imports. It owns:
   not compile.
 - `contractPlaceholders()` — maps the record onto the Google Docs `{{TOKENS}}`. **Simple values
   only.** Optional service sections are not placeholders; see the block markers below.
-- `monthlyPrice()` — derives the sheet's PRICE column from the service selection.
+- `parseMonthlyPrice()` — the monthly fee is **typed on the card, never derived**. Clients are
+  routinely signed at a negotiated rate, so nothing falls back to list price: a blank or
+  unparseable price fails the onboard rather than billing a number nobody agreed. One figure
+  serves both outputs — `{{MONTHLY_PRICE}}` in the contract and column L of the Clients tab.
+- `suggestedMonthlyPrice()` — list price for the ticked services. A **hint on the form only**;
+  it is never submitted and the server has no fallback to it.
   **Grab is deliberately excluded**: the contract states no Grab fee is charged until the client
   passes a performance threshold, so billing it from month one would contradict what they sign.
   Add `addOns.grab.price` by hand when a client crosses it.
+
+  > The Docs master must contain `{{MONTHLY_PRICE}}`. Nothing verifies that it does —
+  > `replaceAllText` reports zero matches as success, and `Contract Result` only inspects
+  > copy/batchUpdate errors. If the token is ever edited out of the template, every contract
+  > silently keeps whatever literal price is sitting in section 3. Check section 3 after any
+  > template edit.
 
 Tax ID and branch are **strings throughout**. Never `Number()` them — leading zeros are real.
 `accountant_email` is optional but validated when present — it becomes `contactEmail` on the

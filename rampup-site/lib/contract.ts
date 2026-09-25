@@ -9,7 +9,7 @@
 // n8n copies and fills.
 
 import { isValidEmail, normalizeEmail } from './emails'
-import { restaurantRampUp, addOns } from './pricing'
+import { restaurantRampUp, addOns, formatTHB } from './pricing'
 
 export const CONTRACT_DURATIONS = [3, 6, 12] as const
 export type ContractDuration = (typeof CONTRACT_DURATIONS)[number]
@@ -47,12 +47,24 @@ export interface ContractDetails {
   /** YYYY-MM-DD, always derived from start_date + duration_months. */
   end_date: string
   services: ContractServices
-  /** THB per month, derived from `services`. See monthlyPrice(). */
+  /**
+   * THB per month, whole baht, exactly as typed on the onboarding card.
+   *
+   * Deliberately NOT derived. Clients are routinely signed at a negotiated
+   * rate, so the billed figure is whatever staff entered.
+   * suggestedMonthlyPrice() offers a starting number in the UI, but nothing
+   * falls back to it: an onboard with no usable price is rejected rather than
+   * billed on a guess.
+   */
   monthly_price: number
 }
 
 /**
- * Monthly billing amount for the selected services, in THB.
+ * List price for the selected services, in THB — a SUGGESTION only.
+ *
+ * Offered as a starting figure on the onboarding card. It is never the billed
+ * amount and nothing in the pipeline falls back to it; see
+ * ContractDetails.monthly_price.
  *
  * Grab is deliberately EXCLUDED. The contract states that no Grab management
  * fee is charged until the client passes the agreed performance threshold, so
@@ -60,12 +72,36 @@ export interface ContractDetails {
  * When a client crosses that threshold, add ฿9,990 (`addOns.grab.price`) to
  * their sheet row by hand.
  */
-export function monthlyPrice(services: ContractServices): number {
+export function suggestedMonthlyPrice(services: ContractServices): number {
   return (
     restaurantRampUp.price +
     (services.line_oa ? addOns.lineOa.price : 0) +
     (services.lineman ? addOns.lineman.price : 0)
   )
+}
+
+/** Upper bound on a monthly fee. Exists only to catch a slipped extra digit. */
+const MAX_MONTHLY_PRICE = 10_000_000
+
+/**
+ * Coerces a typed monthly fee into whole baht, or returns null.
+ *
+ * Lenient about formatting, because the field is free text and staff type what
+ * they see — "63,980", " 63980 " and "฿63,980" all parse. Strict about the
+ * value: zero, negatives, satang and anything unparseable are rejected, so an
+ * unusable price stops the onboard instead of reaching a signed contract as
+ * "฿NaN".
+ */
+export function parseMonthlyPrice(input: unknown): number | null {
+  const value =
+    typeof input === 'number'
+      ? input
+      : typeof input === 'string'
+        ? Number(input.replace(/[,\s฿]/g, ''))
+        : NaN
+  if (!Number.isFinite(value) || !Number.isInteger(value)) return null
+  if (value < 1 || value > MAX_MONTHLY_PRICE) return null
+  return value
 }
 
 
@@ -224,6 +260,16 @@ export function parseContractDetails(
     lineman: rawServices.lineman === true,
   }
 
+  // Typed by staff, never derived — a blank or broken price must fail loudly
+  // rather than quietly bill list price.
+  const monthlyPrice = parseMonthlyPrice(raw.monthly_price)
+  if (monthlyPrice === null) {
+    return {
+      ok: false,
+      error: 'contract.monthly_price must be a whole number of baht above zero',
+    }
+  }
+
   const contract: ContractDetails = {
     client_name:      clientName,
     company_name:     companyName,
@@ -235,8 +281,7 @@ export function parseContractDetails(
     duration_months:  duration,
     end_date:         calculateContractEnd(startDate, duration),
     services,
-    // Derived server-side; a client-sent value is ignored.
-    monthly_price:    monthlyPrice(services),
+    monthly_price:    monthlyPrice,
   }
 
   return { ok: true, contract }
@@ -268,6 +313,8 @@ export function contractPlaceholders(
     '{{CONTRACT_START_DATE}}': formatContractDate(contract.start_date),
     '{{CONTRACT_END_DATE}}':   formatContractDate(contract.end_date),
     '{{CONTRACT_MONTHS}}':     String(contract.duration_months),
+    // The template supplies the ฿, so this is digits and separators only.
+    '{{MONTHLY_PRICE}}':       formatTHB(contract.monthly_price),
     '{{AGREEMENT_DATE}}':      formatContractDate(agreementDate),
     // Reserved for future optional-service payment wording. Mapped to '' so the
     // raw token can never survive into a generated contract.

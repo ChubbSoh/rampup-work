@@ -13,8 +13,11 @@ import {
   DEFAULT_DURATION_MONTHS,
   calculateContractEnd,
   formatContractDate,
+  parseMonthlyPrice,
+  suggestedMonthlyPrice,
   type ContractDuration,
 } from '@/lib/contract'
+import { formatTHB } from '@/lib/pricing'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -174,6 +177,13 @@ const inputCls =
 // focus ring, so it reads as displayed data rather than something to fill in.
 const readOnlyInputCls =
   'w-full font-poppins text-sm text-[#888888] bg-black/[0.03] border border-black/[0.06] rounded-xl px-4 py-3 outline-none cursor-default placeholder:text-[#CCCCCC]'
+
+// inputCls with room for the leading currency symbol. Spelled out in full,
+// like the two above it: Tailwind generates a class only when it finds the
+// literal token in the source, so building this by string surgery at runtime
+// would be one refactor away from silently losing its padding.
+const priceInputCls =
+  'w-full font-poppins text-sm text-[#2D2D2D] bg-[#F7F7F7] border border-black/[0.08] rounded-xl pl-9 pr-4 py-3 outline-none focus:border-[#3DBE5A] focus:ring-2 focus:ring-[#3DBE5A]/20 transition placeholder:text-[#AAAAAA]'
 
 /** Optional-field hint, matching the email-count captions in Drive Access. */
 function Hint({ children }: { children: React.ReactNode }) {
@@ -360,6 +370,9 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
   const [grab, setGrab]       = useState(false)
   const [lineOa, setLineOa]   = useState(false)
   const [lineman, setLineman] = useState(false)
+  // Free text, and blank until someone types: the billed figure is always a
+  // deliberate entry, never a default that nobody looked at.
+  const [price, setPrice] = useState('')
 
   // Derived, never stored: recalculated on every render from start + duration.
   // The server recalculates it too and ignores whatever the browser sends.
@@ -368,12 +381,26 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
   // Optional, but if filled it must be usable — the server rejects a bad one.
   const accountantEmailInvalid = accountantEmail.trim() !== '' && !isValidEmail(accountantEmail)
 
+  // List price for the ticked services. A hint on the form and nothing more —
+  // it is never submitted, and the server has no fallback to it either.
+  const suggestedPrice = suggestedMonthlyPrice({
+    social_media_marketing: true,
+    grab,
+    line_oa: lineOa,
+    lineman,
+  })
+  // null covers both empty and unparseable; the two are told apart only for
+  // the hint, since an empty required field already explains itself.
+  const priceValue = parseMonthlyPrice(price)
+  const priceInvalid = price.trim() !== '' && priceValue === null
+
   const contractIncomplete =
     !name.trim() ||
     !companyName.trim() ||
     !companyAddress.trim() ||
     !taxId.trim() ||
     !endDate ||
+    priceValue === null ||
     accountantEmailInvalid
 
   const invalidEmails = [...teamEmails, ...clientEmails].filter((e) => !isValidEmail(e))
@@ -414,6 +441,7 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
     setGrab(false)
     setLineOa(false)
     setLineman(false)
+    setPrice('')
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -456,6 +484,9 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
               line_oa: lineOa,
               lineman,
             },
+            // Already known good — contractIncomplete blocks submit otherwise.
+            // The server re-parses it and rejects anything unusable.
+            monthly_price:   priceValue,
           },
         }),
       })
@@ -734,6 +765,27 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
               <ServiceOption label="LINE MAN" checked={lineman} onChange={setLineman} />
             </div>
             <Hint>Social Media Marketing is included in every contract.</Hint>
+          </Field>
+
+          <Field label="Monthly Price">
+            <div className="relative">
+              <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center font-poppins text-sm text-[#AAAAAA]">
+                ฿
+              </span>
+              <input
+                className={`${priceInputCls} tabular-nums`}
+                placeholder={`e.g. ${formatTHB(suggestedPrice)}`}
+                value={price}
+                onChange={e => setPrice(e.target.value)}
+                inputMode="numeric"
+                required
+              />
+            </div>
+            <Hint>
+              {priceInvalid
+                ? 'Enter a whole number of baht — no satang'
+                : `Excluding VAT · goes on the contract and the sheet · list price for the ticked services is ฿${formatTHB(suggestedPrice)}`}
+            </Hint>
           </Field>
 
           {invalidEmails.length > 0 && (
