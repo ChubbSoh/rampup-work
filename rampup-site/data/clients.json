@@ -940,6 +940,23 @@
       "drive_folder_id": "0AALJvfxpPyRiUk9PVA",
       "website_folder_id": "1viJLC3deV8vHKxlCLN5YEPyZK743GhrE",
       "brand_assets_folder_id": "1QjPzfFFzDr_9AC4bnKwufy_rgUl7Dpms"
+    },
+    {
+      "name": "Fox",
+      "slug": "fox",
+      "cuisine": "nightlife",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-09-25",
+      "cover": "",
+      "page": "fox.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AO_XmM-_zWXeUk9PVA",
+      "website_folder_id": "1gZm7DYdM5jHfXKB7eN7A6otHiYUjWCrN",
+      "brand_assets_folder_id": "1znbN0lsDjcVedlCgRMZ-5hRsKaCKz7FF"
     }
   ]
 }
