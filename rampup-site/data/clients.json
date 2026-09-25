@@ -923,6 +923,23 @@
       "drive_folder_id": "0AFDAJ_TZwlf1Uk9PVA",
       "website_folder_id": "1DeQTigKA1o-tpGR5BBo88sKXZhpnOyBy",
       "brand_assets_folder_id": "13EAVzvYSLxUX7riT5trXLyXJS8ZWLlNO"
+    },
+    {
+      "name": "Ngua",
+      "slug": "ngua",
+      "cuisine": "thai",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-09-25",
+      "cover": "",
+      "page": "ngua.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AALJvfxpPyRiUk9PVA",
+      "website_folder_id": "1viJLC3deV8vHKxlCLN5YEPyZK743GhrE",
+      "brand_assets_folder_id": "1QjPzfFFzDr_9AC4bnKwufy_rgUl7Dpms"
     }
   ]
 }
