@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-// useState is used by OnboardSection, PublishSection; useEffect by OnboardSection
+import { useState } from 'react'
+// useState is used by OnboardSection, PublishSection
 import {
   dedupeKey,
   isValidEmail,
@@ -11,11 +11,14 @@ import {
 import {
   CONTRACT_DURATIONS,
   DEFAULT_DURATION_MONTHS,
+  DEFAULT_VIDEOS_PER_MONTH,
+  VIDEO_COUNTS,
   calculateContractEnd,
   formatContractDate,
   parseMonthlyPrice,
   suggestedMonthlyPrice,
   type ContractDuration,
+  type VideoCount,
 } from '@/lib/contract'
 import { formatTHB } from '@/lib/pricing'
 
@@ -348,11 +351,12 @@ function EmailChips({
 
 function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) {
   const [name, setName]           = useState('')
-  const [slug, setSlug]           = useState('')
-  const [slugEdited, setSlugEdited] = useState(false)
+  // Both derived from the client name, never typed. They were two more fields
+  // to fill with the same word, and a typo in either one quietly created a
+  // mismatched URL or Drive folder.
+  const slug = slugify(name)
   const [cuisine, setCuisine]     = useState(CUISINES[0])
   const [location, setLocation]   = useState('Bangkok')
-  const [driveFolder, setDriveFolder] = useState('')
   const [teamEmails, setTeamEmails]     = useState<string[]>(defaultTeamEmails)
   const [clientEmails, setClientEmails] = useState<string[]>([])
   const [status, setStatus]       = useState<Status>({ type: 'idle' })
@@ -368,6 +372,10 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
   const [startDate, setStartDate]           = useState('')
   const [durationMonths, setDurationMonths] =
     useState<ContractDuration>(DEFAULT_DURATION_MONTHS)
+  // How many videos a month this client buys. Goes to the sheet's "Videos"
+  // column, which is what the shoot plan doc's video table is built from.
+  const [videosPerMonth, setVideosPerMonth] =
+    useState<VideoCount>(DEFAULT_VIDEOS_PER_MONTH)
   const [grab, setGrab]       = useState(false)
   const [lineOa, setLineOa]   = useState(false)
   const [lineman, setLineman] = useState(false)
@@ -404,6 +412,10 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
     priceValue === null ||
     accountantEmailInvalid
 
+  // A name with no Latin letters or digits ("ร้านอาหาร") slugifies to "", which
+  // the API rejects. Say so here rather than failing after submit.
+  const slugUnusable = name.trim() !== '' && slug === ''
+
   const invalidEmails = [...teamEmails, ...clientEmails].filter((e) => !isValidEmail(e))
   const teamKeys   = teamEmails.map(dedupeKey)
   const clientKeys = clientEmails.map(dedupeKey)
@@ -413,23 +425,10 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
   const sortedKeys = (list: string[]) => list.map(dedupeKey).sort().join(',')
   const teamMatchesDefaults = sortedKeys(teamEmails) === sortedKeys(defaultTeamEmails)
 
-  // Auto-generate slug from name unless user has manually edited it
-  useEffect(() => {
-    if (!slugEdited) setSlug(slugify(name))
-  }, [name, slugEdited])
-
-  function handleSlugChange(v: string) {
-    setSlugEdited(true)
-    setSlug(v)
-  }
-
   function reset() {
     setName('')
-    setSlug('')
-    setSlugEdited(false)
     setCuisine(CUISINES[0])
     setLocation('Bangkok')
-    setDriveFolder('')
     setTeamEmails(defaultTeamEmails)
     setClientEmails([])
     setCompanyName('')
@@ -439,6 +438,7 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
     setBranch('')
     setStartDate('')
     setDurationMonths(DEFAULT_DURATION_MONTHS)
+    setVideosPerMonth(DEFAULT_VIDEOS_PER_MONTH)
     setGrab(false)
     setLineOa(false)
     setLineman(false)
@@ -455,6 +455,10 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
       setStatus({ type: 'error', msg: 'Complete the contract details before creating the client' })
       return
     }
+    if (slugUnusable) {
+      setStatus({ type: 'error', msg: 'Client name needs at least one letter or number that can be used in a web address' })
+      return
+    }
     setStatus({ type: 'loading' })
     try {
       const res = await fetch('/api/onboard', {
@@ -465,7 +469,9 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
           slug,
           cuisine,
           location,
-          drive_folder: driveFolder,
+          // The Drive folder is named after the client, so there is nothing
+          // to type and nothing that can disagree with the name above.
+          drive_folder: name.trim(),
           team_emails: teamEmails,
           client_emails: clientEmails,
           contract: {
@@ -485,6 +491,7 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
               line_oa: lineOa,
               lineman,
             },
+            videos_per_month: videosPerMonth,
             // Already known good — contractIncomplete blocks submit otherwise.
             // The server re-parses it and rejects anything unusable.
             monthly_price:   priceValue,
@@ -534,27 +541,22 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
       <Card title="Onboard New Client">
         <div className="space-y-4">
         <SectionLabel step={1} title="Client Info" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Client Name">
-            <input
-              className={inputCls}
-              placeholder="e.g. Okasan Bangkok"
-              value={name}
-              onChange={e => setName(e.target.value)}
-              required
-            />
-          </Field>
-
-          <Field label="Slug">
-            <input
-              className={inputCls}
-              placeholder="okasan-bangkok"
-              value={slug}
-              onChange={e => handleSlugChange(e.target.value)}
-              required
-            />
-          </Field>
-        </div>
+        <Field label="Client Name">
+          <input
+            className={inputCls}
+            placeholder="e.g. Okasan Bangkok"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            required
+          />
+          <Hint>
+            {slugUnusable
+              ? 'Needs at least one letter or number for the web address'
+              : slug
+                ? `Web address /${slug} · Drive folder "${name.trim()}"`
+                : 'The web address and Drive folder are named from this'}
+          </Hint>
+        </Field>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Cuisine">
@@ -580,15 +582,6 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
           </Field>
         </div>
 
-        <Field label="Google Drive Folder Name">
-          <input
-            className={inputCls}
-            placeholder="e.g. Okasan or BACIO"
-            value={driveFolder}
-            onChange={e => setDriveFolder(e.target.value)}
-            required
-          />
-        </Field>
           <SectionLabel
             step={2}
             title="Drive Access"
@@ -768,6 +761,24 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
             <Hint>Social Media Marketing is included in every contract.</Hint>
           </Field>
 
+          <Field label="Videos per Month">
+            <select
+              className={inputCls}
+              value={videosPerMonth}
+              onChange={e => setVideosPerMonth(Number(e.target.value) as VideoCount)}
+            >
+              {VIDEO_COUNTS.map(n => (
+                <option key={n} value={n}>
+                  {n} videos{n === DEFAULT_VIDEOS_PER_MONTH ? ' (standard)' : ''}
+                </option>
+              ))}
+            </select>
+            <Hint>
+              Fills the Videos column on the Clients sheet · the monthly shoot
+              plan doc is built with this many video rows
+            </Hint>
+          </Field>
+
           <Field label="Monthly Price">
             <div className="relative">
               <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center font-poppins text-sm text-[#AAAAAA]">
@@ -799,7 +810,7 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
             <StatusBadge status={status} />
             <button
               type="submit"
-              disabled={status.type === 'loading' || invalidEmails.length > 0 || contractIncomplete}
+              disabled={status.type === 'loading' || invalidEmails.length > 0 || contractIncomplete || slugUnusable}
               className="ml-auto shrink-0 bg-[#3DBE5A] text-white font-poppins font-semibold text-sm px-6 py-2.5 rounded-full hover:brightness-105 transition-all active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {status.type === 'loading' ? 'Creating…' : 'Create Client'}

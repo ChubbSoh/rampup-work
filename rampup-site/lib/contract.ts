@@ -20,6 +20,22 @@ export function isContractDuration(v: unknown): v is ContractDuration {
   return (CONTRACT_DURATIONS as readonly number[]).includes(v as number)
 }
 
+/**
+ * Videos shot per month.
+ *
+ * Written to the "Videos" column of the Clients sheet by n8n, where the Apps
+ * Script reads it to decide how many video rows the monthly shoot plan doc
+ * gets. The template carries seven, which is why seven is the default.
+ */
+export const VIDEO_COUNTS = [3, 4, 5, 6, 7, 8, 9, 10] as const
+export type VideoCount = (typeof VIDEO_COUNTS)[number]
+
+export const DEFAULT_VIDEOS_PER_MONTH: VideoCount = 7
+
+export function isVideoCount(v: unknown): v is VideoCount {
+  return (VIDEO_COUNTS as readonly number[]).includes(v as number)
+}
+
 /** Service keys as they are stored and sent to n8n. */
 export interface ContractServices {
   /** Always true — the base package. Not removable in the UI. */
@@ -47,6 +63,11 @@ export interface ContractDetails {
   /** YYYY-MM-DD, always derived from start_date + duration_months. */
   end_date: string
   services: ContractServices
+  /**
+   * Videos shot per month — what n8n writes to the sheet's "Videos" column.
+   * Omitted by an older caller means the package default, seven.
+   */
+  videos_per_month: VideoCount
   /**
    * THB per month, whole baht, exactly as typed on the onboarding card.
    *
@@ -260,6 +281,19 @@ export function parseContractDetails(
     lineman: rawServices.lineman === true,
   }
 
+  // Left out entirely means the package default of seven, which is what every
+  // client got before this field existed. A value that IS supplied has to be
+  // one we offer: a typo must not quietly become someone's shoot plan.
+  const rawVideos = raw.videos_per_month
+  const videosSupplied = rawVideos !== undefined && rawVideos !== null && rawVideos !== ''
+  const videosPerMonth = videosSupplied ? Number(rawVideos) : DEFAULT_VIDEOS_PER_MONTH
+  if (!isVideoCount(videosPerMonth)) {
+    return {
+      ok: false,
+      error: `contract.videos_per_month must be one of ${VIDEO_COUNTS.join(', ')}`,
+    }
+  }
+
   // Typed by staff, never derived — a blank or broken price must fail loudly
   // rather than quietly bill list price.
   const monthlyPrice = parseMonthlyPrice(raw.monthly_price)
@@ -281,6 +315,7 @@ export function parseContractDetails(
     duration_months:  duration,
     end_date:         calculateContractEnd(startDate, duration),
     services,
+    videos_per_month: videosPerMonth,
     monthly_price:    monthlyPrice,
   }
 
@@ -313,6 +348,9 @@ export function contractPlaceholders(
     '{{CONTRACT_START_DATE}}': formatContractDate(contract.start_date),
     '{{CONTRACT_END_DATE}}':   formatContractDate(contract.end_date),
     '{{CONTRACT_MONTHS}}':     String(contract.duration_months),
+    // Only replaced where the template actually uses the token; a template
+    // without it is untouched, so this is safe to add before the wording does.
+    '{{VIDEOS_PER_MONTH}}':    String(contract.videos_per_month),
     // The template supplies the ฿, so this is digits and separators only.
     '{{MONTHLY_PRICE}}':       formatTHB(contract.monthly_price),
     '{{AGREEMENT_DATE}}':      formatContractDate(agreementDate),
