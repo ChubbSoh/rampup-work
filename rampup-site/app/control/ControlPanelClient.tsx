@@ -357,6 +357,12 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
   const slug = slugify(name)
   const [cuisine, setCuisine]     = useState(CUISINES[0])
   const [location, setLocation]   = useState('Bangkok')
+  // Planning tag for the Clients sheet's Cuisine column — free text, and
+  // deliberately NOT the CUISINES list above. The sheet's vocabulary is
+  // operational (Rooftop-Bar, Omakase, Steakhouse, Football) and drives
+  // content themes; the site's is a public category. Keeping one field for
+  // both would force a compromise that reads wrong in one place or the other.
+  const [theme, setTheme]         = useState('')
   const [teamEmails, setTeamEmails]     = useState<string[]>(defaultTeamEmails)
   const [clientEmails, setClientEmails] = useState<string[]>([])
   const [status, setStatus]       = useState<Status>({ type: 'idle' })
@@ -429,6 +435,7 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
     setName('')
     setCuisine(CUISINES[0])
     setLocation('Bangkok')
+    setTheme('')
     setTeamEmails(defaultTeamEmails)
     setClientEmails([])
     setCompanyName('')
@@ -469,6 +476,10 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
           slug,
           cuisine,
           location,
+          // Clients sheet only. "Merge and Encode" builds the public record
+          // field by field and ignores unknown keys, so this never reaches
+          // clients.json.
+          theme: theme.trim(),
           // The Drive folder is named after the client, so there is nothing
           // to type and nothing that can disagree with the name above.
           drive_folder: name.trim(),
@@ -581,6 +592,16 @@ function OnboardSection({ defaultTeamEmails }: { defaultTeamEmails: string[] }) 
             />
           </Field>
         </div>
+
+        <Field label="Content Theme">
+          <input
+            className={inputCls}
+            placeholder="e.g. Steakhouse, Football"
+            value={theme}
+            onChange={e => setTheme(e.target.value)}
+          />
+          <Hint>Optional · planning tag on the Clients sheet · separate from the site category above</Hint>
+        </Field>
 
           <SectionLabel
             step={2}

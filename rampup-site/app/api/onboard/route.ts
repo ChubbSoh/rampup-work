@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { client_name, slug, cuisine, location, description, cover, photos, videos, active } = body as Record<string, unknown>
-  const { team_emails, client_emails, drive_folder, contract } = body as Record<string, unknown>
+  const { team_emails, client_emails, drive_folder, contract, theme } = body as Record<string, unknown>
 
   // Required field validation
   if (!client_name || typeof client_name !== 'string') {
@@ -99,6 +99,11 @@ export async function POST(req: NextRequest) {
     slug,
     cuisine:      (cuisine as string).toLowerCase().trim(),
     location:     (location as string).trim(),
+    // Operational planning tag for the Clients sheet, not a public field.
+    // Free text on purpose: the sheet's vocabulary is a working one that
+    // staff extend ("Rooftop-Bar, Football"), so validating it against a
+    // fixed list here would only block them.
+    theme:        typeof theme === 'string' ? theme.trim() : '',
     description:  typeof description === 'string' ? description.trim() : '',
     cover:        typeof cover === 'string' ? cover.trim() : '',
     photos:       Array.isArray(photos) ? photos : [],
