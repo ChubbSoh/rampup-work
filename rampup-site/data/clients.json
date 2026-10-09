@@ -957,6 +957,23 @@
       "drive_folder_id": "0AO_XmM-_zWXeUk9PVA",
       "website_folder_id": "1gZm7DYdM5jHfXKB7eN7A6otHiYUjWCrN",
       "brand_assets_folder_id": "1znbN0lsDjcVedlCgRMZ-5hRsKaCKz7FF"
+    },
+    {
+      "name": "And Made Smash Burgers",
+      "slug": "and-made-smash-burgers",
+      "cuisine": "japanese",
+      "location": "Bangkok",
+      "description": "",
+      "months": 0,
+      "active": false,
+      "last_updated": "2026-10-09",
+      "cover": "",
+      "page": "and-made-smash-burgers.html",
+      "photos": [],
+      "videos": [],
+      "drive_folder_id": "0AOXe-ekAcGSXUk9PVA",
+      "website_folder_id": "16AXkcl_Zjo2SXUtrzVHhNpHc49w8PQBp",
+      "brand_assets_folder_id": "1UyZQ8Q458TbCSsXW0Q4uqHY_09QPBYF5"
     }
   ]
 }
