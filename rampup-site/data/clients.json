@@ -740,14 +740,34 @@
       "description": "",
       "months": 0,
       "active": false,
-      "last_updated": "2026-07-14",
-      "cover": "",
+      "last_updated": "2026-10-19",
+      "cover": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/8a630363-b443-4d9a-bc19-ed1401547400/public",
       "page": "napha.html",
-      "photos": [],
-      "videos": [],
+      "photos": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/8a630363-b443-4d9a-bc19-ed1401547400/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/064a66f9-692c-4cf6-1b5b-acb4cf174900/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/8d2e30c7-85d7-437c-49e5-971da9b9ff00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/618be9d2-a557-406b-bafc-7c3d86028000/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/c033e520-01e4-439b-983f-d73f13551c00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/a272e29e-d7aa-4f20-801e-35f945f1b700/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ee93abeb-31c7-4134-e47a-b6f7f1881b00/public"
+      ],
+      "videos": [
+        "7aa821eae29ca5191f20a4c3123061bd",
+        "38f05898475ab5f82d496497d8a7f02a",
+        "f2ca277facabca7239ee8587a971947f"
+      ],
       "drive_folder_id": "0APy5H-xDr3PqUk9PVA",
       "website_folder_id": "1AbwBS1-Nl65k2nIaHSdkvdGNOl2ssnzY",
-      "brand_assets_folder_id": "1T-aY5n5fb8TrpQn1dwIJAN4QeymxXP13"
+      "brand_assets_folder_id": "1T-aY5n5fb8TrpQn1dwIJAN4QeymxXP13",
+      "feed_design": "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/fba46bb8-a23b-4a45-c63a-1f65c4f3af00/public",
+      "monthly_plan": [
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/ca6ba714-5237-44bb-4fe0-1bae7105a100/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/24e713ed-a492-491a-5fee-8b446aaf2600/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/31e6145b-ef87-4c8f-5379-57b7c8e4fd00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/4c87eb98-1bbb-446a-ab1b-ed6797fede00/public",
+        "https://imagedelivery.net/vLx1XbY5KfOkLsw5dmceXw/3d203ef6-66d0-43ad-9fd4-6a8c67593600/public"
+      ]
     },
     {
       "name": "Brewave Ari",
