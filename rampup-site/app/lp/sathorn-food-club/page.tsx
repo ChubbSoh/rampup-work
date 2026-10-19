@@ -20,6 +20,24 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
+/**
+ * The hero answers their agency brief point by point.
+ *
+ * Their brief is blunt about it: "don't just create awareness, fill the
+ * restaurant", and it asks the agency to show what one baht of spend returned.
+ * So bookings lead, and every other line maps to a channel or a number they
+ * asked for. Short, plain words on purpose — this is read quickly, and by
+ * people whose first language is not English.
+ */
+const heroPoints = [
+  'We fill tables. Not just feeds.',
+  'We film chefs, farms and food.',
+  'We run ads on Google, Meta and TikTok.',
+  'We pick creators who bring real guests.',
+  'Every ad leads to a booking.',
+  'We show you what each baht earned.',
+]
+
 /** Their own line-up, straight from the deck. Dates are theirs, not ours. */
 const residencies = [
   { chef: 'Kanji Kobayashi', house: 'Villa Aida · Wakayama', dates: '16 Dec — 31 Jan', note: 'Agrigastronomy' },
@@ -84,12 +102,16 @@ export default function SathornFoodClubPage() {
           <br />
           Food Club
         </h1>
-        <p className="font-poppins text-base md:text-xl text-white/45 mt-7 max-w-md">
-          Four chefs. Four stories. One year.
-        </p>
-        <p className="font-poppins text-base md:text-xl text-white mt-1 max-w-md">
-          We make the content that keeps up.
-        </p>
+        <ul className="mt-9 md:mt-10 flex flex-col gap-3 max-w-lg">
+          {heroPoints.map((point) => (
+            <li key={point} className="flex items-start gap-3">
+              {/* A rule rather than a dot: a bullet list under a 5rem headline
+                  reads as a form, a rule reads as a statement. */}
+              <span aria-hidden className="mt-[0.7em] h-px w-5 shrink-0 bg-[#C0A878]" />
+              <span className="font-poppins text-base md:text-xl leading-snug">{point}</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <div className="max-w-site mx-auto px-5 md:px-12"><div className="h-px bg-white/10" /></div>
