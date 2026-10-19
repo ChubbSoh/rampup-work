@@ -21,21 +21,17 @@ export const metadata: Metadata = {
 }
 
 /**
- * The hero answers their agency brief point by point.
+ * What we do, from their agency brief. Three lines, no more.
  *
- * Their brief is blunt about it: "don't just create awareness, fill the
- * restaurant", and it asks the agency to show what one baht of spend returned.
- * So bookings lead, and every other line maps to a channel or a number they
- * asked for. Short, plain words on purpose — this is read quickly, and by
+ * Written as things rather than claims: "Ads on Google, Meta and TikTok", not
+ * "we run ads on…". A hero that opens with We, We, We is about us, and this
+ * page is about their restaurant. Plain words — it is skimmed, and read by
  * people whose first language is not English.
  */
 const heroPoints = [
-  'We fill tables. Not just feeds.',
-  'We film chefs, farms and food.',
-  'We run ads on Google, Meta and TikTok.',
-  'We pick creators who bring real guests.',
-  'Every ad leads to a booking.',
-  'We show you what each baht earned.',
+  'Film and photos of chefs, farms and food',
+  'Ads on Google, Meta and TikTok',
+  'Every ad leads to a booking',
 ]
 
 /** Their own line-up, straight from the deck. Dates are theirs, not ours. */
