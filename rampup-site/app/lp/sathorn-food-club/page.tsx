@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { getClientBySlug } from '@/lib/clients'
-import FunnelVideoSection from '@/components/FunnelVideoSection'
+import LazyVideoCard from '@/components/LazyVideoCard'
 
 /**
  * Proposal page for one named prospect: Sathorn Food Club at U Sathorn.
@@ -64,22 +64,38 @@ const SectionLabel = ({ children }: { children: React.ReactNode }) => (
 )
 
 export default function SathornFoodClubPage() {
-  const mansTable = getClientBySlug('mans-table')
+  const napha     = getClientBySlug('napha')
   const tohDaeng  = getClientBySlug('toh-d')
+  const mansTable = getClientBySlug('mans-table')
 
   const customerCode = process.env.CLOUDFLARE_STREAM_CUSTOMER_CODE ?? ''
 
-  // Chef-led rooms only. Napha belongs here too but has no published media yet.
-  const videoIds = [...(mansTable?.videos ?? []), ...(tohDaeng?.videos ?? [])]
+  // One reel per restaurant, in the order the line above this section names
+  // them. Three venues, three reels: the row proves its own caption rather
+  // than leaning on whichever client happens to have the most footage.
+  const videoIds = [
+    ...(napha?.videos ?? []).slice(0, 1),
+    ...(tohDaeng?.videos ?? []).slice(0, 1),
+    ...(mansTable?.videos ?? []).slice(0, 1),
+  ]
 
   // feed_design and monthly_plan live in `photos` as well; they are deck
-  // artwork rather than photography, so they do not belong in this grid.
+  // artwork rather than photography, so they do not belong in these rows.
   const notArtwork = (c: ReturnType<typeof getClientBySlug>) => {
     if (!c) return []
     const special = new Set([...(c.feed_design ? [c.feed_design] : []), ...(c.monthly_plan ?? [])])
     return (c.photos ?? []).filter((p) => !special.has(p))
   }
-  const photos = [...notArtwork(mansTable), ...notArtwork(tohDaeng)]
+
+  // One row per restaurant, four frames each. Read from the data rather than
+  // hardcoded to three, so Napha's row appears by itself the day its shoot is
+  // published. It has no photos at all today and would otherwise render as an
+  // empty row under a heading.
+  const photoRows = [
+    { name: 'Napha',      photos: notArtwork(napha).slice(0, 4) },
+    { name: 'Toh Daeng',  photos: notArtwork(tohDaeng).slice(0, 4) },
+    { name: 'Man Tables', photos: notArtwork(mansTable).slice(0, 4) },
+  ].filter((row) => row.photos.length > 0)
 
   return (
     <main className="min-h-[100dvh] bg-[#0A0A0A] text-white">
@@ -117,27 +133,50 @@ export default function SathornFoodClubPage() {
         <section className="max-w-site mx-auto px-5 md:px-12 py-16 md:py-24">
           <SectionLabel>Our video</SectionLabel>
           <h2 className="font-sora font-extrabold text-[clamp(1.6rem,4.5vw,3rem)] leading-[1.05] tracking-tight mb-3">
-            Chef-led rooms
+            Chef-Led Concepts
           </h2>
           <p className="font-poppins text-base text-white/45 mb-10 max-w-md">
-            Man&nbsp;Tables. Toh&nbsp;Daeng.
+            Trusted by Napha, Toh&nbsp;Daeng and Man&nbsp;Tables.
           </p>
-          <FunnelVideoSection videoIds={videoIds} customerCode={customerCode} />
+          {/* A plain grid rather than FunnelVideoSection. That component hides
+              the later reels behind a "view more" button, which earns its place
+              on a funnel page where scroll depth is the enemy. On a proposal
+              the work should already be on the page. */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+            {videoIds.map((id, i) => (
+              <LazyVideoCard
+                key={id}
+                videoId={id}
+                customerCode={customerCode}
+                label={`Reel ${i + 1}`}
+                sizes="(max-width: 768px) 50vw, 33vw"
+              />
+            ))}
+          </div>
         </section>
       )}
 
       {/* ── 3. PHOTOS ── */}
-      {photos.length > 0 && (
+      {photoRows.length > 0 && (
         <section className="max-w-site mx-auto px-5 md:px-12 py-16 md:py-24">
           <SectionLabel>Our photography</SectionLabel>
           <h2 className="font-sora font-extrabold text-[clamp(1.6rem,4.5vw,3rem)] leading-[1.05] tracking-tight mb-10">
-            Food, shot properly
+            Food, atmosphere and detail, captured
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-            {photos.map((src, i) => (
-              <div key={i} className="aspect-square overflow-hidden rounded-xl bg-white/[0.04]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+          <div className="flex flex-col gap-10 md:gap-14">
+            {photoRows.map(({ name, photos }) => (
+              <div key={name}>
+                <p className="font-poppins text-[11px] uppercase tracking-[0.18em] text-white/35 mb-4">
+                  {name}
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                  {photos.map((src, i) => (
+                    <div key={i} className="aspect-square overflow-hidden rounded-xl bg-white/[0.04]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -147,9 +186,12 @@ export default function SathornFoodClubPage() {
       {/* ── 4. ADS ── */}
       <section className="max-w-site mx-auto px-5 md:px-12 py-16 md:py-24">
         <SectionLabel>Our ads</SectionLabel>
-        <h2 className="font-sora font-extrabold text-[clamp(1.6rem,4.5vw,3rem)] leading-[1.05] tracking-tight mb-10">
-          Running now
+        <h2 className="font-sora font-extrabold text-[clamp(1.6rem,4.5vw,3rem)] leading-[1.05] tracking-tight mb-3">
+          Facebook, Instagram, TikTok, Google
         </h2>
+        <p className="font-poppins text-base text-white/45 mb-10 max-w-md">
+          Ads to drive brand awareness and bookings.
+        </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {adShots.map(({ src, caption }) => (
             <figure key={src}>
