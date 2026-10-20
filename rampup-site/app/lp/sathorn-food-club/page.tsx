@@ -229,10 +229,13 @@ export default function SathornFoodClubPage() {
   // Their Canva feed planner, shown under "how we work" as the worked example.
   const planPages = mansTable?.monthly_plan ?? []
 
+  // desktopOnly drops a row on phones. Three restaurants is a long scroll on a
+  // handset and Toh Daeng is the weakest of the three here: its media is still
+  // April's, because its republish has not run clean yet.
   const photoRows = [
-    { name: 'Napha',      photos: notArtwork(napha).slice(0, 4) },
-    { name: 'Man Tables', photos: notArtwork(mansTable).slice(0, 4) },
-    { name: 'Toh Daeng',  photos: notArtwork(tohDaeng).slice(0, 4) },
+    { name: 'Napha',      desktopOnly: false, photos: notArtwork(napha).slice(0, 4) },
+    { name: 'Man Tables', desktopOnly: false, photos: notArtwork(mansTable).slice(0, 4) },
+    { name: 'Toh Daeng',  desktopOnly: true,  photos: notArtwork(tohDaeng).slice(0, 4) },
   ].filter((row) => row.photos.length > 0)
 
   return (
@@ -293,13 +296,17 @@ export default function SathornFoodClubPage() {
               the work should already be on the page. */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
             {videoIds.map((id, i) => (
-              <LazyVideoCard
-                key={id}
-                videoId={id}
-                customerCode={customerCode}
-                label={`Reel ${i + 1}`}
-                sizes="(max-width: 768px) 50vw, 33vw"
-              />
+              // Third reel is Toh Daeng, dropped on phones. Three 9:16 cards in
+              // a two-column grid leave one stranded on its own row, and this is
+              // the clip still waiting on a clean publish.
+              <div key={id} className={i === 2 ? 'hidden md:block' : undefined}>
+                <LazyVideoCard
+                  videoId={id}
+                  customerCode={customerCode}
+                  label={`Reel ${i + 1}`}
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                />
+              </div>
             ))}
           </div>
         </section>
@@ -313,8 +320,8 @@ export default function SathornFoodClubPage() {
             Food, atmosphere and detail, captured
           </h2>
           <div className="flex flex-col gap-10 md:gap-14">
-            {photoRows.map(({ name, photos }) => (
-              <div key={name}>
+            {photoRows.map(({ name, photos, desktopOnly }) => (
+              <div key={name} className={desktopOnly ? 'hidden md:block' : undefined}>
                 <p className="font-poppins text-[11px] uppercase tracking-[0.18em] text-white/35 mb-4">
                   {name}
                 </p>
