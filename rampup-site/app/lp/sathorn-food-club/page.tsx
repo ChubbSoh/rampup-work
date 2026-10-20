@@ -62,9 +62,11 @@ const campaignMix = [
 // like this does ฿4-6M in high season and about 60% of that when it is quiet.
 // Stated as total revenue rather than a lift we claim credit for, because they
 // take no bookings and no cover can be traced back to an ad anyway.
-const HIGH_SEASON = [4_000_000, 6_000_000]
-const LOW_SEASON_SHARE = 0.6
-const LOW_SEASON = HIGH_SEASON.map((v) => v * LOW_SEASON_SHARE)
+// Both bands are Chubb's figures, stated rather than derived. Low season used
+// to be a flat 60% of high; it is not, so deriving it would quietly overwrite
+// the number he actually wants on the page.
+const HIGH_SEASON = [3_900_000, 5_000_000]
+const LOW_SEASON = [1_900_000, 3_000_000]
 
 /** 4000000 -> "฿4M", 2400000 -> "฿2.4M". Whole millions lose the decimal. */
 const millions = (n: number) =>
