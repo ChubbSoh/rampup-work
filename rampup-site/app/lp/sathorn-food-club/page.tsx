@@ -190,7 +190,14 @@ export default function SathornFoodClubPage() {
   // Add a slug below to pin that restaurant's reel; with no entry it falls
   // back to the client's first video.
   const CHOSEN_REEL: Record<string, string> = {
+    // "Use this - NAPHA VDO 6 Strawberry"
     napha: '38f05898475ab5f82d496497d8a7f02a',
+    // "USE THIS - VIDEO 6", the chef-to-camera piece. Confirmed against the
+    // Drive file's own poster frame, not inferred from array order.
+    'mans-table': '1e7cef531af56b5db382dbf1248605bb',
+    // Toh Daeng's "USE THIS" cut is not on Stream: its republish died on a
+    // missing feed-design subfolder, so clients.json still holds April's
+    // upload. Add its id here once the publish has run clean.
   }
   const pickReel = (c: ReturnType<typeof getClientBySlug>, slug: string) => {
     const vids = c?.videos ?? []
@@ -262,7 +269,7 @@ export default function SathornFoodClubPage() {
           <p className="font-sora font-extrabold text-2xl md:text-3xl tracking-tight tabular-nums">
             {formatTHB(restaurantRampUp.price)} baht per month
           </p>
-          <p className="font-poppins text-base text-white/45 mt-1">(excluding ad budget)</p>
+          <p className="font-poppins text-base text-white/45 mt-1">(excluding vat)</p>
         </div>
       </section>
 
