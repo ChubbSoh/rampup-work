@@ -21,6 +21,8 @@ export const DEFAULT_TEAM_EMAILS: string[] = [
   'video.editor.rampupth@gmail.com',
   'rampup.graphic.designer@gmail.com',
   'senior.video.editor.rampupth@gmail.com',
+  'photo.nova.rampupth@gmail.com',
+  'video.nova.rampupth@gmail.com',
 ]
 
 /** Shared Drive role granted to RampUp staff. */
