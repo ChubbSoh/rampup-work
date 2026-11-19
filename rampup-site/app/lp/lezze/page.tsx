@@ -318,26 +318,6 @@ export default function LezzePage() {
         </div>
       </section>
 
-      {/* ── 4.5 INFLUENCERS ── */}
-      <section className="max-w-site mx-auto px-5 md:px-12 py-16 md:py-24">
-        <SectionLabel>Influencers</SectionLabel>
-        <h2 className="font-sora font-extrabold text-[clamp(1.6rem,4.5vw,3rem)] leading-[1.05] tracking-tight mb-10">
-          The right rooms, the right faces
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/10 rounded-xl overflow-hidden">
-          {[
-            { k: 'Food media', v: 'Bangkok dining press and guides' },
-            { k: 'Creators',   v: 'Matched to the room, not a fixed list' },
-            { k: 'Launches',   v: 'Invited for the opening week' },
-          ].map(({ k, v }) => (
-            <div key={k} className="bg-[#0A0A0A] p-6 md:p-8">
-              <p className="font-poppins text-[11px] uppercase tracking-[0.18em] text-white/35 mb-2">{k}</p>
-              <p className="font-sora font-bold text-lg leading-snug">{v}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ── 5. TIMELINE ── their line-up, our cycle against it */}
       <section className="bg-white/[0.03] border-y border-white/10">
         <div className="max-w-site mx-auto px-5 md:px-12 py-16 md:py-24">
